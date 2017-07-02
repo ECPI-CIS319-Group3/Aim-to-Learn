@@ -4,6 +4,9 @@ import javax.imageio.ImageIO;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ReplicateScaleFilter;
 import java.io.File;
 import java.io.IOException;
 
@@ -52,9 +55,15 @@ public class Constants {
 			System.exit(666);
 		}
 
-		SHIP_IMAGE = shipImage;
-		SHIP_WIDTH = shipImage.getWidth(null);
-		SHIP_HEIGHT = shipImage.getHeight(null);
+		int width = shipImage.getWidth(null) * 2;
+		int height = shipImage.getHeight(null) * 2;
+
+		ReplicateScaleFilter scaleFilter = new ReplicateScaleFilter(width, height);
+		FilteredImageSource fis = new FilteredImageSource(shipImage.getSource(), scaleFilter);
+
+		SHIP_IMAGE = Toolkit.getDefaultToolkit().createImage(fis);
+		SHIP_WIDTH = width;
+		SHIP_HEIGHT = height;
 	}
 
 	// TODO temporary stuff

@@ -28,6 +28,7 @@ public class Game extends JFrame {
 		setDisplayPanel(mainMenu);
 		setRes(720);
 
+		this.setTitle("Aim to Learn");
 		this.setResizable(false);
 		this.setUndecorated(true);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -40,19 +41,18 @@ public class Game extends JFrame {
 		this.activePanel = panel;
 		this.setContentPane(activePanel);
 		this.revalidate();
+		activePanel.requestFocusInWindow();
 	}
 
 	public void changeRes() {
-		Integer[] ops = {/*96, 144,*/ 240, 360, 480, 720, 900};
-		int op = JOptionPane.showOptionDialog(this,
+		Integer[] heights = {/*96, 144, 240, 360, 480,*/ 720, 900, 1080};
+		int option = JOptionPane.showOptionDialog(this,
 			"Choose resolution", "Resolution",
 			JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-			ops, ops[0]);
+			heights, heights[0]);
 
-		int height = ops[op];
-
-		if (height != JOptionPane.CLOSED_OPTION)
-			setRes(height);
+		if (option != JOptionPane.CLOSED_OPTION)
+			setRes(heights[option]);
 	}
 
 	private void setRes(int h) {

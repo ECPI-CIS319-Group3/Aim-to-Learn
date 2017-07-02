@@ -4,12 +4,14 @@ import javax.swing.SwingConstants;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static aimtolearn.Constants.*;
+import static java.awt.event.KeyEvent.*;
 
 public class GameplayScreen extends GamePanel {
 
@@ -17,10 +19,14 @@ public class GameplayScreen extends GamePanel {
 
 	private int score, level;
 
-	private boolean firedShot = false;
+	private long lastShotTime = 0;
 
 	private Map<Integer, Boolean> activeKeys = new HashMap<>();
-	private final List<Point> shotLocations = new ArrayList<>();
+	private final List<Point> shotLocations = new CopyOnWriteArrayList<>();
+
+	private final int[] RIGHT_KEYS = {VK_RIGHT, VK_D};
+	private final int[] LEFT_KEYS = {VK_LEFT, VK_A};
+	private final int[] FIRE_KEYS = {VK_UP, VK_W};
 
 	private static final Dimension SHOT_SIZE = new Dimension(10, 40);
 
@@ -28,7 +34,7 @@ public class GameplayScreen extends GamePanel {
 		BOX_WIDTH = 100, TEXT_MARGIN = 10,
 		SMALL_FONT = 16, LARGE_FONT = 50;
 
-	private static final int SHIP_SPEED = 10, SHOT_SPEED = 10;
+	private static final int SHIP_SPEED = 10, SHOT_SPEED = 10, AUTOFIRE_DELAY = 500;
 
 	private static final int LEFT_BOUND = SHIP_WIDTH / 2,
 		RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND;
@@ -42,13 +48,9 @@ public class GameplayScreen extends GamePanel {
 		this.shipX = MAIN_WIDTH / 2;
 
 		this.addKeyListener(new KeyAdapter() {
-
-			@Override
 			public void keyPressed(KeyEvent e) {
 				activeKeys.put(e.getKeyCode(), true);
 			}
-
-			@Override
 			public void keyReleased(KeyEvent e) {
 				activeKeys.put(e.getKeyCode(), false);
 			}
@@ -66,7 +68,7 @@ public class GameplayScreen extends GamePanel {
 		// draw the top interface
 
 		Rectangle levelBox = new Rectangle(TOP_MARGIN, TOP_MARGIN, BOX_WIDTH, TOP);
-		Rectangle scoreBox = new Rectangle(MAIN_WIDTH - TOP_MARGIN - BOX_WIDTH, TOP_MARGIN, BOX_WIDTH, TOP);
+		Rectangle scoreBox = new Rectangle(MAIN_WIDTH - TOP_MARGIN - 2*BOX_WIDTH, TOP_MARGIN, 2*BOX_WIDTH, TOP);
 
 		g.draw(levelBox);
 		g.draw(scoreBox);
@@ -87,24 +89,28 @@ public class GameplayScreen extends GamePanel {
 		Game.text(""+level, levelBox, g, SwingConstants.CENTER);
 		Game.text(""+score, scoreBox, g, SwingConstants.CENTER);
 
-		Rectangle questionBox = new Rectangle(2 * TOP_MARGIN + BOX_WIDTH, TOP_MARGIN,
-			MAIN_WIDTH - 4 * TOP_MARGIN - 2 * BOX_WIDTH, TOP);
+		Rectangle questionBox = new Rectangle(
+			(int) (levelBox.getMaxX() + TOP_MARGIN),
+			TOP_MARGIN,
+			(int) (MAIN_WIDTH - 4 * TOP_MARGIN - levelBox.getWidth() - scoreBox.getWidth()),
+			TOP
+		);
 
+		/*
 		Stroke orig = g.getStroke();
 		float strokeWidth = ((BasicStroke) orig).getLineWidth();
 		Stroke dash = new BasicStroke(strokeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10f, new float[]{10f}, 0f);
 		g.setStroke(dash);
 		g.draw(questionBox);
+		g.setStroke(orig);
+		*/
 		g.setFont(g.getFont().deriveFont(((float) FONT_SIZE)));
 		Game.text(QUESTION, questionBox, g, SwingConstants.CENTER);
 
-		g.setStroke(orig);
+		// draw the shots
 
-		// draw the shot
-
-		for (Point shotLoc : shotLocations) {
+		for (Point shotLoc : shotLocations)
 			g.fill(new Rectangle(shotLoc, SHOT_SIZE));
-		}
 
 		// draw the ship
 
@@ -115,8 +121,9 @@ public class GameplayScreen extends GamePanel {
 
 	}
 
-	private boolean keyDown(int keyNumber) {
-		return activeKeys.getOrDefault(keyNumber, false);
+	private boolean keyDown(int... keyNumbers) {
+		return Arrays.stream(keyNumbers)
+			.anyMatch(key -> activeKeys.getOrDefault(key, false));
 	}
 
 	/**
@@ -125,31 +132,33 @@ public class GameplayScreen extends GamePanel {
 	private void tick() {
 
 		// prevent both left and right from being held down together
-		if (!(keyDown(KeyEvent.VK_RIGHT) && keyDown(KeyEvent.VK_LEFT))) {
+		if (!(keyDown(RIGHT_KEYS) && keyDown(LEFT_KEYS))) {
 
-			if (keyDown(KeyEvent.VK_RIGHT)) // if right is down, move right
+			if (keyDown(RIGHT_KEYS)) // if right is down, move right
 				this.shipX += SHIP_SPEED;
-			else if (keyDown(KeyEvent.VK_LEFT)) // if left is down, move left
+			else if (keyDown(LEFT_KEYS)) // if left is down, move left
 				this.shipX -= SHIP_SPEED;
 
 			if (shipX > RIGHT_BOUND) this.shipX = RIGHT_BOUND;
 			if (shipX < LEFT_BOUND) this.shipX = LEFT_BOUND;
 		}
 
-		if (keyDown(KeyEvent.VK_UP)) {
-			if (!firedShot) {
+		if (keyDown(FIRE_KEYS)) {
+			if (System.currentTimeMillis() - lastShotTime >= AUTOFIRE_DELAY) {// auto-fire every [x]ms
 				fireShot();
-				firedShot = true;
+				this.lastShotTime = System.currentTimeMillis();
 			}
 		}
 		else {
-			firedShot = false;
+			this.lastShotTime = 0;
 		}
 
 		for (Point shotLoc : shotLocations) {
-		//	if (shotLoc.getY() < 0)
-		//		shotLocations.remove(shotLoc);
-		//	else
+			if (shotLoc.getY() < 0) {
+				shotLocations.remove(shotLoc);
+				score++; // TODO temp
+			}
+			else
 				shotLoc.translate(0, -SHOT_SPEED);
 		}
 
@@ -158,7 +167,7 @@ public class GameplayScreen extends GamePanel {
 
 	private void fireShot() {
 		int x = (int) (shipX - SHOT_SIZE.getWidth() / 2);
-		int y = (int) (SHIP_Y - SHIP_HEIGHT / 2 - SHOT_SIZE.getHeight());
+		int y = (int) (SHIP_Y /*- SHIP_HEIGHT / 2*/ - SHOT_SIZE.getHeight());
 
 		shotLocations.add(new Point(x, y));
 	}

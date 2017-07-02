@@ -1,5 +1,6 @@
 package aimtolearn;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -40,9 +41,12 @@ public class MainMenu extends GamePanel {
 							game.changeRes();
 							break;
 						case 2: // How to play
+							JOptionPane.showMessageDialog(game, "TODO: How to Play menu");
 							break;
 						case 3: // Quit
-							System.exit(0);
+							int confirm = JOptionPane.showConfirmDialog(game, "Are you sure you want to quit?", "Confirm Quit",
+								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+							if (confirm == 0) System.exit(0);
 							break;
 						default:
 							throw new AssertionError("Not possible");
