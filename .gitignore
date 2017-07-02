@@ -1,3 +1,4 @@
 /ignore
 /AimToLearn/out/**
 /AimToLearn/.idea
+/AimToLearn/*.iml
