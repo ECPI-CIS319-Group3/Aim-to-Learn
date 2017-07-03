@@ -17,7 +17,7 @@ public class GameplayScreen extends GamePanel {
 
 	private int shipX;
 
-	private int score, level;
+	private int score, level, round;
 
 	private long lastShotTime = 0;
 
@@ -44,12 +44,15 @@ public class GameplayScreen extends GamePanel {
 
 		this.score = 0;
 		this.level = 1;
+		this.round = 1;
 
 		this.shipX = MAIN_WIDTH / 2;
 
 		this.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				activeKeys.put(e.getKeyCode(), true);
+
+				if (e.getKeyCode() == VK_ESCAPE) game.quit(); // TODO temporary
 			}
 			public void keyReleased(KeyEvent e) {
 				activeKeys.put(e.getKeyCode(), false);
@@ -68,31 +71,34 @@ public class GameplayScreen extends GamePanel {
 		// draw the top interface
 
 		Rectangle levelBox = new Rectangle(TOP_MARGIN, TOP_MARGIN, BOX_WIDTH, TOP);
+		Rectangle roundBox = new Rectangle((int) (levelBox.getMaxX()), TOP_MARGIN, BOX_WIDTH, TOP);
 		Rectangle scoreBox = new Rectangle(MAIN_WIDTH - TOP_MARGIN - 2*BOX_WIDTH, TOP_MARGIN, 2*BOX_WIDTH, TOP);
+		Rectangle[] boxes = new Rectangle[]{levelBox, roundBox, scoreBox};
 
-		g.draw(levelBox);
-		g.draw(scoreBox);
-
-		levelBox.translate(0, TEXT_MARGIN);
-		scoreBox.translate(0, TEXT_MARGIN);
+		for (Rectangle box : boxes) {
+			g.draw(box);
+			box.translate(0, TEXT_MARGIN);
+		}
 
 		g.setFont(g.getFont().deriveFont((float) SMALL_FONT));
 		Game.text("Level", levelBox, g, SwingConstants.TOP);
+		Game.text("Round", roundBox, g, SwingConstants.TOP);
 		Game.text("Score", scoreBox, g, SwingConstants.TOP);
 
-		levelBox.translate(0, SMALL_FONT);
-		levelBox.setSize((int) levelBox.getWidth(), (int) levelBox.getHeight() - TEXT_MARGIN - SMALL_FONT);
-		scoreBox.translate(0, SMALL_FONT);
-		scoreBox.setSize((int) scoreBox.getWidth(), (int) scoreBox.getHeight() - TEXT_MARGIN - SMALL_FONT);
+		for (Rectangle box : boxes) {
+			box.translate(0, SMALL_FONT);
+			box.setSize((int) box.getWidth(), (int) box.getHeight() - TEXT_MARGIN - SMALL_FONT);
+		}
 
 		g.setFont(g.getFont().deriveFont((float) LARGE_FONT));
 		Game.text(""+level, levelBox, g, SwingConstants.CENTER);
 		Game.text(""+score, scoreBox, g, SwingConstants.CENTER);
+		Game.text(""+round, roundBox, g, SwingConstants.CENTER);
 
 		Rectangle questionBox = new Rectangle(
-			(int) (levelBox.getMaxX() + TOP_MARGIN),
+			(int) (roundBox.getMaxX() + TOP_MARGIN),
 			TOP_MARGIN,
-			(int) (MAIN_WIDTH - 4 * TOP_MARGIN - levelBox.getWidth() - scoreBox.getWidth()),
+			MAIN_WIDTH - 4 * TOP_MARGIN - 4 * BOX_WIDTH,
 			TOP
 		);
 
@@ -115,7 +121,7 @@ public class GameplayScreen extends GamePanel {
 		// draw the ship
 
 		int y = SHIP_Y - SHIP_HEIGHT;
-		int x = this.shipX - SHIP_WIDTH / 2;
+		int x = shipX - SHIP_WIDTH / 2;
 
 		g.drawImage(SHIP_IMAGE, x, y, null);
 

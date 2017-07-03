@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ReplicateScaleFilter;
-import java.io.File;
 import java.io.IOException;
 
 public class Constants {
@@ -35,7 +34,7 @@ public class Constants {
 
 		Font font;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File(FONT_FILE)).deriveFont((float) FONT_SIZE);
+			font = Font.createFont(Font.TRUETYPE_FONT, Constants.class.getResourceAsStream(FONT_FILE)).deriveFont((float) FONT_SIZE);
 		}
 		catch (FontFormatException | IOException e) {
 			font = null;
@@ -47,12 +46,12 @@ public class Constants {
 
 		Image shipImage;
 		try {
-			shipImage = ImageIO.read(new File(SHIP_FILE_NAME));
+			shipImage = ImageIO.read(Constants.class.getResource(SHIP_FILE_NAME));
 		}
 		catch (IOException e) {
 			shipImage = null;
 			System.err.println("Missing image file \"" + SHIP_FILE_NAME + "\". Quitting game.");
-			System.exit(666);
+			System.exit(14);
 		}
 
 		int width = shipImage.getWidth(null) * 2;

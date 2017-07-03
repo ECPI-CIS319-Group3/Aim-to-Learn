@@ -31,7 +31,7 @@ public class MainMenu extends GamePanel {
 				if (e.getKeyCode() == KeyEvent.VK_UP)
 					selectedIndex = selectedIndex == 0 ? ITEMS.length-1 : selectedIndex-1;
 				else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-					selectedIndex++;
+					selectedIndex = selectedIndex == ITEMS.length-1 ? 0 : selectedIndex+1;
 				else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					switch (selectedIndex) {
 						case 0: // Start
@@ -44,17 +44,15 @@ public class MainMenu extends GamePanel {
 							JOptionPane.showMessageDialog(game, "TODO: How to Play menu");
 							break;
 						case 3: // Quit
-							int confirm = JOptionPane.showConfirmDialog(game, "Are you sure you want to quit?", "Confirm Quit",
-								JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-							if (confirm == 0) System.exit(0);
+							game.quit();
 							break;
 						default:
 							throw new AssertionError("Not possible");
 					}
 				}
 
-				if (selectedIndex == -1) selectedIndex = ITEMS.length-1;
-				if (selectedIndex == ITEMS.length) selectedIndex = 0;
+			//	if (selectedIndex == -1) selectedIndex = ITEMS.length-1;
+			//	if (selectedIndex == ITEMS.length) selectedIndex = 0;
 
 				repaint();
 

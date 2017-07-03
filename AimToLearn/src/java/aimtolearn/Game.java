@@ -4,10 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 import static aimtolearn.Constants.AR;
@@ -21,12 +18,25 @@ public class Game extends JFrame {
 	private int desiredHeight;
 	private int desiredWidth;
 
+	private static final Integer[] HEIGHTS = {720, 900, 1080};
+
 	public Game() {
 		this.mainMenu = new MainMenu(this);
 		this.gameplayScreen = new GameplayScreen(this);
 
 		setDisplayPanel(mainMenu);
-		setRes(720);
+
+		int res = -1;
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		if (screen.width > screen.height) {
+			for (int h : HEIGHTS) {
+				if (h > screen.height) break;
+				res = h;
+			}
+		}
+		else throw new UnsupportedOperationException("Not implemented yet"); // TODO implement this
+
+		setRes(res);
 
 		this.setTitle("Aim to Learn");
 		this.setResizable(false);
@@ -45,14 +55,13 @@ public class Game extends JFrame {
 	}
 
 	public void changeRes() {
-		Integer[] heights = {/*96, 144, 240, 360, 480,*/ 720, 900, 1080};
 		int option = JOptionPane.showOptionDialog(this,
 			"Choose resolution", "Resolution",
 			JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-			heights, heights[0]);
+			HEIGHTS, HEIGHTS[0]);
 
 		if (option != JOptionPane.CLOSED_OPTION)
-			setRes(heights[option]);
+			setRes(HEIGHTS[option]);
 	}
 
 	private void setRes(int h) {
@@ -60,6 +69,13 @@ public class Game extends JFrame {
 		this.desiredWidth = (int) (desiredHeight * AR);
 		this.setSize(desiredWidth, desiredHeight);
 		this.setLocationRelativeTo(null);
+	}
+
+	public void quit() {
+		int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Confirm Quit",
+			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+		if (confirm == 0) System.exit(0);
 	}
 
 	public int getDesiredHeight() {

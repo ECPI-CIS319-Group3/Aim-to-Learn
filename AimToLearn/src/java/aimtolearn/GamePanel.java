@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ReplicateScaleFilter;
 
@@ -37,17 +38,19 @@ public abstract class GamePanel extends JPanel {
 		}
 
 		g.setColor(getBackground());
-		g.fillRect(0, 0, Constants.MAIN_WIDTH, Constants.MAIN_HEIGHT);
+		g.fillRect(0, 0, MAIN_WIDTH, MAIN_HEIGHT);
 		g.setColor(WHITE);
-		g.setFont(Constants.PIXEL_FONT);
+		g.setFont(PIXEL_FONT);
 
 		updateScreen(g);
 
-		if (game.getDesiredHeight() != MAIN_HEIGHT && rescale != null) {
+		if (rescale != null) {
 			ReplicateScaleFilter scaleFilter = new ReplicateScaleFilter(game.getDesiredWidth(), game.getDesiredHeight());
 			FilteredImageSource fis = new FilteredImageSource(rescale.getSource(), scaleFilter);
 			graphics.drawImage(createImage(fis), 0, 0, null);
 		}
+
+		Toolkit.getDefaultToolkit().sync();
 	}
 
 	protected abstract void updateScreen(Graphics g);
