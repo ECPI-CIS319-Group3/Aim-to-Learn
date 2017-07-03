@@ -3,11 +3,9 @@ package aimtolearn;
 import javax.imageio.ImageIO;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ReplicateScaleFilter;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 public class Constants {
 
@@ -26,9 +24,7 @@ public class Constants {
 
 	public static final Font PIXEL_FONT;
 
-	private static final String SHIP_FILE_NAME = "ship.png";
-	public static final Image SHIP_IMAGE;
-	public static final int SHIP_WIDTH, SHIP_HEIGHT;
+	public static final Random RAND = new Random();
 
 	static {
 
@@ -43,31 +39,22 @@ public class Constants {
 		}
 
 		PIXEL_FONT = font;
+	}
 
-		Image shipImage;
+	public static BufferedImage getImage(String fileName) {
 		try {
-			shipImage = ImageIO.read(Constants.class.getResource(SHIP_FILE_NAME));
-		}
-		catch (IOException e) {
-			shipImage = null;
-			System.err.println("Missing image file \"" + SHIP_FILE_NAME + "\". Quitting game.");
+			return ImageIO.read(Constants.class.getResource(fileName));
+		} catch (IOException e) {
+			System.err.println("Failed to load image: \"" + fileName + "\". Quitting game.");
 			System.exit(14);
+			return null;
 		}
-
-		int width = shipImage.getWidth(null) * 2;
-		int height = shipImage.getHeight(null) * 2;
-
-		ReplicateScaleFilter scaleFilter = new ReplicateScaleFilter(width, height);
-		FilteredImageSource fis = new FilteredImageSource(shipImage.getSource(), scaleFilter);
-
-		SHIP_IMAGE = Toolkit.getDefaultToolkit().createImage(fis);
-		SHIP_WIDTH = width;
-		SHIP_HEIGHT = height;
 	}
 
 	// TODO temporary stuff
 
-	public static final String QUESTION = "How many states are in the US?";
+	public static final Question QUESTION = new Question("How many states are in the US?", "50",
+		new String[]{"49", "48", "52", "25", "51", "13"});
 
 	// question length limit is currently 52
 //	public static final String QUESTION = "How many states are in the United states of america?";
