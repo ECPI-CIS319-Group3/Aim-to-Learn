@@ -16,10 +16,13 @@ import static java.awt.event.KeyEvent.*;
 public class GameplayScreen extends GamePanel {
 
 	private Ship ship;
+	private QuestionSet questionSet;
+	private Question currentQuestion;
 
 	private int score, level, round;
 
 	private long lastShotTime = 0;
+	private long lastAnswerSpawnTime = 0;
 
 	private Map<Integer, Boolean> activeKeys = new HashMap<>();
 	private final List<Rectangle> shots = new CopyOnWriteArrayList<>();
@@ -36,10 +39,8 @@ public class GameplayScreen extends GamePanel {
 		BOX_WIDTH = 100, TEXT_MARGIN = 10,
 		SMALL_FONT = 16, LARGE_FONT = 50,
 		SHIP_SPEED = 5, SHOT_SPEED = 10, ANSWER_SPEED = 2, FIRE_DELAY = 500,
-		LEFT_BOUND = Ship.WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND;
-
-	/** Chance every game tick a answer will spawn **/
-	private static final double ANSWER_SPAWN_CHANCE = 0.005;
+		LEFT_BOUND = Ship.WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND,
+		ANSWER_SPAWN_RATE = 1000;
 
 	public GameplayScreen(Game game) {
 		super(game);
@@ -49,6 +50,7 @@ public class GameplayScreen extends GamePanel {
 		this.round = 1;
 
 		this.ship = new Ship(MAIN_WIDTH / 2);
+		this.questionSet = new QuestionSet();
 
 		this.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -61,6 +63,8 @@ public class GameplayScreen extends GamePanel {
 			}
 		});
 
+		this.currentQuestion = questionSet.getQuestion(Question.Subject.MATH, Question.Difficulty.EASY);
+
 		GameLoop loop = new GameLoop();
 		loop.start();
 	}
@@ -70,9 +74,8 @@ public class GameplayScreen extends GamePanel {
 
 		Graphics2D g = ((Graphics2D) graphics);
 
-		Question currentQuestion = QUESTION;
-
-		if (Math.random() <= ANSWER_SPAWN_CHANCE) {
+		if (System.currentTimeMillis() - lastAnswerSpawnTime >= ANSWER_SPAWN_RATE) {
+			this.lastAnswerSpawnTime = System.currentTimeMillis();
 			String randomAnswer = currentQuestion.randomAnswer();
 			AnswerSprite sprite = new AnswerSprite(randomAnswer, g);
 			this.answers.add(sprite);
@@ -175,14 +178,10 @@ public class GameplayScreen extends GamePanel {
 				this.lastShotTime = System.currentTimeMillis();
 			}
 		}
-	//	else { // uncomment to allow spam-shooting
-	//		this.lastShotTime = 0;
-	//	}
 
 		for (Rectangle shotLoc : shots) {
 			if (shotLoc.getY() < 0) {
 				shots.remove(shotLoc);
-				score++; // TODO temp
 			}
 			else
 				shotLoc.translate(0, -SHOT_SPEED);
@@ -192,14 +191,36 @@ public class GameplayScreen extends GamePanel {
 			if (answer.getBounds().getY() > MAIN_HEIGHT - answer.getBounds().getHeight()) {
 				answers.remove(answer);
 			}
-			else if (shots.stream().anyMatch(loc -> loc.intersects(answer.getBounds()))) {
-				answers.remove(answer);
+			else {
+				boolean collided = false;
+
+				for (Rectangle shot : shots) {
+					if (answer.getBounds().intersects(shot)) {
+						shots.remove(shot);
+						onAnswerHit(answer);
+						collided = true;
+						break;
+					}
+				}
+
+				if (!collided) answer.moveDown(ANSWER_SPEED);
 			}
-			else
-				answer.moveDown(ANSWER_SPEED);
 		}
 
 		repaint();
+	}
+
+	private void onAnswerHit(AnswerSprite answer) {
+		if (currentQuestion.isCorrect(answer.getText())) {
+			answers.clear();
+			shots.clear();
+			this.currentQuestion = questionSet.getQuestion(Question.Subject.MATH, Question.Difficulty.EASY);
+			this.score++;
+		}
+		else {
+			answers.remove(answer);
+			if (score > 0) this.score--;
+		}
 	}
 
 	private void fireShot() {

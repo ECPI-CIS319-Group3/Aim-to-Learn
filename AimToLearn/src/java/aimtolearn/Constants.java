@@ -51,11 +51,6 @@ public class Constants {
 		}
 	}
 
-	// TODO temporary stuff
-
-	public static final Question QUESTION = new Question("How many states are in the US?", "50",
-		new String[]{"49", "48", "52", "25", "51", "13"});
-
 	// question length limit is currently 52
 //	public static final String QUESTION = "How many states are in the United states of america?";
 

@@ -1,25 +1,25 @@
 package aimtolearn;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Question {
 
 	public final String questionPrompt, correctAnswer;
 	public final String[] otherAnswers;
-	private final List<String> allAnswers;
+	private final String[] allAnswers;
 	private final int answerCount;
 
-	public Question(String questionPrompt, String correctAnswer, String[] otherAnswers) {
+	public Question(String questionPrompt, String[] allAnswers) {
 		this.questionPrompt = questionPrompt;
-		this.correctAnswer = correctAnswer;
-		this.otherAnswers = otherAnswers;
 
-		this.allAnswers = new ArrayList<>(Arrays.asList(otherAnswers));
-		allAnswers.add(correctAnswer);
+		this.allAnswers = allAnswers;
+		this.answerCount = allAnswers.length;
 
-		this.answerCount = otherAnswers.length + 1;
+		this.correctAnswer = allAnswers[0];
+		this.otherAnswers = Arrays.copyOfRange(allAnswers, 1, answerCount);
+
+		if (this.questionPrompt.length() > 50)
+			System.out.printf("Warning: long answer (%d chars):\n\t\"%s\"\n", questionPrompt.length(), questionPrompt);
 	}
 
 	public boolean isCorrect(String testAnswer) {
@@ -27,6 +27,14 @@ public class Question {
 	}
 
 	public String randomAnswer() {
-		return allAnswers.get(Constants.RAND.nextInt(answerCount));
+		return allAnswers[Constants.RAND.nextInt(answerCount)];
+	}
+
+	public enum Subject {
+		MATH, SCIENCE, HISTORY;
+	}
+
+	public enum Difficulty {
+		EASY, NORMAL, HARD;
 	}
 }

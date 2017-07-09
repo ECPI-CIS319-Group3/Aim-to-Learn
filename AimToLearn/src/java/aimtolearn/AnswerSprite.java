@@ -34,4 +34,8 @@ public class AnswerSprite {
 	public Rectangle getBounds() {
 		return bounds;
 	}
+
+	public String getText() {
+		return text;
+	}
 }
