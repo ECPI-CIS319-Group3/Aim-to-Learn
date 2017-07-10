@@ -88,15 +88,24 @@ public class GameplayScreen extends GamePanel {
 			g.setColor(Color.WHITE);
 		}
 
+		// draw the shots and ship
+
+		for (Rectangle shotLoc : shots)
+			g.fill(shotLoc);
+
+		ship.draw(g);
+
 		// draw the top interface
 
-		// TODO top interface needs solid backgrounds behind boxes/text
 		Rectangle levelBox = new Rectangle(TOP_MARGIN, TOP_MARGIN, BOX_WIDTH, TOP);
 		Rectangle roundBox = new Rectangle((int) (levelBox.getMaxX()), TOP_MARGIN, BOX_WIDTH, TOP);
 		Rectangle scoreBox = new Rectangle(MAIN_WIDTH - TOP_MARGIN - 2*BOX_WIDTH, TOP_MARGIN, 2*BOX_WIDTH, TOP);
 		Rectangle[] boxes = new Rectangle[]{levelBox, roundBox, scoreBox};
 
 		for (Rectangle box : boxes) {
+			g.setColor(Color.BLACK);
+			g.fill(box);
+			g.setColor(Color.WHITE);
 			g.draw(box);
 			box.translate(0, TEXT_MARGIN);
 		}
@@ -124,16 +133,7 @@ public class GameplayScreen extends GamePanel {
 		);
 
 		g.setFont(g.getFont().deriveFont(((float) FONT_SIZE)));
-		Game.text(currentQuestion.getQuestionPrompt(), questionBox, g, SwingConstants.CENTER);
-
-		// draw the shots
-
-		for (Rectangle shotLoc : shots)
-			g.fill(shotLoc);
-
-		// draw the ship
-
-		ship.draw(g);
+		Game.text(currentQuestion.getQuestionPrompt(), questionBox, Color.BLACK, g, SwingConstants.CENTER);
 
 	}
 

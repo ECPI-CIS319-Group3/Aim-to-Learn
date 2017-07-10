@@ -99,17 +99,39 @@ public class Game extends JFrame {
 	 * @return the position of the centered text
 	 */
 	public static Point text(String text, Rectangle rect, Graphics g, int align) {
+		return text(text, rect, null, g, align);
+	}
+
+	/**
+	 * Draw a string centered vertically and horizontally within a given Rectangle
+	 * @param text string to draw
+	 * @param rect Rectangle to center within
+	 * @param bgColor text background color
+	 * @param g graphics context
+	 * @param align one of {@code SwingConstants.BOTTOM}, {@code SwingConstants.CENTER}, {@code SwingConstants.TOP}
+	 * @return the position of the centered text
+	 */
+	public static Point text(String text, Rectangle rect, Color bgColor, Graphics g, int align) {
 		FontMetrics metrics = g.getFontMetrics();
 		Rectangle2D textBounds = metrics.getStringBounds(text, g);
 
-		int x = rect.x + (int)(rect.width - textBounds.getWidth())/2;
+		int textWidth = (int) textBounds.getWidth();
+		int textHeight = metrics.getHeight();
+		int x = rect.x + (rect.width - textWidth)/2;
 
 		int y;
-		if (align == SwingConstants.CENTER) y = rect.y + (rect.height - metrics.getHeight()) / 2 + metrics.getAscent();
+		if (align == SwingConstants.CENTER) y = rect.y + (rect.height - textHeight) / 2 + metrics.getAscent();
 		else if (align == SwingConstants.BOTTOM)  y = rect.y + rect.height - metrics.getDescent();
-		else if (align == SwingConstants.TOP) y = rect.y + metrics.getHeight() - metrics.getDescent();
+		else if (align == SwingConstants.TOP) y = rect.y + textHeight - metrics.getDescent();
 		else throw new IllegalArgumentException(
 			"Alignment must be SwingConstants.BOTTOM, SwingConstants.CENTER, or SwingConstants.TOP");
+
+		if (bgColor != null) {
+			Color oldColor = g.getColor();
+			g.setColor(bgColor);
+			g.fillRect(x, y - metrics.getAscent(), textWidth, textHeight);
+			g.setColor(oldColor);
+		}
 
 		g.drawString(text, x, y);
 
