@@ -1,4 +1,9 @@
-package aimtolearn;
+package aimtolearn.screens;
+
+import aimtolearn.*;
+import aimtolearn.sprites.AnswerSprite;
+import aimtolearn.sprites.NumberBox;
+import aimtolearn.sprites.Ship;
 
 import javax.swing.SwingConstants;
 import java.awt.*;
@@ -194,16 +199,28 @@ public class GameplayScreen extends GamePanel {
 		}
 
 		for (AnswerSprite answer : answers) {
-			if (answer.getBounds().getY() > MAIN_HEIGHT - answer.getBounds().getHeight()) {
+
+			Rectangle bounds = answer.getBounds();
+
+			if (bounds.getY() > MAIN_HEIGHT - bounds.getHeight()) {
 				answers.remove(answer);
 			}
 			else {
 				boolean collided = false;
 
 				for (Rectangle shot : shots) {
-					if (answer.getBounds().intersects(shot)) {
+					if (bounds.intersects(shot)) {
 						shots.remove(shot);
 						onAnswerHit(answer);
+						collided = true;
+						break;
+					}
+					if (ship.getBounds().intersects(bounds)) {
+						if (!ship.isInvincible()) {
+							ship.impacted();
+							this.score--;
+						}
+						answers.remove(answer);
 						collided = true;
 						break;
 					}

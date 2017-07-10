@@ -1,5 +1,9 @@
 package aimtolearn;
 
+import aimtolearn.screens.GamePanel;
+import aimtolearn.screens.GameplayScreen;
+import aimtolearn.screens.MainMenu;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;

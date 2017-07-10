@@ -1,4 +1,6 @@
-package aimtolearn;
+package aimtolearn.sprites;
+
+import aimtolearn.Utils;
 
 import javax.swing.SwingConstants;
 import java.awt.Color;

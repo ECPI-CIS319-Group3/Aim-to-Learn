@@ -1,4 +1,6 @@
-package aimtolearn;
+package aimtolearn.screens;
+
+import aimtolearn.Game;
 
 import javax.swing.JPanel;
 import java.awt.Graphics;

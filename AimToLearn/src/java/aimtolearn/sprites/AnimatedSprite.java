@@ -1,4 +1,4 @@
-package aimtolearn;
+package aimtolearn.sprites;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;

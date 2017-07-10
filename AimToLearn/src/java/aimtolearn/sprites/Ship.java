@@ -1,7 +1,10 @@
-package aimtolearn;
+package aimtolearn.sprites;
+
+import aimtolearn.Constants;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
@@ -11,13 +14,16 @@ import static aimtolearn.Constants.SHIP_Y;
 public class Ship {
 
 	private int x;
+	private final int y;
 
 	/** -1, 0, or 1 **/
 	private byte direction;
 
-	private long directionChangeStart;
+	private long directionChangeStart, impactedStart;
 
 	private Image currentImage;
+
+	private static final int INVULN_DURATION = 1000;
 
 	public static final byte DIR_RIGHT = 1, DIR_NONE = 0, DIR_LEFT = -1;
 	private static final List<Byte> DIRECTIONS = Arrays.asList(DIR_RIGHT, DIR_NONE, DIR_LEFT);
@@ -46,12 +52,12 @@ public class Ship {
 
 	public Ship(int startX) {
 		this.x = startX;
+		this.y = SHIP_Y - HEIGHT;
 		this.direction = 0;
 		this.currentImage = IMAGE;
 	}
 
 	public void draw(Graphics g) {
-		int y = SHIP_Y - HEIGHT;
 		int x = this.x - WIDTH / 2;
 
 		g.drawImage(currentImage, x, y, null);
@@ -77,6 +83,14 @@ public class Ship {
 		this.x = x;
 	}
 
+	public void impacted() {
+		this.impactedStart = System.currentTimeMillis();
+	}
+
+	public boolean isInvincible() {
+		return System.currentTimeMillis() - impactedStart <= INVULN_DURATION;
+	}
+
 	public void setDirection(byte direction) {
 		if (!DIRECTIONS.contains(direction))
 			throw new IllegalArgumentException("Invalid direction: " + direction);
@@ -85,5 +99,9 @@ public class Ship {
 			this.directionChangeStart = System.currentTimeMillis();
 
 		this.direction = direction;
+	}
+
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, WIDTH, HEIGHT);
 	}
 }

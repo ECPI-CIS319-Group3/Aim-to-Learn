@@ -1,4 +1,7 @@
-package aimtolearn;
+package aimtolearn.screens;
+
+import aimtolearn.Game;
+import aimtolearn.Utils;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
@@ -20,7 +23,7 @@ public class MainMenu extends GamePanel {
 
 	private int selectedIndex = 0;
 
-	protected MainMenu(Game game) {
+	public MainMenu(Game game) {
 
 		super(game);
 
