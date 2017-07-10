@@ -19,10 +19,6 @@ public class Ship {
 
 	private Image currentImage;
 
-	private static final String SHIP_FILE_NAME = "ship.png";
-	private static final String SHIP_MOVE_LEFT_NAME = "moveShipLeft.png";
-	private static final String SHIP_MOVE_RIGHT_NAME = "moveShipRight.png";
-
 	public static final byte DIR_RIGHT = 1, DIR_NONE = 0, DIR_LEFT = -1;
 	private static final List<Byte> DIRECTIONS = Arrays.asList(DIR_RIGHT, DIR_NONE, DIR_LEFT);
 

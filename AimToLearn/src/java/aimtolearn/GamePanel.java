@@ -14,7 +14,7 @@ import static java.awt.Color.WHITE;
 
 public abstract class GamePanel extends JPanel {
 
-	protected final Game game;
+	private final Game game;
 
 	protected GamePanel(Game game) {
 		this.game = game;

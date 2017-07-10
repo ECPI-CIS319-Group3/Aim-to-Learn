@@ -124,7 +124,7 @@ public class GameplayScreen extends GamePanel {
 		);
 
 		g.setFont(g.getFont().deriveFont(((float) FONT_SIZE)));
-		Game.text(currentQuestion.questionPrompt, questionBox, g, SwingConstants.CENTER);
+		Game.text(currentQuestion.getQuestionPrompt(), questionBox, g, SwingConstants.CENTER);
 
 		// draw the shots
 
@@ -179,14 +179,6 @@ public class GameplayScreen extends GamePanel {
 			}
 		}
 
-		for (Rectangle shotLoc : shots) {
-			if (shotLoc.getY() < 0) {
-				shots.remove(shotLoc);
-			}
-			else
-				shotLoc.translate(0, -SHOT_SPEED);
-		}
-
 		for (AnswerSprite answer : answers) {
 			if (answer.getBounds().getY() > MAIN_HEIGHT - answer.getBounds().getHeight()) {
 				answers.remove(answer);
@@ -205,6 +197,13 @@ public class GameplayScreen extends GamePanel {
 
 				if (!collided) answer.moveDown(ANSWER_SPEED);
 			}
+		}
+
+		for (Rectangle shotLoc : shots) {
+			if (shotLoc.getY() < 0)
+				shots.remove(shotLoc);
+			else
+				shotLoc.translate(0, -SHOT_SPEED);
 		}
 
 		repaint();
