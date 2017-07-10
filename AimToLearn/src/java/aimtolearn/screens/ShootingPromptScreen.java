@@ -5,11 +5,12 @@ import aimtolearn.Game;
 import aimtolearn.Utils;
 
 import javax.swing.SwingConstants;
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.IntConsumer;
 
@@ -18,7 +19,7 @@ public class ShootingPromptScreen extends MainScreen {
 	private String prompt;
 	private String[] optionStrings;
 	private boolean active, initiated;
-	private int[] disabledIndexes;
+	private List<Integer> disabledIndexes;
 	private IntConsumer onSelection;
 
 	private Rectangle[] options;
@@ -35,18 +36,23 @@ public class ShootingPromptScreen extends MainScreen {
 		this.optionStrings = null;
 		this.active = false;
 		this.initiated = false;
-		this.disabledIndexes = new int[0];
+		this.disabledIndexes = null;
 		this.onSelection = null;
 
 		this.promptBounds = new Rectangle(0, 0, Constants.MAIN_WIDTH, PROMPT_HEIGHT);
 	}
 
-	public void setup(String prompt, String[] optionStrings, int[] disabledIndexes, IntConsumer onSelection) {
+	public void setup(String prompt, String[] optionStrings, Integer[] disabledIndexes, IntConsumer onSelection) {
 		this.prompt = prompt;
 		this.optionStrings = optionStrings;
 		this.options = new Rectangle[optionStrings.length];
 		this.initiated = false;
-		this.disabledIndexes = disabledIndexes == null ? new int[0] : disabledIndexes;
+
+		if (disabledIndexes != null)
+			this.disabledIndexes = Arrays.asList(disabledIndexes);
+		else
+			this.disabledIndexes = new ArrayList<>();
+
 		this.onSelection = onSelection;
 
 		this.active = true;
@@ -95,7 +101,11 @@ public class ShootingPromptScreen extends MainScreen {
 		Utils.text(prompt, promptBounds, g, SwingConstants.CENTER);
 
 		for (int i = 0; i < options.length; i++) {
-			((Graphics2D) g).draw(options[i]);
+			if (disabledIndexes.contains(i))
+				g.setColor(Color.GRAY);
+			else
+				g.setColor(Color.WHITE);
+
 			Utils.text(optionStrings[i], options[i], g, SwingConstants.CENTER);
 		}
 
@@ -108,10 +118,15 @@ public class ShootingPromptScreen extends MainScreen {
 		for (int i = 0; i < options.length; i++) {
 
 			for (Rectangle shot : shots) {
+
 				if (shot.intersects(options[i])) {
+
 					shots.remove(shot);
-					onSelection.accept(i);
-					deactivate();
+
+					if (!disabledIndexes.contains(i)) {
+						onSelection.accept(i);
+						deactivate();
+					}
 				}
 			}
 

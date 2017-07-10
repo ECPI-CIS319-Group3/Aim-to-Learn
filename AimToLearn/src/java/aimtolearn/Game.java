@@ -63,7 +63,7 @@ public class Game extends JFrame {
 		shootingOption(prompt, options, null, onSelection);
 	}
 
-	public void shootingOption(String prompt, String[] options, int[] disabledIndexes, IntConsumer onSelection) {
+	public void shootingOption(String prompt, String[] options, Integer[] disabledIndexes, IntConsumer onSelection) {
 		setDisplayPanel(SHOOTING_PROMPT_SCREEN);
 		SHOOTING_PROMPT_SCREEN.setup(prompt, options, disabledIndexes, onSelection);
 	}

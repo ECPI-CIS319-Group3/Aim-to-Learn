@@ -134,19 +134,22 @@ public class MainScreen extends GamePanel {
 
 	private class GameLoop implements Runnable {
 
-		private boolean running;
+		private boolean running, started;
 		private Thread thread;
 
 		GameLoop() {
 			this.running = false;
+			this.started = false;
 			this.thread = new Thread(this,
 				this.getClass().getSimpleName() + " for " + MainScreen.this.getClass().getSimpleName());
 		}
 
 		public void start() {
 			this.running = true;
-			if (!thread.isAlive())
+			if (!started) {
 				thread.start();
+				this.started = true;
+			}
 		}
 
 		public void stop() {

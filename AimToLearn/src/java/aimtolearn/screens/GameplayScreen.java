@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -150,9 +151,47 @@ public class GameplayScreen extends MainScreen {
 		if (currentQuestion.isCorrect(answer.getText())) {
 			answers.clear();
 			shots.clear();
-			this.currentQuestion = questionSet.getQuestion();
-			this.round++;
 			this.score++;
+			if (questionSet.outOfQuestions()) {
+				String[] ops = new String[]{"Change subject", "Increase Difficulty"};
+				game.shootingOption("How do you want to continue?", ops, choice -> {
+
+					Question.Difficulty currentDiff = currentQuestion.getDifficulty();
+					Question.Subject currentSubject = currentQuestion.getSubject();
+
+					if (choice == 0) {
+
+						Question.Subject[] subjects = Question.Subject.values();
+						String[] subjectStrings = new String[subjects.length];
+
+						int current = -1;
+						for (int i = 0; i < subjects.length; i++) {
+							Question.Subject sub = subjects[i];
+							subjectStrings[i] = sub.name().toUpperCase();
+							if (currentSubject == sub) current = i;
+						}
+
+						game.shootingOption("Choose a subject", subjectStrings, new Integer[]{current}, result -> {
+							game.setDisplayPanel(game.GAMEPLAY_SCREEN);
+							game.GAMEPLAY_SCREEN.start(subjects[result], currentDiff);
+						});
+					}
+					else if (choice == 1) {
+						Question.Difficulty[] diffs = Question.Difficulty.values();
+						int currentIndex = Arrays.binarySearch(diffs, currentDiff);
+
+						if (currentIndex < diffs.length) currentIndex++;
+						
+						game.setDisplayPanel(game.GAMEPLAY_SCREEN);
+						game.GAMEPLAY_SCREEN.start(currentSubject, diffs[currentIndex]);
+					}
+				});
+
+			}
+			else {
+				this.currentQuestion = questionSet.getQuestion();
+				this.round++;
+			}
 		}
 		else {
 			decrementScore();

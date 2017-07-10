@@ -89,6 +89,10 @@ public class QuestionSet {
 			.get(currentQuestionNum);
 	}
 
+	public boolean outOfQuestions() {
+		return currentQuestionNum >= getQuestionCount(currentSubject, currentDiff) - 1;
+	}
+
 	public int getQuestionCount(Question.Subject subject, Question.Difficulty diff) {
 		return masterData.get(subject).get(diff).size();
 	}
