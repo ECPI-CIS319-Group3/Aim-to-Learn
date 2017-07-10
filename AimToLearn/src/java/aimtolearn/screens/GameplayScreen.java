@@ -1,53 +1,43 @@
 package aimtolearn.screens;
 
-import aimtolearn.*;
+import aimtolearn.Game;
+import aimtolearn.Question;
+import aimtolearn.QuestionSet;
+import aimtolearn.Utils;
 import aimtolearn.sprites.AnswerSprite;
 import aimtolearn.sprites.NumberBox;
-import aimtolearn.sprites.Ship;
 
 import javax.swing.SwingConstants;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.HashMap;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static aimtolearn.Constants.*;
-import static java.awt.event.KeyEvent.*;
 
-public class GameplayScreen extends GamePanel {
+public class GameplayScreen extends MainScreen {
 
-	private Ship ship;
 	private QuestionSet questionSet;
 	private Question currentQuestion;
 
 	private int score, level, round;
+	private boolean ready;
 
-	private long lastShotTime = 0;
 	private long lastAnswerSpawnTime = 0;
 
-	private Map<Integer, Boolean> activeKeys = new HashMap<>();
-	private final List<Rectangle> shots = new CopyOnWriteArrayList<>();
 	private final List<AnswerSprite> answers = new CopyOnWriteArrayList<>();
 
 	private final NumberBox levelBox, roundBox, scoreBox;
 	private final NumberBox[] numberBoxes;
 	private final Rectangle questionBox;
 
-	private final int[] RIGHT_KEYS = {VK_RIGHT, VK_D};
-	private final int[] LEFT_KEYS = {VK_LEFT, VK_A};
-	private final int[] FIRE_KEYS = {VK_UP, VK_W};
-
-	private static final Dimension SHOT_SIZE = new Dimension(10, 40);
-
-	private static final int
-		TOP = 150, TOP_MARGIN = 25,
-		BOX_WIDTH = 100,
-		SHIP_SPEED = 5, SHOT_SPEED = 10, ANSWER_SPEED = 2, FIRE_DELAY = 500,
-		LEFT_BOUND = Ship.WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND,
-		ANSWER_SPAWN_RATE = 1000;
+	private static final int TOP = 150;
+	private static final int TOP_MARGIN = 25;
+	private static final int BOX_WIDTH = 100;
+	private static final int ANSWER_SPEED = 2;
+	private static final int ANSWER_SPAWN_RATE = 1000;
 
 	public GameplayScreen(Game game) {
 		super(game);
@@ -55,22 +45,9 @@ public class GameplayScreen extends GamePanel {
 		this.score = 0;
 		this.level = 1;
 		this.round = 1;
+		this.ready = false;
 
-		this.ship = new Ship(MAIN_WIDTH / 2);
 		this.questionSet = new QuestionSet();
-
-		this.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				activeKeys.put(e.getKeyCode(), true);
-
-				if (e.getKeyCode() == VK_ESCAPE) game.quit(); // TODO temporary
-			}
-			public void keyReleased(KeyEvent e) {
-				activeKeys.put(e.getKeyCode(), false);
-			}
-		});
-
-		this.currentQuestion = questionSet.getQuestion(Question.Subject.HISTORY, Question.Difficulty.NORMAL);
 
 		this.levelBox = new NumberBox("Level", TOP_MARGIN, TOP_MARGIN, BOX_WIDTH, TOP);
 		this.roundBox = new NumberBox("Round", (int) (levelBox.getBounds().getMaxX()), TOP_MARGIN, BOX_WIDTH, TOP);
@@ -84,14 +61,22 @@ public class GameplayScreen extends GamePanel {
 			TOP
 		);
 
-		GameLoop loop = new GameLoop();
-		loop.start();
+	}
+
+	public void start(Question.Subject subject, Question.Difficulty difficulty) {
+		this.currentQuestion = questionSet.getQuestion(subject, difficulty);
+		this.ready = true;
+		startLoop();
 	}
 
 	@Override
 	protected void updateScreen(Graphics graphics) {
 
+		if (!ready) return;
+
 		Graphics2D g = ((Graphics2D) graphics);
+
+		super.updateScreen(g);
 
 		if (System.currentTimeMillis() - lastAnswerSpawnTime >= ANSWER_SPAWN_RATE) {
 			this.lastAnswerSpawnTime = System.currentTimeMillis();
@@ -107,134 +92,51 @@ public class GameplayScreen extends GamePanel {
 			g.setColor(Color.WHITE);
 		}
 
-		// draw the shots and ship
-
-		for (Rectangle shotLoc : shots) g.fill(shotLoc);
-		ship.draw(g);
-
 		// draw the top interface
 
 		for (NumberBox box : numberBoxes) box.draw(g);
-
-		/*
-
-		Rectangle levelBox = new Rectangle(TOP_MARGIN, TOP_MARGIN, BOX_WIDTH, TOP);
-		Rectangle roundBox = new Rectangle((int) (levelBox.getMaxX()), TOP_MARGIN, BOX_WIDTH, TOP);
-		Rectangle scoreBox = new Rectangle(MAIN_WIDTH - TOP_MARGIN - 2*BOX_WIDTH, TOP_MARGIN, 2*BOX_WIDTH, TOP);
-		Rectangle[] boxes = new Rectangle[]{levelBox, roundBox, scoreBox};
-
-		for (Rectangle box : boxes) {
-			g.setColor(Color.BLACK);
-			g.fill(box);
-			g.setColor(Color.WHITE);
-			g.draw(box);
-			box.translate(0, TEXT_MARGIN);
-		}
-
-		g.setFont(g.getFont().deriveFont(SMALL_FONT));
-		Game.text("Level", levelBox, g, SwingConstants.TOP);
-		Game.text("Round", roundBox, g, SwingConstants.TOP);
-		Game.text("Score", scoreBox, g, SwingConstants.TOP);
-
-		for (Rectangle box : boxes) {
-			box.translate(0, (int) SMALL_FONT);
-			box.setSize((int) box.getWidth(), (int) (box.getHeight() - TEXT_MARGIN - SMALL_FONT));
-		}
-
-		g.setFont(g.getFont().deriveFont(LARGE_FONT));
-		Game.text(""+level, levelBox, g, SwingConstants.CENTER);
-		Game.text(""+score, scoreBox, g, SwingConstants.CENTER);
-		Game.text(""+round, roundBox, g, SwingConstants.CENTER);
-
-		*/
 
 		g.setFont(g.getFont().deriveFont(MAIN_FONT));
 		Utils.text(currentQuestion.getQuestionPrompt(), questionBox, Color.BLACK, g, SwingConstants.CENTER);
 
 	}
 
-	private boolean keyDown(int... keyNumbers) {
-		for (int key : keyNumbers) {
-			if (activeKeys.getOrDefault(key, false))
-				return true;
-		}
-		return false;
-	}
+	@Override
+	protected void tick() {
 
-	/**
-	 * Called every game tick to update positions and such
-	 */
-	private void tick() {
-
-		ship.tick();
-
-		// prevent both left and right from being held down together
-		if (!(keyDown(RIGHT_KEYS) && keyDown(LEFT_KEYS))) {
-
-			int shipX = ship.getX();
-
-			if (keyDown(RIGHT_KEYS)) { // if right is down, move right
-				shipX += SHIP_SPEED;
-				ship.setDirection(Ship.DIR_RIGHT);
-			}
-			else if (keyDown(LEFT_KEYS)) { // if left is down, move left
-				shipX -= SHIP_SPEED;
-				ship.setDirection(Ship.DIR_LEFT);
-			}
-			else {
-				ship.setDirection(Ship.DIR_NONE);
-			}
-
-			if (shipX > RIGHT_BOUND) shipX = RIGHT_BOUND;
-			if (shipX < LEFT_BOUND) shipX = LEFT_BOUND;
-
-			ship.setX(shipX);
-		}
-
-		if (keyDown(FIRE_KEYS)) {
-			if (System.currentTimeMillis() - lastShotTime >= FIRE_DELAY) {// auto-fire every [x]ms
-				fireShot();
-				this.lastShotTime = System.currentTimeMillis();
-			}
-		}
+		super.tick();
 
 		for (AnswerSprite answer : answers) {
 
-			Rectangle bounds = answer.getBounds();
+			Rectangle ansBounds = answer.getBounds();
+			boolean remove = false;
 
-			if (bounds.getY() > MAIN_HEIGHT - bounds.getHeight()) {
-				answers.remove(answer);
+			if (ansBounds.getY() > MAIN_HEIGHT - ansBounds.getHeight()) {
+				remove = true;
 			}
 			else {
-				boolean collided = false;
 
 				for (Rectangle shot : shots) {
-					if (bounds.intersects(shot)) {
+					if (ansBounds.intersects(shot)) {
 						shots.remove(shot);
 						onAnswerHit(answer);
-						collided = true;
-						break;
-					}
-					if (ship.getBounds().intersects(bounds)) {
-						if (!ship.isInvincible()) {
-							ship.impacted();
-							this.score--;
-						}
-						answers.remove(answer);
-						collided = true;
+						remove = true;
 						break;
 					}
 				}
 
-				if (!collided) answer.moveDown(ANSWER_SPEED);
-			}
-		}
+				if (ship.getBounds().intersects(ansBounds)) {
+					if (!ship.isInvincible()) {
+						ship.impacted();
+						decrementScore();
+					}
+					remove = true;
+				}
 
-		for (Rectangle shotLoc : shots) {
-			if (shotLoc.getY() < 0)
-				shots.remove(shotLoc);
-			else
-				shotLoc.translate(0, -SHOT_SPEED);
+			}
+
+			if (remove) answers.remove(answer);
+			else answer.moveDown(ANSWER_SPEED);
 		}
 
 		roundBox.update(round);
@@ -248,63 +150,16 @@ public class GameplayScreen extends GamePanel {
 		if (currentQuestion.isCorrect(answer.getText())) {
 			answers.clear();
 			shots.clear();
-			this.currentQuestion = questionSet.getQuestion(Question.Subject.HISTORY, Question.Difficulty.NORMAL);
+			this.currentQuestion = questionSet.getQuestion();
 			this.round++;
 			this.score++;
 		}
 		else {
-			answers.remove(answer);
-			if (score > 0) this.score--;
+			decrementScore();
 		}
 	}
 
-	private void fireShot() {
-		int x = (int) (ship.getX() - SHOT_SIZE.getWidth() / 2);
-		int y = SHIP_Y - Ship.HEIGHT / 2 - SHOT_SIZE.height;
-
-		shots.add(new Rectangle(new Point(x, y), SHOT_SIZE));
-	}
-
-	private class GameLoop implements Runnable {
-
-		private boolean running;
-		private Thread thread;
-
-		GameLoop() {
-			this.running = false;
-			this.thread = new Thread(this);
-		}
-
-		public void start() {
-			this.running = true;
-			thread.start();
-		}
-
-		@Override
-		public void run() {
-
-			final int delay = 1000 / Constants.TICK_RATE;
-			long lastStartTime, offset, sleepTime;
-
-			lastStartTime = System.currentTimeMillis();
-
-			while (running) {
-				tick();
-
-				offset = System.currentTimeMillis() - lastStartTime;
-				sleepTime = delay - offset;
-
-				if (sleepTime < 0) sleepTime = 2;
-
-				try {
-					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {
-					throw new RuntimeException("Game loop interrupted.", e);
-				}
-
-				lastStartTime = System.currentTimeMillis();
-			}
-
-		}
+	private void decrementScore() {
+		if (score > 0) this.score--;
 	}
 }

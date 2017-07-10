@@ -1,6 +1,7 @@
 package aimtolearn.screens;
 
 import aimtolearn.Game;
+import aimtolearn.Question;
 import aimtolearn.Utils;
 
 import javax.swing.JOptionPane;
@@ -38,7 +39,7 @@ public class MainMenu extends GamePanel {
 				else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					switch (selectedIndex) {
 						case 0: // Start
-							game.setDisplayPanel(game.getGameplayScreen());
+							startChosen();
 							break;
 						case 1: // Options
 							game.changeRes();
@@ -60,6 +61,18 @@ public class MainMenu extends GamePanel {
 				repaint();
 
 			}
+		});
+	}
+
+	private void startChosen() {
+		Question.Subject[] subjects = Question.Subject.values();
+		String[] subjectStrings = new String[subjects.length];
+		for (int i = 0; i < subjects.length; i++)
+			subjectStrings[i] = subjects[i].name().toUpperCase();
+
+		game.shootingOption("Choose subject", subjectStrings, result -> {
+			game.setDisplayPanel(game.GAMEPLAY_SCREEN);
+			game.GAMEPLAY_SCREEN.start(subjects[result], Question.Difficulty.EASY);
 		});
 	}
 

@@ -40,6 +40,14 @@ public class Question {
 		return questionPrompt;
 	}
 
+	public Subject getSubject() {
+		return subject;
+	}
+
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+
 	public enum Subject {
 		MATH, SCIENCE, HISTORY
 	}

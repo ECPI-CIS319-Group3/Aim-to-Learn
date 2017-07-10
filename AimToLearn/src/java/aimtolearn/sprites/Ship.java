@@ -75,6 +75,10 @@ public class Ship {
 		}
 	}
 
+	private int computeX() {
+		return this.x - WIDTH / 2;
+	}
+
 	public int getX() {
 		return x;
 	}
@@ -102,6 +106,6 @@ public class Ship {
 	}
 
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, WIDTH, HEIGHT);
+		return new Rectangle(computeX(), y, WIDTH, HEIGHT);
 	}
 }

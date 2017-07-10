@@ -63,6 +63,13 @@ public class QuestionSet {
 		}
 	}
 
+	public Question getQuestion() {
+		if (this.currentSubject == null || this.currentDiff == null)
+			throw new IllegalStateException("Cannot get next question - no subject or difficulty set.");
+
+		return getQuestion(currentSubject, currentDiff);
+	}
+
 	public Question getQuestion(Question.Subject subject, Question.Difficulty diff) {
 
 		if (subject == currentSubject && diff == currentDiff)

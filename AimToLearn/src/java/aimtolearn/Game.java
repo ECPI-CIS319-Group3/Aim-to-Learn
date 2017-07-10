@@ -1,22 +1,23 @@
 package aimtolearn;
 
-import aimtolearn.screens.GamePanel;
-import aimtolearn.screens.GameplayScreen;
-import aimtolearn.screens.MainMenu;
+import aimtolearn.screens.*;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.function.IntConsumer;
 
 import static aimtolearn.Constants.AR;
 
 public class Game extends JFrame {
 
 	private GamePanel activePanel = null;
-	private MainMenu mainMenu;
-	private GameplayScreen gameplayScreen;
+
+	public final MainMenu MAIN_MENU;
+	public final GameplayScreen GAMEPLAY_SCREEN;
+	public final ShootingPromptScreen SHOOTING_PROMPT_SCREEN;
 
 	private int desiredHeight;
 	private int desiredWidth;
@@ -24,10 +25,11 @@ public class Game extends JFrame {
 	private static final Integer[] HEIGHTS = {720, 900, 1080};
 
 	public Game() {
-		this.mainMenu = new MainMenu(this);
-		this.gameplayScreen = new GameplayScreen(this);
+		this.MAIN_MENU = new MainMenu(this);
+		this.GAMEPLAY_SCREEN = new GameplayScreen(this);
+		this.SHOOTING_PROMPT_SCREEN = new ShootingPromptScreen(this);
 
-		setDisplayPanel(mainMenu);
+		setDisplayPanel(MAIN_MENU);
 
 		int res = -1;
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -55,6 +57,15 @@ public class Game extends JFrame {
 		this.setContentPane(activePanel);
 		this.revalidate();
 		activePanel.requestFocusInWindow();
+	}
+
+	public void shootingOption(String prompt, String[] options, IntConsumer onSelection) {
+		shootingOption(prompt, options, null, onSelection);
+	}
+
+	public void shootingOption(String prompt, String[] options, int[] disabledIndexes, IntConsumer onSelection) {
+		setDisplayPanel(SHOOTING_PROMPT_SCREEN);
+		SHOOTING_PROMPT_SCREEN.setup(prompt, options, disabledIndexes, onSelection);
 	}
 
 	public void changeRes() {
@@ -87,10 +98,6 @@ public class Game extends JFrame {
 
 	public int getDesiredWidth() {
 		return desiredWidth;
-	}
-
-	public GameplayScreen getGameplayScreen() {
-		return gameplayScreen;
 	}
 
 }
