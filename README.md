@@ -6,5 +6,5 @@ dir | info
 -|-
 `/wireframes` | Contains [draw.io](https://www.draw.io/) XML files and images
 `/docs` | Contains MS Word and Visio documents for this project
-`/pictures` | Contains misc. pictures relating to the project
+`/assets` | Contains misc. assets relating to the project
 `/AimToLearn` | IntelliJ IDEA project folder, containing Java source files for the game
