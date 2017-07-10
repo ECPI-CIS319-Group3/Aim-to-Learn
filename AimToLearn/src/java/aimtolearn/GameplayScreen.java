@@ -65,7 +65,7 @@ public class GameplayScreen extends GamePanel {
 			}
 		});
 
-		this.currentQuestion = questionSet.getQuestion(Question.Subject.MATH, Question.Difficulty.EASY);
+		this.currentQuestion = questionSet.getQuestion(Question.Subject.HISTORY, Question.Difficulty.NORMAL);
 
 		this.levelBox = new NumberBox("Level", TOP_MARGIN, TOP_MARGIN, BOX_WIDTH, TOP);
 		this.roundBox = new NumberBox("Round", (int) (levelBox.getBounds().getMaxX()), TOP_MARGIN, BOX_WIDTH, TOP);
@@ -144,7 +144,7 @@ public class GameplayScreen extends GamePanel {
 		*/
 
 		g.setFont(g.getFont().deriveFont(MAIN_FONT));
-		Game.text(currentQuestion.getQuestionPrompt(), questionBox, Color.BLACK, g, SwingConstants.CENTER);
+		Utils.text(currentQuestion.getQuestionPrompt(), questionBox, Color.BLACK, g, SwingConstants.CENTER);
 
 	}
 
@@ -231,7 +231,8 @@ public class GameplayScreen extends GamePanel {
 		if (currentQuestion.isCorrect(answer.getText())) {
 			answers.clear();
 			shots.clear();
-			this.currentQuestion = questionSet.getQuestion(Question.Subject.MATH, Question.Difficulty.EASY);
+			this.currentQuestion = questionSet.getQuestion(Question.Subject.HISTORY, Question.Difficulty.NORMAL);
+			this.round++;
 			this.score++;
 		}
 		else {

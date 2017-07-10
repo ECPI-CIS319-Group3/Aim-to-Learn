@@ -66,7 +66,7 @@ public class MainMenu extends GamePanel {
 		final int triangleHeight = 20, triangleWidth = 30, triangleMargin = 10;
 
 		g.setFont(PIXEL_FONT.deriveFont(64f));
-		Game.text("Aim to Learn", new Rectangle(0, 0, MAIN_WIDTH, topHeight), g, SwingConstants.CENTER);
+		Utils.text("Aim to Learn", new Rectangle(0, 0, MAIN_WIDTH, topHeight), g, SwingConstants.CENTER);
 
 		g.setFont(PIXEL_FONT);
 
@@ -79,7 +79,7 @@ public class MainMenu extends GamePanel {
 
 		for (int i = 0; i < ITEMS.length; i++) {
 
-			Point pos = Game.text(ITEMS[i], bounds, g, SwingConstants.BOTTOM);
+			Point pos = Utils.text(ITEMS[i], bounds, g, SwingConstants.BOTTOM);
 
 			if (i == selectedIndex) {
 				triangle.translate(pos.x - triangleMargin, pos.y);

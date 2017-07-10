@@ -24,7 +24,7 @@ public class AnswerSprite {
 	}
 
 	public void draw(Graphics g) {
-		Game.text(text, bounds, g, SwingConstants.CENTER);
+		Utils.text(text, bounds, g, SwingConstants.CENTER);
 	}
 
 	public void moveDown(int dy) {

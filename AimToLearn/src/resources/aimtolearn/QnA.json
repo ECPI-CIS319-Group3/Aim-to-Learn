@@ -73,7 +73,7 @@
 				17,
 				12
 			],
-			"155 – 37 =": [
+			"55 – 37 =": [
 				18,
 				19,
 				20,
@@ -255,7 +255,7 @@
 				49,
 				52
 			],
-			"Who was the first president of the United States?": [
+			"Who was the first president of\nthe United States?": [
 				"George Washington",
 				"John Adams",
 				"Benjamin Franklin",
@@ -267,43 +267,43 @@
 				"Tulip",
 				"Sunflower"
 			],
-			"A _______ is a place where people live, work, and play.": [
+			"A __ is a place where people\nlive, work, and play.": [
 				"Community",
 				"Table",
 				"Class",
 				"Yard"
 			],
-			"Abraham Lincoln was known as___________.": [
+			"Abraham Lincoln was known as __.": [
 				"Honest Abe",
 				"Tall Man",
 				"Mr. Money",
 				"Hat Man"
 			],
-			"Benjamin Franklin was_________ .": [
+			"Benjamin Franklin was __.": [
 				"All",
 				"Inventor",
 				"Scientist",
 				"Leader"
 			],
-			"A member of a community or country is also known as a ______.": [
+			"A member of a community or country is\nalso known as a __.": [
 				"Citizen",
 				"Business",
 				"Building",
 				"Tourist"
 			],
-			"The compass on a map helps you know which_________ to go.": [
+			"The compass on a map helps you know\nwhich __ to go.": [
 				"Direction",
 				"Communities",
 				"Habitat",
 				"Career"
 			],
-			"To which country did Benjamin Franklin travel to ask for help for colonies in their fight for independence?": [
+			"To which country did Benjamin Franklin\ntravel to ask for help for colonies\nin their fight for independence?": [
 				"France",
 				"Spain",
 				"England",
 				"Portugal"
 			],
-			"Natives means _______.": [
+			"Natives means __.": [
 				"People who lived somewhere first.",
 				"Babies who need food to eat.",
 				"People with a lot of friends.",
@@ -311,43 +311,43 @@
 			]
 		},
 		"normal": {
-			"The round map that shows the 7 continents and oceans is called a________.": [
+			"The round map that shows the 7 continents\nand oceans is called a __.": [
 				"Globe",
 				"Map",
 				"Compass",
 				"Directions"
 			],
-			"To bring things into your country from another country is called_________.": [
+			"To bring things into your country from\nanother country is called __.": [
 				"Import",
 				"Export",
 				"Barter",
 				"Trade"
 			],
-			"The islands of Hawaii are located in the _________Ocean.": [
+			"The islands of Hawaii are\nlocated in the __ Ocean.": [
 				"Pacific",
 				"Atlantic",
 				"Artic",
 				"Indian"
 			],
-			"Sending things to another country is called_______.": [
+			"Sending things to another country is called __.": [
 				"Export",
 				"Import",
 				"Barter",
 				"Trade"
 			],
-			"What is the study of the way we use goods and money?": [
+			"What is the study of the way\nwe use goods and money?": [
 				"Economics",
 				"Geography",
 				"History",
 				"Culture"
 			],
-			"A service is __________.": [
+			"A service is __.": [
 				"A thing a person does for you.",
 				"A problem.",
 				"A thing you can touch.",
 				"Whether a thing is worth the price."
 			],
-			"A good is _____________.": [
+			"A good is __.": [
 				"A thing you can touch.",
 				"A thing you can hear.",
 				"A thing a person does for you.",
@@ -359,7 +359,7 @@
 				"Canada",
 				"United States"
 			],
-			"The Constitution says that people have a right to ______.": [
+			"The Constitution says that people\nhave a right to __.": [
 				"Privacy",
 				"Lots of money",
 				"Win",
@@ -385,37 +385,37 @@
 				"Train",
 				"Car"
 			],
-			"The people who moved west long ago to find land were called________.": [
+			"The people who moved west long ago\nto find land were called __.": [
 				"Pioneers",
 				"Meatpackers",
 				"Canadians",
 				"Explorers"
 			],
-			"Abraham Lincoln signed what document to free the slaves?": [
+			"Abraham Lincoln signed what document\nto free the slaves?": [
 				"Emancipation Proclamation",
 				"Declaration of Independence",
 				"Bill of Rights",
 				"Constitution of the United States"
 			],
-			"Abraham Lincoln was the ______ President of the United States.": [
+			"Abraham Lincoln was the __ President\nof the United States.": [
 				"16th",
 				"1st",
 				"3rd",
 				"10th"
 			],
-			"_________________ commanded the Continental Army.": [
+			"__ commanded the Continental Army.": [
 				"George Washington",
 				"Thomas Paine",
 				"Patrick Henry",
 				"John Adams"
 			],
-			"________wrote the Declaration of Independence.": [
+			"__ wrote the Declaration of Independence.": [
 				"Thomas Jefferson",
 				"Francis Scott Key",
 				"King George III",
 				"Thomas Paine"
 			],
-			"Massachusetts men who could be ready to fight at a minute's notice were called what?": [
+			"Massachusetts men who could be ready to fight\nat a minute's notice were called what?": [
 				"Minutemen",
 				"Loyalists",
 				"Patriots",
@@ -427,7 +427,7 @@
 				"William Wipple",
 				"Benjamin Franklin"
 			],
-			"Jamestown was the first permanent English settlement and was located in which colony?": [
+			"Jamestown was the first permanent English\nsettlement and was located in which colony?": [
 				"Virginia",
 				"North Carolina",
 				"Maryland",
@@ -437,19 +437,19 @@
 	},
 	"science": {
 		"easy": {
-			"Moving air is called ______.": [
+			"Moving air is called __.": [
 				"Wind",
 				"Rain",
 				"Sunshine",
 				"Snow"
 			],
-			"How a living thing grows, lives and dies is called______.": [
+			"How a living thing grows, lives\nand dies is called __.": [
 				"Life Cycle",
 				"Parent Plant",
 				"Rain Forest",
 				"Photosynthesis"
 			],
-			"Which of the following is part of the digestive system?": [
+			"Which of the following is part\nof the digestive system?": [
 				"Stomach",
 				"Heart",
 				"Brain",
@@ -461,13 +461,13 @@
 				"Rain gauge",
 				"Compass"
 			],
-			"Which part of a plant takes in water from the soil?": [
+			"Which part of a plant takes in\nwater from the soil?": [
 				"Roots",
 				"Stem",
 				"Flower",
 				"Leaf"
 			],
-			"A _______ is a living thing that has young.": [
+			"A __ is a living thing that has young.": [
 				"Parent",
 				"Young",
 				"Adult",
@@ -479,13 +479,13 @@
 				"Wind or moving water",
 				"A shaking of Earth's surface"
 			],
-			"The _______ in soil help plants grow.": [
+			"The __ in soil help plants grow.": [
 				"Minerals",
 				"Iron",
 				"Plants",
 				"Leaves"
 			],
-			"To _______ is to group things by what they have in common.": [
+			"To __ is to group things by what\nthey have in common.": [
 				"Classify",
 				"Atmosphere",
 				"Revolve",
@@ -499,7 +499,7 @@
 			]
 		},
 		"normal": {
-			"Gravity on the moon is ________ the gravity on Earth.": [
+			"Gravity on the moon is __ the gravity on Earth.": [
 				"Less than",
 				"Greater than",
 				"Equal to",
@@ -511,7 +511,7 @@
 				"Eaten by people",
 				"Keeps the earth clean"
 			],
-			"What you think will happen in the future is called ________.": [
+			"What you think will happen in the\nfuture is called __.": [
 				"Prediction",
 				"Properties",
 				"Materials",
@@ -523,19 +523,19 @@
 				"Bedrock",
 				"Humus"
 			],
-			"What are minerals, weathered rock, and other things mixed together?": [
+			"What are minerals, weathered rock, and\nother things mixed together?": [
 				"Soil",
 				"Rocks",
 				"Fossils",
 				"Water"
 			],
-			"It has a volume that stays the same, but it can change shape. What is it?": [
+			"It has a volume that stays the same, but\nit can change shape. What is it?": [
 				"Mass",
 				"Solid",
 				"Gas",
 				"Liquid"
 			],
-			"When something changes position, it is in _____.": [
+			"When something changes position, it is in __.": [
 				"Motion",
 				"Friction",
 				"Gravity",
@@ -547,7 +547,7 @@
 				"Earth",
 				"Venus"
 			],
-			"An organism is __________.": [
+			"An organism is __.": [
 				"An individual living thing",
 				"A nonliving thing",
 				"An animal that eats fruit and meat",
@@ -561,25 +561,25 @@
 			]
 		},
 		"hard": {
-			"A Ferris wheel is an example of which kind of simple machine?": [
+			"A Ferris wheel is an example of which\nkind of simple machine?": [
 				"Wheel and axle",
 				"Fixed pulley",
 				"Movable pulley",
 				"Incline plane"
 			],
-			"A force that occurs when an object rubs against another object is called ______.": [
+			"A force that occurs when an object rubs\nagainst another object is called __.": [
 				"Friction",
 				"Conduction",
 				"Thermometer",
 				"Radiation"
 			],
-			"The force that pulls any two objects toward each other is ______.": [
+			"The force that pulls any two objects\ntoward each other is __.": [
 				"Gravity",
 				"Length",
 				"Volume",
 				"Weight"
 			],
-			"Condensation is ________.": [
+			"Condensation is __.": [
 				"The process by which a gas changes into a liquid.",
 				"Climate.",
 				"The process by which a liquid changes into a gas.",
@@ -591,30 +591,30 @@
 				"Neptune",
 				"Venus"
 			],
-			"When the North Pole is tilted toward the Sun, it is ______________.": [
+			"When the North Pole is tilted\ntoward the Sun, it is __.": [
 				"Summer in the Northern Hemisphere",
 				"Winter in the Northern Hemisphere",
 				"Daytime in the Northern Hemisphere",
 				"Nighttime in the Northern Hemisphere"
 			],
-			"The closest star to Earth is _____.": [
+			"The closest star to Earth is __.": [
 				"Sun",
 				"Orion",
 				"Moon",
 				"Mars"
 			],
-			"Molecules in this phase of matter are tightly packed together.": [
+			"Molecules in this phase of matter\nare tightly packed together.": [
 				"Solids",
 				"Liquids",
 				"Gases"
 			],
-			"Molten rock that flows from a volcano onto earth's surface is _____.": [
+			"Molten rock that flows from a volcano\nonto earth's surface is __.": [
 				"Lava",
 				"Magma",
 				"Sediment",
 				"Sand"
 			],
-			"_________ is the spinning of the earth on its axis.": [
+			"__ is the spinning of the earth on its axis.": [
 				"Rotation",
 				"Revolution",
 				"Continent",

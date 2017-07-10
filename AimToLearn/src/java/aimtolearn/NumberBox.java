@@ -42,11 +42,11 @@ public class NumberBox {
 		Font oldFont = g.getFont();
 
 		g.setFont(g.getFont().deriveFont(SMALL_FONT));
-		Game.text(title, titleBounds, g, SwingConstants.TOP);
+		Utils.text(title, titleBounds, g, SwingConstants.TOP);
 
 		g.setFont(g.getFont().deriveFont(LARGE_FONT));
 
-		Game.text(""+value, textBounds, g, SwingConstants.CENTER);
+		Utils.text(""+value, textBounds, g, SwingConstants.CENTER);
 
 		g.setFont(oldFont);
 	}
