@@ -19,7 +19,7 @@ public class Constants {
 	/** Y-coordinate for bottom of the ship */
 	public static final int SHIP_Y = 850;
 
-	public static final int FONT_SIZE = 24;
+	public static final float MAIN_FONT = 24, SMALL_FONT = 16, LARGE_FONT = 50;
 	private static final String FONT_FILE = "PressStart2P-Regular.ttf";
 
 	public static final Font PIXEL_FONT;
@@ -30,7 +30,8 @@ public class Constants {
 
 		Font font;
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, Constants.class.getResourceAsStream(FONT_FILE)).deriveFont((float) FONT_SIZE);
+			font = Font.createFont(Font.TRUETYPE_FONT, Constants.class.getResourceAsStream(FONT_FILE))
+				.deriveFont(MAIN_FONT);
 		}
 		catch (FontFormatException | IOException e) {
 			font = null;

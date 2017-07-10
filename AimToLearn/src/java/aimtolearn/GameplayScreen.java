@@ -4,7 +4,6 @@ import javax.swing.SwingConstants;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,10 @@ public class GameplayScreen extends GamePanel {
 	private final List<Rectangle> shots = new CopyOnWriteArrayList<>();
 	private final List<AnswerSprite> answers = new CopyOnWriteArrayList<>();
 
+	private final NumberBox levelBox, roundBox, scoreBox;
+	private final NumberBox[] numberBoxes;
+	private final Rectangle questionBox;
+
 	private final int[] RIGHT_KEYS = {VK_RIGHT, VK_D};
 	private final int[] LEFT_KEYS = {VK_LEFT, VK_A};
 	private final int[] FIRE_KEYS = {VK_UP, VK_W};
@@ -36,8 +39,7 @@ public class GameplayScreen extends GamePanel {
 
 	private static final int
 		TOP = 150, TOP_MARGIN = 25,
-		BOX_WIDTH = 100, TEXT_MARGIN = 10,
-		SMALL_FONT = 16, LARGE_FONT = 50,
+		BOX_WIDTH = 100,
 		SHIP_SPEED = 5, SHOT_SPEED = 10, ANSWER_SPEED = 2, FIRE_DELAY = 500,
 		LEFT_BOUND = Ship.WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND,
 		ANSWER_SPAWN_RATE = 1000;
@@ -65,6 +67,18 @@ public class GameplayScreen extends GamePanel {
 
 		this.currentQuestion = questionSet.getQuestion(Question.Subject.MATH, Question.Difficulty.EASY);
 
+		this.levelBox = new NumberBox("Level", TOP_MARGIN, TOP_MARGIN, BOX_WIDTH, TOP);
+		this.roundBox = new NumberBox("Round", (int) (levelBox.getBounds().getMaxX()), TOP_MARGIN, BOX_WIDTH, TOP);
+		this.scoreBox = new NumberBox("Score", MAIN_WIDTH - TOP_MARGIN - 2*BOX_WIDTH, TOP_MARGIN, 2*BOX_WIDTH, TOP);
+		this.numberBoxes = new NumberBox[]{levelBox, roundBox, scoreBox};
+
+		this.questionBox = new Rectangle(
+			(int) (roundBox.getBounds().getMaxX() + TOP_MARGIN),
+			TOP_MARGIN,
+			MAIN_WIDTH - 4 * TOP_MARGIN - 4 * BOX_WIDTH,
+			TOP
+		);
+
 		GameLoop loop = new GameLoop();
 		loop.start();
 	}
@@ -90,12 +104,14 @@ public class GameplayScreen extends GamePanel {
 
 		// draw the shots and ship
 
-		for (Rectangle shotLoc : shots)
-			g.fill(shotLoc);
-
+		for (Rectangle shotLoc : shots) g.fill(shotLoc);
 		ship.draw(g);
 
 		// draw the top interface
+
+		for (NumberBox box : numberBoxes) box.draw(g);
+
+		/*
 
 		Rectangle levelBox = new Rectangle(TOP_MARGIN, TOP_MARGIN, BOX_WIDTH, TOP);
 		Rectangle roundBox = new Rectangle((int) (levelBox.getMaxX()), TOP_MARGIN, BOX_WIDTH, TOP);
@@ -110,36 +126,34 @@ public class GameplayScreen extends GamePanel {
 			box.translate(0, TEXT_MARGIN);
 		}
 
-		g.setFont(g.getFont().deriveFont((float) SMALL_FONT));
+		g.setFont(g.getFont().deriveFont(SMALL_FONT));
 		Game.text("Level", levelBox, g, SwingConstants.TOP);
 		Game.text("Round", roundBox, g, SwingConstants.TOP);
 		Game.text("Score", scoreBox, g, SwingConstants.TOP);
 
 		for (Rectangle box : boxes) {
-			box.translate(0, SMALL_FONT);
-			box.setSize((int) box.getWidth(), (int) box.getHeight() - TEXT_MARGIN - SMALL_FONT);
+			box.translate(0, (int) SMALL_FONT);
+			box.setSize((int) box.getWidth(), (int) (box.getHeight() - TEXT_MARGIN - SMALL_FONT));
 		}
 
-		g.setFont(g.getFont().deriveFont((float) LARGE_FONT));
+		g.setFont(g.getFont().deriveFont(LARGE_FONT));
 		Game.text(""+level, levelBox, g, SwingConstants.CENTER);
 		Game.text(""+score, scoreBox, g, SwingConstants.CENTER);
 		Game.text(""+round, roundBox, g, SwingConstants.CENTER);
 
-		Rectangle questionBox = new Rectangle(
-			(int) (roundBox.getMaxX() + TOP_MARGIN),
-			TOP_MARGIN,
-			MAIN_WIDTH - 4 * TOP_MARGIN - 4 * BOX_WIDTH,
-			TOP
-		);
+		*/
 
-		g.setFont(g.getFont().deriveFont(((float) FONT_SIZE)));
+		g.setFont(g.getFont().deriveFont(MAIN_FONT));
 		Game.text(currentQuestion.getQuestionPrompt(), questionBox, Color.BLACK, g, SwingConstants.CENTER);
 
 	}
 
 	private boolean keyDown(int... keyNumbers) {
-		return Arrays.stream(keyNumbers)
-			.anyMatch(key -> activeKeys.getOrDefault(key, false));
+		for (int key : keyNumbers) {
+			if (activeKeys.getOrDefault(key, false))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -206,6 +220,10 @@ public class GameplayScreen extends GamePanel {
 				shotLoc.translate(0, -SHOT_SPEED);
 		}
 
+		roundBox.update(round);
+		levelBox.update(level);
+		scoreBox.update(score);
+
 		repaint();
 	}
 
@@ -224,7 +242,7 @@ public class GameplayScreen extends GamePanel {
 
 	private void fireShot() {
 		int x = (int) (ship.getX() - SHOT_SIZE.getWidth() / 2);
-		int y = (int) (SHIP_Y - Ship.HEIGHT / 2 - SHOT_SIZE.getHeight());
+		int y = SHIP_Y - Ship.HEIGHT / 2 - SHOT_SIZE.height;
 
 		shots.add(new Rectangle(new Point(x, y), SHOT_SIZE));
 	}
