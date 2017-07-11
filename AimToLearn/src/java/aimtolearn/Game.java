@@ -14,6 +14,7 @@ import static aimtolearn.Constants.AR;
 public class Game extends JFrame {
 
 	private GamePanel activePanel = null;
+	private GameLoop loop;
 
 	public final MainMenu MAIN_MENU;
 	public final GameplayScreen GAMEPLAY_SCREEN;
@@ -30,6 +31,9 @@ public class Game extends JFrame {
 		this.SHOOTING_PROMPT_SCREEN = new ShootingPromptScreen(this);
 
 		setDisplayPanel(MAIN_MENU);
+
+		this.loop = new GameLoop(this);
+		loop.start();
 
 		int res = -1;
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -100,4 +104,7 @@ public class Game extends JFrame {
 		return desiredWidth;
 	}
 
+	public GamePanel getActivePanel() {
+		return activePanel;
+	}
 }

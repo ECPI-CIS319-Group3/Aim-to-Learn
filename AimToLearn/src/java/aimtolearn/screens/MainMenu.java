@@ -10,13 +10,12 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import static aimtolearn.Constants.*;
 
 public class MainMenu extends GamePanel {
-	// used to create errors when using these; shouldn't use them
+	// used to create errors when using these
 	@SuppressWarnings("unused")
 	private Integer WIDTH = null, HEIGHT = null;
 
@@ -25,43 +24,36 @@ public class MainMenu extends GamePanel {
 	private int selectedIndex = 0;
 
 	public MainMenu(Game game) {
-
 		super(game);
 
-		this.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
+	}
 
-				if (e.getKeyCode() == KeyEvent.VK_UP)
-					selectedIndex = selectedIndex == 0 ? ITEMS.length-1 : selectedIndex-1;
-				else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-					selectedIndex = selectedIndex == ITEMS.length-1 ? 0 : selectedIndex+1;
-				else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					switch (selectedIndex) {
-						case 0: // Start
-							startChosen();
-							break;
-						case 1: // Options
-							game.changeRes();
-							break;
-						case 2: // How to play
-							JOptionPane.showMessageDialog(game, "TODO: How to Play menu");
-							break;
-						case 3: // Quit
-							game.quit();
-							break;
-						default:
-							throw new AssertionError("Not possible");
-					}
-				}
-
-			//	if (selectedIndex == -1) selectedIndex = ITEMS.length-1;
-			//	if (selectedIndex == ITEMS.length) selectedIndex = 0;
-
-				repaint();
-
+	@Override
+	protected void onKeyDown(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_UP)
+			selectedIndex = selectedIndex == 0 ? ITEMS.length-1 : selectedIndex-1;
+		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+			selectedIndex = selectedIndex == ITEMS.length-1 ? 0 : selectedIndex+1;
+		else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			switch (selectedIndex) {
+				case 0: // Start
+					startChosen();
+					break;
+				case 1: // Options
+					game.changeRes();
+					break;
+				case 2: // How to play
+					JOptionPane.showMessageDialog(game, "TODO: How to Play menu");
+					break;
+				case 3: // Quit
+					game.quit();
+					break;
+				default:
+					throw new AssertionError("Not possible");
 			}
-		});
+		}
+
+		repaint();
 	}
 
 	private void startChosen() {
@@ -106,5 +98,8 @@ public class MainMenu extends GamePanel {
 		}
 
 	}
+
+	@Override
+	public void tick() {}
 }
 

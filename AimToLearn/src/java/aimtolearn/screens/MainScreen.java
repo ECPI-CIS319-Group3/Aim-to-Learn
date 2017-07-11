@@ -1,11 +1,9 @@
 package aimtolearn.screens;
 
-import aimtolearn.Constants;
 import aimtolearn.Game;
 import aimtolearn.sprites.Ship;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +21,6 @@ public class MainScreen extends GamePanel {
 	protected final Ship ship;
 	protected final List<Rectangle> shots = new CopyOnWriteArrayList<>();
 
-	private final GameLoop loop;
 	private long lastShotTime = 0;
 
 	private Map<Integer, Boolean> activeKeys = new HashMap<>();
@@ -39,34 +36,23 @@ public class MainScreen extends GamePanel {
 
 	protected MainScreen(Game game) {
 		super(game);
-
 		this.ship = new Ship(MAIN_WIDTH / 2);
-
-		this.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				activeKeys.put(e.getKeyCode(), true);
-
-				if (e.getKeyCode() == VK_ESCAPE)
-					game.quit(); // TODO temporary
-			}
-			public void keyReleased(KeyEvent e) {
-				activeKeys.put(e.getKeyCode(), false);
-			}
-		});
-
-		this.loop = new GameLoop();
-
 	}
 
-	public void startLoop() {
-		loop.start();
+	@Override
+	protected void onKeyDown(KeyEvent e) {
+		activeKeys.put(e.getKeyCode(), true);
+
+		if (e.getKeyCode() == VK_ESCAPE)
+			game.quit(); // TODO temporary
 	}
 
-	public void stopLoop() {
-		loop.stop();
+	@Override
+	protected void onKeyUp(KeyEvent e) {
+		activeKeys.put(e.getKeyCode(), false);
 	}
 
-	private boolean keyDown(int... keyNumbers) {
+	private boolean isKeyDown(int... keyNumbers) {
 		for (int key : keyNumbers) {
 			if (activeKeys.getOrDefault(key, false))
 				return true;
@@ -84,19 +70,19 @@ public class MainScreen extends GamePanel {
 	/**
 	 * Called every game tick to update positions and such
 	 */
-	protected void tick() {
+	public void tick() {
 		ship.tick();
 
 		// prevent both left and right from being held down together
-		if (!(keyDown(RIGHT_KEYS) && keyDown(LEFT_KEYS))) {
+		if (!(isKeyDown(RIGHT_KEYS) && isKeyDown(LEFT_KEYS))) {
 
 			int shipX = ship.getX();
 
-			if (keyDown(RIGHT_KEYS)) { // if right is down, move right
+			if (isKeyDown(RIGHT_KEYS)) { // if right is down, move right
 				shipX += SHIP_SPEED;
 				ship.setDirection(Ship.DIR_RIGHT);
 			}
-			else if (keyDown(LEFT_KEYS)) { // if left is down, move left
+			else if (isKeyDown(LEFT_KEYS)) { // if left is down, move left
 				shipX -= SHIP_SPEED;
 				ship.setDirection(Ship.DIR_LEFT);
 			}
@@ -110,7 +96,7 @@ public class MainScreen extends GamePanel {
 			ship.setX(shipX);
 		}
 
-		if (keyDown(FIRE_KEYS)) {
+		if (isKeyDown(FIRE_KEYS)) {
 			if (System.currentTimeMillis() - lastShotTime >= FIRE_DELAY) {// auto-fire every [x]ms
 				fireShot();
 				this.lastShotTime = System.currentTimeMillis();
@@ -132,55 +118,4 @@ public class MainScreen extends GamePanel {
 		shots.add(new Rectangle(new Point(x, y), SHOT_SIZE));
 	}
 
-	private class GameLoop implements Runnable {
-
-		private boolean running, started;
-		private Thread thread;
-
-		GameLoop() {
-			this.running = false;
-			this.started = false;
-			this.thread = new Thread(this,
-				this.getClass().getSimpleName() + " for " + MainScreen.this.getClass().getSimpleName());
-		}
-
-		public void start() {
-			this.running = true;
-			if (!started) {
-				thread.start();
-				this.started = true;
-			}
-		}
-
-		public void stop() {
-			this.running = false;
-		}
-
-		@Override
-		public void run() {
-
-			final int delay = 1000 / Constants.TICK_RATE;
-			long lastStartTime, offset, sleepTime;
-
-			lastStartTime = System.currentTimeMillis();
-
-			while (running) {
-				tick();
-
-				offset = System.currentTimeMillis() - lastStartTime;
-				sleepTime = delay - offset;
-
-				if (sleepTime < 0) sleepTime = 2;
-
-				try {
-					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {
-					throw new RuntimeException("Game loop interrupted.", e);
-				}
-
-				lastStartTime = System.currentTimeMillis();
-			}
-
-		}
-	}
 }

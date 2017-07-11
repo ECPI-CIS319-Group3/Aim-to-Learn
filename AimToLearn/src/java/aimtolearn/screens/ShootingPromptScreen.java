@@ -55,19 +55,13 @@ public class ShootingPromptScreen extends MainScreen {
 
 		this.onSelection = onSelection;
 
-		this.active = true;
-		startLoop();
-	}
-
-	public void deactivate() {
-		this.active = false;
-		stopLoop();
+		setActive(true);
 	}
 
 	@Override
 	protected void updateScreen(Graphics g) {
 
-		if (!active) return;
+		if (!isActive()) return;
 
 		super.updateScreen(g);
 
@@ -112,7 +106,7 @@ public class ShootingPromptScreen extends MainScreen {
 	}
 
 	@Override
-	protected void tick() {
+	public void tick() {
 		super.tick();
 
 		for (int i = 0; i < options.length; i++) {
@@ -125,7 +119,6 @@ public class ShootingPromptScreen extends MainScreen {
 
 					if (!disabledIndexes.contains(i)) {
 						onSelection.accept(i);
-						deactivate();
 					}
 				}
 			}

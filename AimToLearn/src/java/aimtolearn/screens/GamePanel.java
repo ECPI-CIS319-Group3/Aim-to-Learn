@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ReplicateScaleFilter;
 
@@ -18,11 +20,30 @@ public abstract class GamePanel extends JPanel {
 
 	protected final Game game;
 
+	private boolean active;
+
 	protected GamePanel(Game game) {
 		this.game = game;
 
 		this.setFocusable(true);
 		this.setBackground(BLACK);
+
+		this.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				GamePanel.this.onKeyDown(e);
+			}
+			public void keyReleased(KeyEvent e) {
+				GamePanel.this.onKeyUp(e);
+			}
+		});
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	@Override
@@ -56,5 +77,10 @@ public abstract class GamePanel extends JPanel {
 	}
 
 	protected abstract void updateScreen(Graphics g);
+
+	public abstract void tick();
+
+	protected void onKeyDown(KeyEvent e) {}
+	protected void onKeyUp(KeyEvent e) {}
 
 }

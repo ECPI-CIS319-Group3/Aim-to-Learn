@@ -67,7 +67,7 @@ public class GameplayScreen extends MainScreen {
 	public void start(Question.Subject subject, Question.Difficulty difficulty) {
 		this.currentQuestion = questionSet.getQuestion(subject, difficulty);
 		this.ready = true;
-		startLoop();
+		setActive(true);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class GameplayScreen extends MainScreen {
 	}
 
 	@Override
-	protected void tick() {
+	public void tick() {
 
 		super.tick();
 
