@@ -73,7 +73,7 @@ public class GameplayScreen extends MainScreen {
 		this.currentQuestion = questionSet.getQuestion(subject, difficulty);
 		this.ready = true;
 		this.score = 0;
-		this.round = 0;
+		this.round = 1;
 		this.level = difficulty.ordinal() + 1;
 		resetKeys();
 		setActive(true);
@@ -171,41 +171,7 @@ public class GameplayScreen extends MainScreen {
 				JOptionPane.showMessageDialog(game, String.format(msg, score, MAX_SCORE));
 
 				if (passed) {
-
-					String[] ops = new String[]{"Change subject", "Increase Difficulty"};
-					game.shootingOption("How do you want to continue?", ops, choice -> {
-
-						Question.Difficulty currentDiff = currentQuestion.getDifficulty();
-						Question.Subject currentSubject = currentQuestion.getSubject();
-
-						if (choice == 0) {
-
-							Question.Subject[] subjects = Question.Subject.values();
-							String[] subjectStrings = new String[subjects.length];
-
-							int current = -1;
-							for (int i = 0; i < subjects.length; i++) {
-								Question.Subject sub = subjects[i];
-								subjectStrings[i] = sub.name().toUpperCase();
-								if (currentSubject == sub) current = i;
-							}
-
-							game.shootingOption("Choose a subject", subjectStrings, new Integer[]{current}, result -> {
-								game.setDisplayPanel(game.GAMEPLAY_SCREEN);
-								game.GAMEPLAY_SCREEN.start(subjects[result], currentDiff);
-							});
-						}
-						else if (choice == 1) {
-							Question.Difficulty[] diffs = Question.Difficulty.values();
-							int currentIndex = currentDiff.ordinal();
-
-							if (currentIndex < diffs.length) currentIndex++;
-
-							game.setDisplayPanel(game.GAMEPLAY_SCREEN);
-							game.GAMEPLAY_SCREEN.start(currentSubject, diffs[currentIndex]);
-						}
-					});
-
+					roundComplete();
 				}
 				else {
 					this.start(currentQuestion.getSubject(), currentQuestion.getDifficulty());
@@ -220,6 +186,42 @@ public class GameplayScreen extends MainScreen {
 		else {
 			decrementScore();
 		}
+	}
+
+	private void roundComplete() {
+		String[] ops = new String[]{"Change subject", "Increase Difficulty"};
+		game.shootingOption("How do you want to continue?", ops, choice -> {
+
+			Question.Difficulty currentDiff = currentQuestion.getDifficulty();
+			Question.Subject currentSubject = currentQuestion.getSubject();
+
+			if (choice == 0) {
+
+				Question.Subject[] subjects = Question.Subject.values();
+				String[] subjectStrings = new String[subjects.length];
+
+				int current = -1;
+				for (int i = 0; i < subjects.length; i++) {
+					Question.Subject sub = subjects[i];
+					subjectStrings[i] = sub.name().toUpperCase();
+					if (currentSubject == sub) current = i;
+				}
+
+				game.shootingOption("Choose a subject", subjectStrings, new Integer[]{current}, result -> {
+					game.setDisplayPanel(game.GAMEPLAY_SCREEN);
+					game.GAMEPLAY_SCREEN.start(subjects[result], currentDiff);
+				});
+			}
+			else if (choice == 1) {
+				Question.Difficulty[] diffs = Question.Difficulty.values();
+				int currentIndex = currentDiff.ordinal();
+
+				if (currentIndex < diffs.length) currentIndex++;
+
+				game.setDisplayPanel(game.GAMEPLAY_SCREEN);
+				game.GAMEPLAY_SCREEN.start(currentSubject, diffs[currentIndex]);
+			}
+		});
 	}
 
 	private void decrementScore() {

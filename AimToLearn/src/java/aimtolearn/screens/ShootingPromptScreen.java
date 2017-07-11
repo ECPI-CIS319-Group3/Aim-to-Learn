@@ -118,6 +118,8 @@ public class ShootingPromptScreen extends MainScreen {
 					shots.remove(shot);
 
 					if (!disabledIndexes.contains(i)) {
+						this.initiated = false;
+						this.setActive(false);
 						onSelection.accept(i);
 					}
 				}
