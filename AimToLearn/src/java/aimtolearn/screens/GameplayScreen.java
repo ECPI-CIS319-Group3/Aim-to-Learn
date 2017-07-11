@@ -67,6 +67,7 @@ public class GameplayScreen extends MainScreen {
 	public void start(Question.Subject subject, Question.Difficulty difficulty) {
 		this.currentQuestion = questionSet.getQuestion(subject, difficulty);
 		this.ready = true;
+		resetKeys();
 		setActive(true);
 	}
 

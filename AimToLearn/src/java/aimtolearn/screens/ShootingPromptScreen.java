@@ -18,7 +18,7 @@ public class ShootingPromptScreen extends MainScreen {
 
 	private String prompt;
 	private String[] optionStrings;
-	private boolean active, initiated;
+	private boolean initiated;
 	private List<Integer> disabledIndexes;
 	private IntConsumer onSelection;
 
@@ -34,7 +34,6 @@ public class ShootingPromptScreen extends MainScreen {
 
 		this.prompt = "";
 		this.optionStrings = null;
-		this.active = false;
 		this.initiated = false;
 		this.disabledIndexes = null;
 		this.onSelection = null;

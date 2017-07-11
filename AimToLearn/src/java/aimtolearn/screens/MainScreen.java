@@ -43,13 +43,18 @@ public class MainScreen extends GamePanel {
 	protected void onKeyDown(KeyEvent e) {
 		activeKeys.put(e.getKeyCode(), true);
 
-		if (e.getKeyCode() == VK_ESCAPE)
-			game.quit(); // TODO temporary
+		if (e.getKeyCode() == VK_ESCAPE) { // TODO this is temporary
+			game.quit();
+		}
 	}
 
 	@Override
 	protected void onKeyUp(KeyEvent e) {
 		activeKeys.put(e.getKeyCode(), false);
+	}
+
+	protected void resetKeys() {
+		activeKeys.clear();
 	}
 
 	private boolean isKeyDown(int... keyNumbers) {
