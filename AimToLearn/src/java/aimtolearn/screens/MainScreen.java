@@ -123,4 +123,7 @@ public class MainScreen extends GamePanel {
 		shots.add(new Rectangle(new Point(x, y), SHOT_SIZE));
 	}
 
+	public Ship getShip() {
+		return ship;
+	}
 }

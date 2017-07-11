@@ -15,6 +15,7 @@ public class Game extends JFrame {
 
 	private GamePanel activePanel = null;
 	private GameLoop loop;
+	private AnimationOverlay animationOverlay;
 
 	public final MainMenu MAIN_MENU;
 	public final GameplayScreen GAMEPLAY_SCREEN;
@@ -31,6 +32,12 @@ public class Game extends JFrame {
 		this.SHOOTING_PROMPT_SCREEN = new ShootingPromptScreen(this);
 
 		setDisplayPanel(MAIN_MENU);
+
+		this.animationOverlay = new AnimationOverlay(this);
+
+	//	this.setGlassPane(animationOverlay);
+		this.getLayeredPane().add(animationOverlay, new Integer(100));
+		this.revalidate();
 
 		this.loop = new GameLoop(this);
 		loop.start();
@@ -59,6 +66,7 @@ public class Game extends JFrame {
 	public void setDisplayPanel(GamePanel panel) {
 		this.activePanel = panel;
 		this.setContentPane(activePanel);
+
 		this.revalidate();
 		activePanel.requestFocusInWindow();
 	}
@@ -106,5 +114,9 @@ public class Game extends JFrame {
 
 	public GamePanel getActivePanel() {
 		return activePanel;
+	}
+
+	public AnimationOverlay getOverlay() {
+		return animationOverlay;
 	}
 }

@@ -26,6 +26,7 @@ public abstract class GamePanel extends JPanel {
 		this.game = game;
 
 		this.setFocusable(true);
+		this.setOpaque(true);
 		this.setBackground(BLACK);
 
 		this.addKeyListener(new KeyAdapter() {
