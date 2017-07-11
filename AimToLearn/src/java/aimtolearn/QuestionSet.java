@@ -70,6 +70,12 @@ public class QuestionSet {
 		return getQuestion(currentSubject, currentDiff);
 	}
 
+	public void resetQuestions() {
+		this.currentQuestionNum = 0;
+		this.currentSubject = null;
+		this.currentDiff = null;
+	}
+
 	public Question getQuestion(Question.Subject subject, Question.Difficulty diff) {
 
 		if (subject == currentSubject && diff == currentDiff)

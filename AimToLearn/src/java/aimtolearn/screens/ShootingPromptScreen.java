@@ -54,6 +54,7 @@ public class ShootingPromptScreen extends MainScreen {
 
 		this.onSelection = onSelection;
 
+		resetKeys();
 		setActive(true);
 	}
 

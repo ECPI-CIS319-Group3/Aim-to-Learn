@@ -7,12 +7,12 @@ import aimtolearn.Utils;
 import aimtolearn.sprites.AnswerSprite;
 import aimtolearn.sprites.NumberBox;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -39,6 +39,8 @@ public class GameplayScreen extends MainScreen {
 	private static final int BOX_WIDTH = 100;
 	private static final int ANSWER_SPEED = 2;
 	private static final int ANSWER_SPAWN_RATE = 1000;
+	private static final int MAX_SCORE = 10;
+	private static final int PASSING_SCORE = 7;
 
 	public GameplayScreen(Game game) {
 		super(game);
@@ -65,8 +67,14 @@ public class GameplayScreen extends MainScreen {
 	}
 
 	public void start(Question.Subject subject, Question.Difficulty difficulty) {
+		answers.clear();
+		shots.clear();
+		questionSet.resetQuestions();
 		this.currentQuestion = questionSet.getQuestion(subject, difficulty);
 		this.ready = true;
+		this.score = 0;
+		this.round = 0;
+		this.level = difficulty.ordinal() + 1;
 		resetKeys();
 		setActive(true);
 	}
@@ -154,39 +162,54 @@ public class GameplayScreen extends MainScreen {
 			shots.clear();
 			this.score++;
 			if (questionSet.outOfQuestions()) {
-				String[] ops = new String[]{"Change subject", "Increase Difficulty"};
-				game.shootingOption("How do you want to continue?", ops, choice -> {
 
-					Question.Difficulty currentDiff = currentQuestion.getDifficulty();
-					Question.Subject currentSubject = currentQuestion.getSubject();
+				boolean passed = score >= PASSING_SCORE;
 
-					if (choice == 0) {
+				String msg = "You have scored %d out of %d possible questions. ";
+				if (passed)	msg += "You have passed this round.";
+				else msg += "You have failed this round and must try again for a score of " + PASSING_SCORE + ".";
+				JOptionPane.showMessageDialog(game, String.format(msg, score, MAX_SCORE));
 
-						Question.Subject[] subjects = Question.Subject.values();
-						String[] subjectStrings = new String[subjects.length];
+				if (passed) {
 
-						int current = -1;
-						for (int i = 0; i < subjects.length; i++) {
-							Question.Subject sub = subjects[i];
-							subjectStrings[i] = sub.name().toUpperCase();
-							if (currentSubject == sub) current = i;
+					String[] ops = new String[]{"Change subject", "Increase Difficulty"};
+					game.shootingOption("How do you want to continue?", ops, choice -> {
+
+						Question.Difficulty currentDiff = currentQuestion.getDifficulty();
+						Question.Subject currentSubject = currentQuestion.getSubject();
+
+						if (choice == 0) {
+
+							Question.Subject[] subjects = Question.Subject.values();
+							String[] subjectStrings = new String[subjects.length];
+
+							int current = -1;
+							for (int i = 0; i < subjects.length; i++) {
+								Question.Subject sub = subjects[i];
+								subjectStrings[i] = sub.name().toUpperCase();
+								if (currentSubject == sub) current = i;
+							}
+
+							game.shootingOption("Choose a subject", subjectStrings, new Integer[]{current}, result -> {
+								game.setDisplayPanel(game.GAMEPLAY_SCREEN);
+								game.GAMEPLAY_SCREEN.start(subjects[result], currentDiff);
+							});
 						}
+						else if (choice == 1) {
+							Question.Difficulty[] diffs = Question.Difficulty.values();
+							int currentIndex = currentDiff.ordinal();
 
-						game.shootingOption("Choose a subject", subjectStrings, new Integer[]{current}, result -> {
+							if (currentIndex < diffs.length) currentIndex++;
+
 							game.setDisplayPanel(game.GAMEPLAY_SCREEN);
-							game.GAMEPLAY_SCREEN.start(subjects[result], currentDiff);
-						});
-					}
-					else if (choice == 1) {
-						Question.Difficulty[] diffs = Question.Difficulty.values();
-						int currentIndex = Arrays.binarySearch(diffs, currentDiff);
+							game.GAMEPLAY_SCREEN.start(currentSubject, diffs[currentIndex]);
+						}
+					});
 
-						if (currentIndex < diffs.length) currentIndex++;
-						
-						game.setDisplayPanel(game.GAMEPLAY_SCREEN);
-						game.GAMEPLAY_SCREEN.start(currentSubject, diffs[currentIndex]);
-					}
-				});
+				}
+				else {
+					this.start(currentQuestion.getSubject(), currentQuestion.getDifficulty());
+				}
 
 			}
 			else {
