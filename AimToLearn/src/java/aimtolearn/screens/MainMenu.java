@@ -1,7 +1,6 @@
 package aimtolearn.screens;
 
 import aimtolearn.Game;
-import aimtolearn.Question;
 
 import javax.swing.JOptionPane;
 
@@ -21,15 +20,8 @@ public class MainMenu extends MenuScreen {
 	}
 
 	private void startChosen() {
-		Question.Subject[] subjects = Question.Subject.values();
-		String[] subjectStrings = new String[subjects.length];
-		for (int i = 0; i < subjects.length; i++)
-			subjectStrings[i] = subjects[i].name().toUpperCase();
-
-		game.shootingOption("Choose subject", subjectStrings, result -> {
-			game.setDisplayPanel(game.GAMEPLAY_SCREEN);
-			game.GAMEPLAY_SCREEN.start(subjects[result], Question.Difficulty.EASY);
-		});
+		game.setDisplayPanel(game.SUBJECT_SCREEN);
+		game.SUBJECT_SCREEN.init();
 	}
 }
 

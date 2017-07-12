@@ -49,10 +49,28 @@ public class Question {
 	}
 
 	public enum Subject {
-		MATH, SCIENCE, HISTORY
+		MATH, SCIENCE, HISTORY;
+
+		private static String[] items;
+		static {
+			Subject[] vals = Subject.values();
+			items = new String[vals.length];
+			for (int i = 0; i < vals.length; i++) items[i] = vals[i].name();
+		}
+
+		public static String[] items() { return items; }
 	}
 
 	public enum Difficulty {
-		EASY, NORMAL, HARD
+		EASY, NORMAL, HARD;
+
+		private static String[] items;
+		static {
+			Subject[] vals = Subject.values();
+			items = new String[vals.length];
+			for (int i = 0; i < vals.length; i++) items[i] = vals[i].name();
+		}
+
+		public static String[] items() { return items; }
 	}
 }

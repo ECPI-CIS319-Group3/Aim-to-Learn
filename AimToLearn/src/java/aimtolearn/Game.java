@@ -2,10 +2,11 @@ package aimtolearn;
 
 import aimtolearn.screens.*;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.function.IntConsumer;
 
 import static aimtolearn.Constants.AR;
 
@@ -13,11 +14,12 @@ public class Game extends JFrame {
 
 	private GamePanel activePanel = null;
 	private GameLoop loop;
-	private AnimationOverlay animationOverlay;
+//	private AnimationOverlay animationOverlay;
 
 	public final MainMenu MAIN_MENU;
 	public final GameplayScreen GAMEPLAY_SCREEN;
-	public final ShootingPromptScreen SHOOTING_PROMPT_SCREEN;
+	public final ContinueShootingMenu CONTINUE_SCREEN;
+	public final SubjectShootingMenu SUBJECT_SCREEN;
 
 	private int desiredHeight;
 	private int desiredWidth;
@@ -27,14 +29,15 @@ public class Game extends JFrame {
 	public Game() {
 		this.MAIN_MENU = new MainMenu(this);
 		this.GAMEPLAY_SCREEN = new GameplayScreen(this);
-		this.SHOOTING_PROMPT_SCREEN = new ShootingPromptScreen(this);
+		this.CONTINUE_SCREEN = new ContinueShootingMenu(this);
+		this.SUBJECT_SCREEN = new SubjectShootingMenu(this);
 
 		setDisplayPanel(MAIN_MENU);
 
-		this.animationOverlay = new AnimationOverlay(this);
+	//	this.animationOverlay = new AnimationOverlay(this);
 
-		this.getLayeredPane().add(animationOverlay, new Integer(100));
-		this.revalidate();
+	//	this.getLayeredPane().add(animationOverlay, new Integer(100));
+	//	this.revalidate();
 
 		this.loop = new GameLoop(this);
 		loop.start();
@@ -66,15 +69,6 @@ public class Game extends JFrame {
 
 		this.revalidate();
 		activePanel.requestFocusInWindow();
-	}
-
-	public void shootingOption(String prompt, String[] options, IntConsumer onSelection) {
-		shootingOption(prompt, options, null, onSelection);
-	}
-
-	public void shootingOption(String prompt, String[] options, Integer[] disabledIndexes, IntConsumer onSelection) {
-		setDisplayPanel(SHOOTING_PROMPT_SCREEN);
-		SHOOTING_PROMPT_SCREEN.setup(prompt, options, disabledIndexes, onSelection);
 	}
 
 	public void changeRes() {
@@ -113,7 +107,7 @@ public class Game extends JFrame {
 		return activePanel;
 	}
 
-	public AnimationOverlay getOverlay() {
-		return animationOverlay;
-	}
+//	public AnimationOverlay getOverlay() {
+//		return animationOverlay;
+//	}
 }

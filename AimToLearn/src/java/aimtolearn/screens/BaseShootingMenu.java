@@ -12,48 +12,34 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.IntConsumer;
 
-public class ShootingPromptScreen extends MainScreen {
+public abstract class BaseShootingMenu extends MainScreen {
 
 	private String prompt;
 	private String[] optionStrings;
 	private boolean initiated;
 	private List<Integer> disabledIndexes;
-	private IntConsumer onSelection;
 
 	private Rectangle[] options;
 
-	private Rectangle promptBounds;
-
 	private static final int PROMPT_HEIGHT = 200;
+	private static final Rectangle PROMPT_BOUNDS = new Rectangle(0, 0, Constants.MAIN_WIDTH, PROMPT_HEIGHT);
 	private static final float FONT_SIZE = 40;
 
-	public ShootingPromptScreen(Game game) {
+	public BaseShootingMenu(Game game, String prompt, String... optionStrings) {
 		super(game);
-
-		this.prompt = "";
-		this.optionStrings = null;
-		this.initiated = false;
-		this.disabledIndexes = null;
-		this.onSelection = null;
-
-		this.promptBounds = new Rectangle(0, 0, Constants.MAIN_WIDTH, PROMPT_HEIGHT);
-	}
-
-	public void setup(String prompt, String[] optionStrings, Integer[] disabledIndexes, IntConsumer onSelection) {
 		this.prompt = prompt;
 		this.optionStrings = optionStrings;
 		this.options = new Rectangle[optionStrings.length];
 		this.initiated = false;
+		this.disabledIndexes = new ArrayList<>();
+	}
 
-		if (disabledIndexes != null)
-			this.disabledIndexes = Arrays.asList(disabledIndexes);
-		else
-			this.disabledIndexes = new ArrayList<>();
+	protected void setDisabledIndexes(Integer... disabled) {
+		this.disabledIndexes = Arrays.asList(disabled);
+	}
 
-		this.onSelection = onSelection;
-
+	public void init() {
 		resetKeys();
 		setActive(true);
 	}
@@ -92,7 +78,7 @@ public class ShootingPromptScreen extends MainScreen {
 			this.initiated = true;
 		}
 
-		Utils.text(prompt, promptBounds, g, SwingConstants.CENTER);
+		Utils.text(prompt, PROMPT_BOUNDS, g, SwingConstants.CENTER);
 
 		for (int i = 0; i < options.length; i++) {
 			if (disabledIndexes.contains(i))
@@ -119,8 +105,8 @@ public class ShootingPromptScreen extends MainScreen {
 
 					if (!disabledIndexes.contains(i)) {
 						this.initiated = false;
-						this.setActive(false);
-						onSelection.accept(i);
+						setActive(false);
+						onSelection(i);
 					}
 				}
 			}
@@ -129,4 +115,8 @@ public class ShootingPromptScreen extends MainScreen {
 
 		repaint();
 	}
+
+	protected abstract void onSelection(int index);
+
+
 }

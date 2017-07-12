@@ -44,7 +44,7 @@ public class GameLoop implements Runnable {
 			if (game.getActivePanel().isActive())
 				game.getActivePanel().tick();
 
-			game.getOverlay().repaint();
+		//	game.getOverlay().repaint();
 
 			offset = System.currentTimeMillis() - lastStartTime;
 			sleepTime = delay - offset;
