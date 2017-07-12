@@ -44,7 +44,10 @@ public class MainScreen extends BaseScreen {
 		activeKeys.put(e.getKeyCode(), true);
 
 		if (e.getKeyCode() == VK_ESCAPE) { // TODO this is temporary
-			game.quit();
+		//	game.quit();
+			game.setDisplayPanel(game.PAUSE_MENU);
+			game.PAUSE_MENU.reset();
+			setActive(false);
 		}
 	}
 

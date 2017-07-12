@@ -17,6 +17,7 @@ public class Game extends JFrame {
 //	private AnimationOverlay animationOverlay;
 
 	public final MainMenu MAIN_MENU;
+	public final PauseMenu PAUSE_MENU;
 	public final GameplayScreen GAMEPLAY_SCREEN;
 	public final ContinueShootingMenu CONTINUE_SCREEN;
 	public final SubjectShootingMenu SUBJECT_SCREEN;
@@ -28,6 +29,7 @@ public class Game extends JFrame {
 
 	public Game() {
 		this.MAIN_MENU = new MainMenu(this);
+		this.PAUSE_MENU = new PauseMenu(this);
 		this.GAMEPLAY_SCREEN = new GameplayScreen(this);
 		this.CONTINUE_SCREEN = new ContinueShootingMenu(this);
 		this.SUBJECT_SCREEN = new SubjectShootingMenu(this);
@@ -69,6 +71,10 @@ public class Game extends JFrame {
 
 		this.revalidate();
 		activePanel.requestFocusInWindow();
+	}
+
+	public void howToPlay() {
+		JOptionPane.showMessageDialog(this, "TODO: How to play screen");
 	}
 
 	public void changeRes() {
