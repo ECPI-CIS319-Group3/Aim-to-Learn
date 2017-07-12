@@ -95,12 +95,7 @@ public class GameplayScreen extends MainScreen {
 			this.answers.add(sprite);
 		}
 
-		for (AnswerSprite answer : answers) {
-			answer.draw(g);
-		//	g.setColor(Color.GRAY);
-		//	g.draw(answer.getBounds());
-		//	g.setColor(Color.WHITE);
-		}
+		for (AnswerSprite answer : answers) answer.draw(g);
 
 		// draw the top interface
 
