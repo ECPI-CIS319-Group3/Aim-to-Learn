@@ -1,12 +1,19 @@
 package aimtolearn;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class Question {
 
 	private final String questionPrompt, correctAnswer;
-	private final String[] allAnswers;
+	private final List<String> allAnswers;
 	private final int answerCount;
 	private final Subject subject;
 	private final Difficulty difficulty;
+
+	private int lastAnswerIndex;
 
 	private static final int LENGTH_LIMIT = 50;
 
@@ -15,11 +22,13 @@ public class Question {
 		this.subject = subject;
 		this.difficulty = difficulty;
 
-		this.allAnswers = allAnswers;
+		this.allAnswers = new ArrayList<>(Arrays.asList(allAnswers));
 		this.answerCount = allAnswers.length;
+		this.lastAnswerIndex = answerCount; // reset in randomAnswer()
 
 		this.correctAnswer = allAnswers[0];
 
+		// helpful check for questions with any of their lines that are too long
 		for (String line : questionPrompt.split("\n")) {
 			if (line.length() > LENGTH_LIMIT)
 				System.out.printf("Warning: long question (%s/%s, %d chars):\n\t...\"%s\"...\n",
@@ -33,7 +42,24 @@ public class Question {
 	}
 
 	public String randomAnswer() {
-		return allAnswers[Constants.RAND.nextInt(answerCount)];
+		this.lastAnswerIndex++;
+
+		// if the index is beyond the length
+		if (lastAnswerIndex >= answerCount) {
+			// shuffle until the correct answer is NOT first
+			do {
+				Collections.shuffle(allAnswers);
+			} while (allAnswers.get(0).equals(correctAnswer));
+
+			// and reset counter
+			this.lastAnswerIndex = 0;
+		}
+
+		return allAnswers.get(lastAnswerIndex);
+
+
+		// previous implementation, using array
+	//	return allAnswers[Constants.RAND.nextInt(answerCount)];
 	}
 
 	public String getQuestionPrompt() {

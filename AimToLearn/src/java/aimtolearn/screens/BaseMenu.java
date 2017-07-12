@@ -1,6 +1,5 @@
 package aimtolearn.screens;
 
-import aimtolearn.Constants;
 import aimtolearn.Game;
 import aimtolearn.Utils;
 
@@ -20,27 +19,31 @@ public abstract class BaseMenu extends BaseScreen {
 	private int selectedIndex;
 
 	private String titleText;
+	private Image titleImage;
 	private List<Integer> disabledIndexes;
 
 	private Rectangle titleBounds;
 
 	private Rectangle[] choiceBounds;
-	private int topHeight;
-
-	private static final Image LOGO_IMAGE = Constants.getImage("logo.png");
 
 	private static final int CHOICE_HEIGHT = 75, TRIANGLE_MARGIN = 10;
 
 	private static final Dimension TRIANGLE_SIZE = new Dimension(30, 20);
-	protected BaseMenu(Game game, String[] choices) {
-		this(game, choices, null);
+
+	protected BaseMenu(Game game, String[] choices, Image titleImage) {
+		this(game, choices, null, titleImage);
 	}
 
 	protected BaseMenu(Game game, String[] choices, String titleText) {
+		this(game, choices, titleText, null);
+	}
+
+	private BaseMenu(Game game, String[] choices, String titleText, Image titleImage) {
 		super(game);
 		this.choices = choices;
 		this.selectedIndex = 0;
 		this.titleText = titleText;
+		this.titleImage = titleImage;
 		this.disabledIndexes = new ArrayList<>();
 		setTopHeight(250);
 	}
@@ -49,8 +52,7 @@ public abstract class BaseMenu extends BaseScreen {
 		this.disabledIndexes = Arrays.asList(disabled);
 	}
 
-	protected void setTopHeight(int height) {
-		this.topHeight = height;
+	protected void setTopHeight(int topHeight) {
 
 		this.titleBounds = new Rectangle(0, 0, MAIN_WIDTH, topHeight);
 		this.choiceBounds = new Rectangle[choices.length];
@@ -80,8 +82,8 @@ public abstract class BaseMenu extends BaseScreen {
 	protected void updateScreen(Graphics g) {
 
 		if (titleText == null) {
-			int logoX = (MAIN_WIDTH - LOGO_IMAGE.getWidth(null)) / 2;
-			g.drawImage(LOGO_IMAGE, logoX, 100, this);
+			int logoX = (MAIN_WIDTH - titleImage.getWidth(null)) / 2;
+			g.drawImage(titleImage, logoX, 100, this);
 		}
 		else {
 			g.setFont(PIXEL_FONT.deriveFont(64f));

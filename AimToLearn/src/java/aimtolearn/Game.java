@@ -73,11 +73,11 @@ public class Game extends JFrame {
 		activePanel.requestFocusInWindow();
 	}
 
-	public void howToPlay() {
+	public void howToPlayTemp() {
 		JOptionPane.showMessageDialog(this, "TODO: How to play screen");
 	}
 
-	public void changeRes() {
+	public void optionsTemp() {
 		int option = JOptionPane.showOptionDialog(this,
 			"Choose resolution", "Resolution",
 			JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
@@ -94,7 +94,7 @@ public class Game extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 
-	public void quit() {
+	public void quitTemp() {
 		int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Confirm Quit",
 			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
