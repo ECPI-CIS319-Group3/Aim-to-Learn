@@ -2,9 +2,7 @@ package aimtolearn;
 
 import aimtolearn.screens.*;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.function.IntConsumer;
@@ -35,7 +33,6 @@ public class Game extends JFrame {
 
 		this.animationOverlay = new AnimationOverlay(this);
 
-	//	this.setGlassPane(animationOverlay);
 		this.getLayeredPane().add(animationOverlay, new Integer(100));
 		this.revalidate();
 

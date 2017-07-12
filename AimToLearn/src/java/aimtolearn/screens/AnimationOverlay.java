@@ -27,6 +27,9 @@ public class AnimationOverlay extends JPanel {
 	protected void paintComponent(Graphics graphics) {
 
 		Graphics2D g = ((Graphics2D) graphics);
+
+		// TODO temporary
+
 		g.setColor(Color.RED);
 
 		if (game.getActivePanel() instanceof MainScreen) {
