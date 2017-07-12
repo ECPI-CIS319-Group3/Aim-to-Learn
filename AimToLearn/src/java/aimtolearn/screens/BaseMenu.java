@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 
 import static aimtolearn.Constants.*;
 
-public abstract class MenuScreen extends GamePanel {
+public abstract class BaseMenu extends BaseScreen {
 
 	private String[] choices;
 	private int selectedIndex;
@@ -24,11 +24,11 @@ public abstract class MenuScreen extends GamePanel {
 	private static final int CHOICE_HEIGHT = 75, TOP_HEIGHT = 250, TRIANGLE_MARGIN = 10;
 	private static final Dimension TRIANGLE_SIZE = new Dimension(30, 20);
 
-	protected MenuScreen(Game game, String[] choices) {
+	protected BaseMenu(Game game, String[] choices) {
 		this(game, choices, null);
 	}
 
-	protected MenuScreen(Game game, String[] choices, String titleText) {
+	protected BaseMenu(Game game, String[] choices, String titleText) {
 		super(game);
 		this.choices = choices;
 		this.selectedIndex = 0;

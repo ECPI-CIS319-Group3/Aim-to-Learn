@@ -16,13 +16,13 @@ import static aimtolearn.Constants.*;
 import static java.awt.Color.BLACK;
 import static java.awt.Color.WHITE;
 
-public abstract class GamePanel extends JPanel {
+public abstract class BaseScreen extends JPanel {
 
 	protected final Game game;
 
 	private boolean active;
 
-	protected GamePanel(Game game) {
+	protected BaseScreen(Game game) {
 		this.game = game;
 
 		this.setFocusable(true);
@@ -31,10 +31,10 @@ public abstract class GamePanel extends JPanel {
 
 		this.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
-				GamePanel.this.onKeyDown(e);
+				BaseScreen.this.onKeyDown(e);
 			}
 			public void keyReleased(KeyEvent e) {
-				GamePanel.this.onKeyUp(e);
+				BaseScreen.this.onKeyUp(e);
 			}
 		});
 	}

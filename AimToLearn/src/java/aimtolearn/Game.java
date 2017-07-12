@@ -12,7 +12,7 @@ import static aimtolearn.Constants.AR;
 
 public class Game extends JFrame {
 
-	private GamePanel activePanel = null;
+	private BaseScreen activePanel = null;
 	private GameLoop loop;
 //	private AnimationOverlay animationOverlay;
 
@@ -63,7 +63,7 @@ public class Game extends JFrame {
 
 	}
 
-	public void setDisplayPanel(GamePanel panel) {
+	public void setDisplayPanel(BaseScreen panel) {
 		this.activePanel = panel;
 		this.setContentPane(activePanel);
 
@@ -103,7 +103,7 @@ public class Game extends JFrame {
 		return desiredWidth;
 	}
 
-	public GamePanel getActivePanel() {
+	public BaseScreen getActivePanel() {
 		return activePanel;
 	}
 

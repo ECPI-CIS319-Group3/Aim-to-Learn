@@ -16,7 +16,7 @@ import static java.awt.event.KeyEvent.*;
 /**
  * The main screen containing a controllable ship at the bottom and nothing else.
  */
-public class MainScreen extends GamePanel {
+public class MainScreen extends BaseScreen {
 
 	protected final Ship ship;
 	protected final List<Rectangle> shots = new CopyOnWriteArrayList<>();

@@ -31,5 +31,8 @@ public class ContinueShootingMenu extends BaseShootingMenu {
 
 			game.GAMEPLAY_SCREEN.start(sub, diffs[curIndex]);
 		}
+		else {
+			throw new AssertionError("Not possible");
+		}
 	}
 }

@@ -4,7 +4,7 @@ import aimtolearn.Game;
 
 import javax.swing.JOptionPane;
 
-public class MainMenu extends MenuScreen {
+public class MainMenu extends BaseMenu {
 
 	public MainMenu(Game game) {
 		super(game, new String[]{"Start", "Options", "How to Play", "Quit"});
