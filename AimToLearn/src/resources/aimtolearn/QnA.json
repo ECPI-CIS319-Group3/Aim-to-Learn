@@ -261,7 +261,7 @@
 				"Benjamin Franklin",
 				"Abraham Lincoln"
 			],
-			"What was the name of Columbus' ship?": [
+			"What was the name of Columbus’ ship?": [
 				"Mayflower",
 				"Daisy",
 				"Tulip",
@@ -279,11 +279,11 @@
 				"Mr. Money",
 				"Hat Man"
 			],
-			"Benjamin Franklin was __.": [
-				"All",
+			"Benjamin Franklin was a(n) __.": [
 				"Inventor",
-				"Scientist",
-				"Leader"
+				"President",
+				"Gardener",
+				"Loyalist"
 			],
 			"A member of a community or country is\nalso known as a __.": [
 				"Citizen",
@@ -303,11 +303,11 @@
 				"England",
 				"Portugal"
 			],
-			"Natives means __.": [
-				"People who lived somewhere first.",
-				"Babies who need food to eat.",
-				"People with a lot of friends.",
-				"People who are nice."
+			"What is a model of Earth called?": [
+				"Globe",
+				"TV",
+				"Spain",
+				"Map"
 			]
 		},
 		"normal": {
@@ -341,17 +341,17 @@
 				"History",
 				"Culture"
 			],
-			"A service is __.": [
-				"A thing a person does for you.",
-				"A problem.",
-				"A thing you can touch.",
-				"Whether a thing is worth the price."
+			"What is a hill an example of?": [
+				"Landform",
+				"Ancestor",
+				"Geography",
+				"Crop"
 			],
-			"A good is __.": [
-				"A thing you can touch.",
-				"A thing you can hear.",
-				"A thing a person does for you.",
-				"A thing you do for money."
+			"How many stripes are on the United States' flag?": [
+				13,
+				50,
+				12,
+				15
 			],
 			"Which of these is NOT part of North America?": [
 				"France",
@@ -361,7 +361,7 @@
 			],
 			"The Constitution says that people\nhave a right to __.": [
 				"Privacy",
-				"Lots of money",
+				"Money",
 				"Win",
 				"Play"
 			],
@@ -373,11 +373,11 @@
 			]
 		},
 		"hard": {
-			"Who was Susan B. Anthony?": [
-				"Leader for the suffrage movement",
-				"A famous actor in the 1800s",
-				"The wife of the president who ended slavery",
-				"A woman who opposed voting rights for women"
+			"What is the study of the Earth and the ways people use it?": [
+				"Geography",
+				"Crop",
+				"Ancestor",
+				"Land"
 			],
 			"Rosa Parks refused to give up\nher seat on a what?": [
 				"Bus",
@@ -391,11 +391,11 @@
 				"Canadians",
 				"Explorers"
 			],
-			"Abraham Lincoln signed what document\nto free the slaves?": [
-				"Emancipation Proclamation",
-				"Declaration of Independence",
-				"Bill of Rights",
-				"Constitution of the United States"
+			"Who was NOT one of the founding fathers?": [
+				"Barack Obama",
+				"George Washington",
+				"Thomas Jefferson",
+				"Benjamin Franklin"
 			],
 			"Abraham Lincoln was the __ President\nof the United States.": [
 				"16th",
@@ -429,7 +429,7 @@
 			],
 			"Jamestown was the first permanent English\nsettlement and was located in which colony?": [
 				"Virginia",
-				"North Carolina",
+				"Florida",
 				"Maryland",
 				"Georgia"
 			]
@@ -473,11 +473,11 @@
 				"Adult",
 				"Child"
 			],
-			"What is a volcano?": [
-				"A place where molten rock comes out of the ground",
-				"Wind and water breaking down Earth materials",
-				"Wind or moving water",
-				"A shaking of Earth's surface"
+			"To cut down on the use of resources is __.": [
+				"Reduce",
+				"Recycle",
+				"Reinvent",
+				"Reuse"
 			],
 			"The __ in soil help plants grow.": [
 				"Minerals",
@@ -491,11 +491,11 @@
 				"Revolve",
 				"Crater"
 			],
-			"What is a scientist?": [
-				"A person who studies things in their world",
-				"A teacher",
-				"A person who collects bugs",
-				"A person who writes stories"
+			"Which of these is a natural resource?": [
+				"Plant",
+				"Broom",
+				"Plane",
+				"Phone"
 			]
 		},
 		"normal": {
@@ -505,11 +505,11 @@
 				"Equal to",
 				"The same as"
 			],
-			"Why is soil so important?": [
-				"Provides food and support for plants",
-				"Eaten by animals",
-				"Eaten by people",
-				"Keeps the earth clean"
+			"When water in the form of rain, sleet,\nsnow or hail falls it is called __": [
+				"Precipitation",
+				"Condensation",
+				"Ocean",
+				"Evaporation"
 			],
 			"What you think will happen in the\nfuture is called __.": [
 				"Prediction",
@@ -547,11 +547,11 @@
 				"Earth",
 				"Venus"
 			],
-			"An organism is __.": [
-				"An individual living thing",
-				"A nonliving thing",
-				"An animal that eats fruit and meat",
-				"None of the above"
+			"What is another name for fall?": [
+				"Autumn",
+				"Winter",
+				"Summer",
+				"Spring"
 			],
 			"What comes between the inner and outer planets?": [
 				"An asteroid belt",
@@ -579,11 +579,11 @@
 				"Volume",
 				"Weight"
 			],
-			"Condensation is __.": [
-				"The process by which a gas changes into a liquid.",
-				"Climate.",
-				"The process by which a liquid changes into a gas.",
-				"Groundwater."
+			"Which type of weather has strong winds\nthat spin in a circle and create a funnel shape?": [
+				"Tornado",
+				"Hurricane",
+				"Earthquake",
+				"Flood"
 			],
 			"What is the closet planet to Earth?": [
 				"Mars",
@@ -591,11 +591,11 @@
 				"Neptune",
 				"Venus"
 			],
-			"When the North Pole is tilted\ntoward the Sun, it is __.": [
-				"Summer in the Northern Hemisphere",
-				"Winter in the Northern Hemisphere",
-				"Daytime in the Northern Hemisphere",
-				"Nighttime in the Northern Hemisphere"
+			"When the North Pole is tilted\ntoward the Sun, it is\n__ in the Northern Hemisphere.": [
+				"Summer",
+				"Winter",
+				"Daytime",
+				"Nighttime"
 			],
 			"The closest star to Earth is __.": [
 				"Sun",
