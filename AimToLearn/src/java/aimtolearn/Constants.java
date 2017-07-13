@@ -59,7 +59,7 @@ public class Constants {
 		} catch (IOException e) {
 			System.err.println("Failed to load image: \"" + fileName + "\". Quitting game.");
 			System.exit(14);
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 

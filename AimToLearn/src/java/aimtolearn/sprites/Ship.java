@@ -5,7 +5,6 @@ import aimtolearn.Constants;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,24 +17,25 @@ public class Ship {
 
 	/** -1, 0, or 1 **/
 	private byte direction;
-
 	private long directionChangeStart, impactedStart;
-
 	private Image currentImage;
+	private boolean shotCharging;
 
-	private static final int INVULN_DURATION = 1000;
+	private static final int INVULN_DURATION = 2000;
+	public static final int SHOT_CHARGE_TIME = 500;
 
 	public static final byte DIR_RIGHT = 1, DIR_NONE = 0, DIR_LEFT = -1;
 	private static final List<Byte> DIRECTIONS = Arrays.asList(DIR_RIGHT, DIR_NONE, DIR_LEFT);
 
-	private static final BufferedImage MOVING_LEFT, MOVE_LEFT, MOVING_RIGHT, MOVE_RIGHT;
-
-	static {
-		MOVING_LEFT = Constants.getImage("ship_moving_left.png");
-		MOVE_LEFT = Constants.getImage("ship_left.png");
-		MOVING_RIGHT = Constants.getImage("ship_moving_right.png");
-		MOVE_RIGHT = Constants.getImage("ship_right.png");
-	}
+	private static final Image MOVING_LEFT = Constants.getImage("ship_moving_left.png");
+	private static final Image MOVE_LEFT = Constants.getImage("ship_left.png");
+	private static final Image MOVING_RIGHT = Constants.getImage("ship_moving_right.png");
+	private static final Image MOVE_RIGHT = Constants.getImage("ship_right.png");
+	private static final AnimatedSprite FIRING_ANIM = new AnimatedSprite("ship_fire", 9, SHOT_CHARGE_TIME);
+	private static final AnimatedSprite EXPLOSION_ANIM = new AnimatedSprite("ship_explosion", 3, 1);
+	private static final AnimatedSprite SHIELD_OVERLAY_ANIM = new AnimatedSprite("ship_shield", 4, 250, INVULN_DURATION);
+	private static final List<AnimatedSprite> ANIMATIONS =
+		Arrays.asList(FIRING_ANIM, EXPLOSION_ANIM, SHIELD_OVERLAY_ANIM);
 
 	public Ship(int startX) {
 		this.x = startX;
@@ -45,10 +45,22 @@ public class Ship {
 	}
 
 	public void draw(Graphics g) {
-		g.drawImage(currentImage, computeX(), y, null);
+
+		int x = computeX();
+		if (shotCharging) {
+			FIRING_ANIM.draw(g, x, y);
+		}
+		else {
+			g.drawImage(currentImage, x, y, null);
+		}
+
+		if (SHIELD_OVERLAY_ANIM.isRunning()) SHIELD_OVERLAY_ANIM.draw(g, x, y);
 	}
 
 	public void tick() {
+
+		for (AnimatedSprite anim : ANIMATIONS) anim.tick();
+
 		if (this.direction != 0) {
 			if (System.currentTimeMillis() - this.directionChangeStart < 100)
 				this.currentImage = this.direction == DIR_LEFT ? MOVING_LEFT : MOVING_RIGHT;
@@ -74,10 +86,20 @@ public class Ship {
 
 	public void impacted() {
 		this.impactedStart = System.currentTimeMillis();
+		SHIELD_OVERLAY_ANIM.start();
 	}
 
 	public boolean isInvincible() {
 		return System.currentTimeMillis() - impactedStart <= INVULN_DURATION;
+	}
+
+	public void setShotCharging(boolean charging) {
+		this.shotCharging = charging;
+		FIRING_ANIM.start();
+	}
+
+	public boolean isShotCharging() {
+		return shotCharging;
 	}
 
 	public void setDirection(byte direction) {

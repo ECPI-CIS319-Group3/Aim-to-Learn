@@ -160,6 +160,8 @@ public class GameplayScreen extends MainScreen {
 
 				boolean passed = score >= PASSING_SCORE;
 
+				// TODO this needs work
+
 				String msg = "You have scored %d out of %d possible questions. ";
 				if (passed)	msg += "You have passed this round.";
 				else msg += "You have failed this round and must try again for a score of " + PASSING_SCORE + ".";
@@ -191,7 +193,7 @@ public class GameplayScreen extends MainScreen {
 	}
 
 	private void decrementScore() {
-		if (score > 0) this.score--;
+		/*if (score > 0)*/ this.score--;
 	}
 
 	public Question getQuestion() {

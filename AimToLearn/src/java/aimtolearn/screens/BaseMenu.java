@@ -52,6 +52,11 @@ public abstract class BaseMenu extends BaseScreen {
 		setTopHeight(250);
 	}
 
+	public void reset() {
+		this.selectedIndex = 0;
+		repaint();
+	}
+
 	protected void setDisabledIndexes(Integer... disabled) {
 		this.disabledIndexes = Arrays.asList(disabled);
 	}
@@ -113,11 +118,6 @@ public abstract class BaseMenu extends BaseScreen {
 			}
 
 		}
-	}
-
-	public void reset() {
-		this.selectedIndex = 0;
-		repaint();
 	}
 
 	@Override

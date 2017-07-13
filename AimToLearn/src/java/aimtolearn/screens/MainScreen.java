@@ -21,7 +21,7 @@ public class MainScreen extends BaseScreen {
 	protected final Ship ship;
 	protected final List<Rectangle> shots = new CopyOnWriteArrayList<>();
 
-	private long lastShotTime = 0;
+	private long lastShotTime = 0, shotChargeStart = 0;
 
 	private Map<Integer, Boolean> activeKeys = new HashMap<>();
 
@@ -31,7 +31,7 @@ public class MainScreen extends BaseScreen {
 
 	private static final Dimension SHOT_SIZE = new Dimension(10, 40);
 
-	private static final int SHIP_SPEED = 5, SHOT_SPEED = 10, FIRE_DELAY = 500,
+	private static final int SHIP_SPEED = 5, SHOT_SPEED = 10, // FIRE_DELAY = 500, replaced with Ship.SHOT_CHARGE_TIME
 		LEFT_BOUND = SHIP_WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND;
 
 	protected MainScreen(Game game) {
@@ -105,10 +105,16 @@ public class MainScreen extends BaseScreen {
 		}
 
 		if (isKeyDown(FIRE_KEYS)) {
-			if (System.currentTimeMillis() - lastShotTime >= FIRE_DELAY) {// auto-fire every [x]ms
-				fireShot();
-				this.lastShotTime = System.currentTimeMillis();
+			if (System.currentTimeMillis() - lastShotTime >= Ship.SHOT_CHARGE_TIME) { // auto-fire every [x]ms
+				this.shotChargeStart = System.currentTimeMillis();
+				ship.setShotCharging(true);
 			}
+		}
+
+		if (ship.isShotCharging() && System.currentTimeMillis() - shotChargeStart >= Ship.SHOT_CHARGE_TIME) {
+			fireShot();
+			ship.setShotCharging(false);
+			this.lastShotTime = System.currentTimeMillis();
 		}
 
 		for (Rectangle shotLoc : shots) {

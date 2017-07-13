@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -92,7 +93,6 @@ public class Game extends JFrame {
 	}
 
 	public void howToPlay(BaseScreen returnScreen) {
-	//	JOptionPane.showMessageDialog(this, "TODO: How to play screen");
 		setDisplayPanel(HOW_TO_SCREEN);
 		HOW_TO_SCREEN.setReturnScreen(returnScreen);
 	}
@@ -119,13 +119,17 @@ public class Game extends JFrame {
 		setDisplayPanel(CONFIRM_QUIT_SCREEN);
 	}
 
-	@Deprecated
+	public void onKeyDown(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_F10) System.exit(0);
+	}
+
+	/*
 	public void quitTemp() {
 		int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Confirm Quit",
 			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 		if (confirm == 0) System.exit(0);
-	}
+	}*/
 
 	public int getDesiredHeight() {
 		return desiredHeight;

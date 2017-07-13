@@ -13,6 +13,7 @@ public class ConfirmQuitMenu extends BaseMenu {
 
 	public void setReturnScreen(BaseScreen returnScreen) {
 		this.returnScreen = returnScreen;
+		reset();
 	}
 
 	@Override

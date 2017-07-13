@@ -31,6 +31,7 @@ public abstract class BaseScreen extends JPanel {
 
 		this.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
+				game.onKeyDown(e);
 				BaseScreen.this.onKeyDown(e);
 			}
 			public void keyReleased(KeyEvent e) {

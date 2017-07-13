@@ -1,2 +1,3 @@
-ship_explosion 26 11
+ship_explosion -104 -44
 ship_fire 0 0
+ship_shield -32 -32
