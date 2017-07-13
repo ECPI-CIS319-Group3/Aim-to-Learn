@@ -23,6 +23,8 @@ public class Game extends JFrame {
 	public final GameplayScreen GAMEPLAY_SCREEN;
 	public final ContinueShootingMenu CONTINUE_SCREEN;
 	public final SubjectShootingMenu SUBJECT_SCREEN;
+	public final ConfirmReturnMenu CONFIRM_RETURN_MENU;
+	private final ConfirmQuitMenu CONFIRM_QUIT_SCREEN;
 
 	private int desiredHeight;
 	private int desiredWidth;
@@ -36,6 +38,8 @@ public class Game extends JFrame {
 		this.GAMEPLAY_SCREEN = new GameplayScreen(this);
 		this.CONTINUE_SCREEN = new ContinueShootingMenu(this);
 		this.SUBJECT_SCREEN = new SubjectShootingMenu(this);
+		this.CONFIRM_RETURN_MENU = new ConfirmReturnMenu(this);
+		this.CONFIRM_QUIT_SCREEN = new ConfirmQuitMenu(this);
 
 		SplashScreen splashScreen = new SplashScreen(this);
 		setDisplayPanel(splashScreen);
@@ -102,6 +106,12 @@ public class Game extends JFrame {
 		this.setLocationRelativeTo(null);
 	}
 
+	public void confirmQuit(BaseScreen returnScreen) {
+		CONFIRM_QUIT_SCREEN.setReturnScreen(returnScreen);
+		setDisplayPanel(CONFIRM_QUIT_SCREEN);
+	}
+
+	@Deprecated
 	public void quitTemp() {
 		int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Confirm Quit",
 			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);

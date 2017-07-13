@@ -37,7 +37,7 @@ public class Utils {
 		if (text.contains("\n")) {
 			String[] lines = text.split("\n");
 			int lineCount = lines.length;
-			int translateHeight = metrics.getHeight();
+			int translateHeight = metrics.getHeight() + Constants.MULTILINE_SPACING;
 			rect = new Rectangle(rect);
 			rect.translate(0, translateHeight * (lineCount-1) / -2);
 

@@ -26,6 +26,10 @@ public abstract class BaseMenu extends BaseScreen {
 
 	private Rectangle[] choiceBounds;
 
+	private static final List<Integer> UP_KEYS = Arrays.asList(KeyEvent.VK_UP, KeyEvent.VK_W);
+	private static final List<Integer> DOWN_KEYS = Arrays.asList(KeyEvent.VK_DOWN, KeyEvent.VK_S);
+	private static final List<Integer> SELECT_KEYS = Arrays.asList(KeyEvent.VK_ENTER, KeyEvent.VK_SPACE);
+
 	private static final int CHOICE_HEIGHT = 75, TRIANGLE_MARGIN = 10;
 
 	private static final Dimension TRIANGLE_SIZE = new Dimension(30, 20);
@@ -64,11 +68,11 @@ public abstract class BaseMenu extends BaseScreen {
 
 	@Override
 	protected void onKeyDown(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_UP)
+		if (UP_KEYS.contains(e.getKeyCode()))
 			selectedIndex = selectedIndex == 0 ? choices.length-1 : selectedIndex-1;
-		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+		else if (DOWN_KEYS.contains(e.getKeyCode()))
 			selectedIndex = selectedIndex == choices.length-1 ? 0 : selectedIndex+1;
-		else if (e.getKeyCode() == KeyEvent.VK_ENTER && !disabledIndexes.contains(selectedIndex))
+		else if (SELECT_KEYS.contains(e.getKeyCode()) && !disabledIndexes.contains(selectedIndex))
 			onSelection(selectedIndex);
 		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			onEscape();

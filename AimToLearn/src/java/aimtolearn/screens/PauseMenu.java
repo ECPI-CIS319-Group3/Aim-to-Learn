@@ -14,7 +14,7 @@ public class PauseMenu extends BaseMenu {
 	public PauseMenu(Game game) {
 		super(game, new String[]{"Resume", "Options", "How to play", "Return to menu"}, PAUSED_LOGO);
 		this.resumeScreen = null;
-		setDisabledIndexes(1);
+	//	setDisabledIndexes(1);
 	}
 
 	@Override
@@ -46,7 +46,8 @@ public class PauseMenu extends BaseMenu {
 			game.howToPlayTemp();
 		}
 		else if (index == 3) {
-			game.setDisplayPanel(game.MAIN_MENU);
+			game.setDisplayPanel(game.CONFIRM_RETURN_MENU);
+			game.CONFIRM_RETURN_MENU.setReturnScreen(this);
 		}
 	}
 }

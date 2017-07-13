@@ -20,6 +20,8 @@ public class Constants {
 	/** Y-coordinate for bottom of the ship */
 	public static final int SHIP_Y = 850;
 
+	public static final int MULTILINE_SPACING = 20;
+
 	public static final float MAIN_FONT = 24, SMALL_FONT = 16, LARGE_FONT = 50;
 	private static final String FONT_FILE = "PressStart2P-Regular.ttf";
 
