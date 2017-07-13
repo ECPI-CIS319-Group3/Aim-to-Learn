@@ -105,6 +105,10 @@ public class Game extends JFrame {
 
 		if (option != JOptionPane.CLOSED_OPTION)
 			setRes(HEIGHTS[option]);
+
+		String volume = JOptionPane.showInputDialog(this, String.format("Input Volume (current: %d%%)", Sound.getVolume()),
+			"Volume", JOptionPane.QUESTION_MESSAGE);
+		Sound.setVolume(Integer.parseInt(volume));
 	}
 
 	private void setRes(int h) {

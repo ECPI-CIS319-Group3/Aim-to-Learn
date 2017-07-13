@@ -1,8 +1,7 @@
 package aimtolearn;
 
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
+import javax.sound.sampled.*;
+import java.applet.AudioClip;
 
 public enum Sound {
 	MENU_MOVE("menu_move.wav"),
@@ -14,11 +13,17 @@ public enum Sound {
 	SHIP_HIT("ship_hit_explosion.wav"),
 	SHIELD_HIT("answer_hit_shield.wav");
 
+	private static int volume = 100;
+
 	private static LineListener closeListener;
 	private Clip clip;
+	private FloatControl gainControl;
+	private AudioClip appletClip;
 
 	Sound(String fileName) {
 		clip = Constants.getSound(fileName);
+		gainControl = ((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN));
+		//	appletClip = Applet.newAudioClip(Constants.class.getResource("wav/"+fileName));
 	//	clip.addLineListener(CloseListener.self);
 	}
 
@@ -27,6 +32,24 @@ public enum Sound {
 		clip.flush();
 		clip.setFramePosition(0);
 		clip.start();
+	//	appletClip.play();
+	}
+
+	public static void setVolume(int percentVolume) {
+		volume = percentVolume;
+		float gain = toGain(percentVolume);
+
+		for (Sound sound : values())
+			sound.gainControl.setValue(gain);
+	}
+
+	public static int getVolume() {
+		return volume;
+	}
+
+	private static float toGain(int percentVolume) {
+		double percentVol = percentVolume / 100.0;
+		return (float) (Math.log(percentVol) / Math.log(10.0) * 20.0);
 	}
 
 	static class CloseListener implements LineListener {
