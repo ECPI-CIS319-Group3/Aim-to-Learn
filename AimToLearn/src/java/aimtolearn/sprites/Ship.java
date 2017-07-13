@@ -1,6 +1,7 @@
 package aimtolearn.sprites;
 
 import aimtolearn.Constants;
+import aimtolearn.Sound;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -86,6 +87,10 @@ public class Ship {
 		this.impactedStart = System.currentTimeMillis();
 		HIT_OVERLAY_ANIM.start();
 		SHIELD_OVERLAY_ANIM.start();
+
+		Sound.SHIP_HIT.play();
+
+		Sound.SHIELD_ACTIVE.play();
 	}
 
 	public boolean isInvincible() {

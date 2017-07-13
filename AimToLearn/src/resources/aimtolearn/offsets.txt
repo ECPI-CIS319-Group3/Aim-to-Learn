@@ -2,4 +2,4 @@ ship_explosion -104 -44
 ship_fire 0 0
 ship_shield -32 -32
 ship_hit_explosion -20 -10
-answer_hit_explosion 0 24
+answer_hit_explosion 0 0

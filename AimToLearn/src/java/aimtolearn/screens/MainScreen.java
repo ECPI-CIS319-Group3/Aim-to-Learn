@@ -1,6 +1,7 @@
 package aimtolearn.screens;
 
 import aimtolearn.Game;
+import aimtolearn.Sound;
 import aimtolearn.sprites.Ship;
 
 import java.awt.*;
@@ -44,6 +45,7 @@ public class MainScreen extends BaseScreen {
 		activeKeys.put(e.getKeyCode(), true);
 
 		if (e.getKeyCode() == VK_ESCAPE) {
+			Sound.MENU_SELECT.play();
 			game.PAUSE_MENU.setResumeScreen(this);
 			game.setDisplayPanel(game.PAUSE_MENU);
 			game.PAUSE_MENU.reset();
@@ -108,6 +110,7 @@ public class MainScreen extends BaseScreen {
 			if (System.currentTimeMillis() - lastShotTime >= Ship.SHOT_CHARGE_TIME) { // auto-fire every [x]ms
 				this.shotChargeStart = System.currentTimeMillis();
 				ship.setShotCharging(true);
+				Sound.SHOT_CHARGE.play();
 			}
 		}
 
@@ -126,6 +129,9 @@ public class MainScreen extends BaseScreen {
 	}
 
 	private void fireShot() {
+
+		Sound.SHOOT.play();
+
 		int x = (int) (ship.getX() - SHOT_SIZE.getWidth() / 2);
 		int y = SHIP_Y - SHIP_WIDTH / 2 - SHOT_SIZE.height;
 

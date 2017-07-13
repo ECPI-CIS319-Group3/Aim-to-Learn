@@ -1,9 +1,6 @@
 package aimtolearn.screens;
 
-import aimtolearn.Game;
-import aimtolearn.Question;
-import aimtolearn.QuestionSet;
-import aimtolearn.Utils;
+import aimtolearn.*;
 import aimtolearn.sprites.AnimatedSprite;
 import aimtolearn.sprites.AnswerSprite;
 import aimtolearn.sprites.NumberBox;
@@ -141,6 +138,9 @@ public class GameplayScreen extends MainScreen {
 						ship.impacted();
 						decrementScore();
 					}
+					else {
+						Sound.SHIELD_HIT.play();
+					}
 					remove = true;
 				}
 
@@ -163,6 +163,8 @@ public class GameplayScreen extends MainScreen {
 		int explosionY = bounds.y + bounds.height;
 		answerExplosionLoc = new Point(bounds.x, explosionY);
 		ANSWER_HIT_OVERLAY_ANIM.start();
+
+		Sound.ANSWER_EXPLOSION.play();
 
 		if (currentQuestion.isCorrect(answer.getText())) {
 			answers.clear();

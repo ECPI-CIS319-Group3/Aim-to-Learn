@@ -2,6 +2,7 @@ package aimtolearn.screens;
 
 import aimtolearn.Constants;
 import aimtolearn.Game;
+import aimtolearn.Sound;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -32,6 +33,7 @@ public class HowToPlayScreen extends BaseScreen {
 	@Override
 	protected void onKeyDown(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && returnScreen != null) {
+			Sound.MENU_SELECT.play();
 			game.setDisplayPanel(returnScreen);
 			returnScreen.setActive(true);
 		}

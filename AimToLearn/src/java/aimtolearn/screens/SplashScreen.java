@@ -2,6 +2,7 @@ package aimtolearn.screens;
 
 import aimtolearn.Constants;
 import aimtolearn.Game;
+import aimtolearn.Sound;
 import aimtolearn.Utils;
 
 import javax.swing.SwingConstants;
@@ -35,23 +36,15 @@ public class SplashScreen extends BaseScreen {
 		FilteredImageSource fis = new FilteredImageSource(SHIP_IMAGE.getSource(), scaleFilter);
 
 		this.largeShip = createImage(fis);
-
-		this.logoPos = new Point(
-			(MAIN_WIDTH - LOGO_IMAGE.getWidth(null)) / 2,
-			100
-		);
-
-		this.shipPos = new Point(
-			(MAIN_WIDTH - largeShip.getWidth(null)) / 2,
-			350
-		);
-
+		this.logoPos = new Point((MAIN_WIDTH - LOGO_IMAGE.getWidth(null)) / 2, 100);
+		this.shipPos = new Point((MAIN_WIDTH - largeShip.getWidth(null)) / 2, 350);
 		this.textBounds = new Rectangle(0, shipPos.y + h + 100, MAIN_WIDTH, 100);
 	}
 
 	@Override
 	protected void onKeyDown(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			Sound.MENU_SELECT.play();
 			game.confirmQuit(this);
 		}
 		else {

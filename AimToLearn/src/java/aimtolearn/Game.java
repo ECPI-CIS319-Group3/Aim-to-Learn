@@ -31,7 +31,7 @@ public class Game extends JFrame {
 
 	private int desiredHeight;
 	private int desiredWidth;
-	private boolean windowMovementEnabled = true;
+	private boolean windowMovementEnabled = false;
 
 	private static final Integer[] HEIGHTS = {720, 900, 1080};
 

@@ -1,6 +1,7 @@
 package aimtolearn;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Image;
@@ -33,6 +34,8 @@ public class Constants {
 
 	public static final Random RAND = new Random();
 
+	private static final String IMG_DIR = "img/", WAV_DIR = "wav/";
+
 	static {
 
 		SHIP_WIDTH = SHIP_IMAGE.getWidth(null);
@@ -53,11 +56,25 @@ public class Constants {
 	}
 
 	public static BufferedImage getImage(String fileName) {
+		fileName = IMG_DIR + fileName;
 		try {
 			return ImageIO.read(Constants.class.getResource(fileName));
 		} catch (IOException e) {
 			System.err.println("Failed to load image: \"" + fileName + "\". Quitting game.");
 			System.exit(14);
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Clip getSound(String fileName) {
+		fileName = WAV_DIR + fileName;
+		try (AudioInputStream in = AudioSystem.getAudioInputStream(Constants.class.getResource(fileName))) {
+			Clip clip = AudioSystem.getClip();
+			clip.open(in);
+			return clip;
+		} catch (LineUnavailableException | UnsupportedAudioFileException | IOException e) {
+			System.err.println("Failed to load sound file: \"" + fileName + "\". Quitting Game.");
+			System.exit(12);
 			throw new RuntimeException(e);
 		}
 	}

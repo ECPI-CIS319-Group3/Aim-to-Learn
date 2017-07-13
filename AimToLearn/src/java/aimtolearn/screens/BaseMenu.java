@@ -1,6 +1,7 @@
 package aimtolearn.screens;
 
 import aimtolearn.Game;
+import aimtolearn.Sound;
 import aimtolearn.Utils;
 
 import javax.swing.SwingConstants;
@@ -73,14 +74,27 @@ public abstract class BaseMenu extends BaseScreen {
 
 	@Override
 	protected void onKeyDown(KeyEvent e) {
-		if (UP_KEYS.contains(e.getKeyCode()))
-			selectedIndex = selectedIndex == 0 ? choices.length-1 : selectedIndex-1;
-		else if (DOWN_KEYS.contains(e.getKeyCode()))
-			selectedIndex = selectedIndex == choices.length-1 ? 0 : selectedIndex+1;
-		else if (SELECT_KEYS.contains(e.getKeyCode()) && !disabledIndexes.contains(selectedIndex))
+		boolean moved = false, selected = false;
+
+		if (UP_KEYS.contains(e.getKeyCode())) {
+			selectedIndex = selectedIndex == 0 ? choices.length - 1 : selectedIndex - 1;
+			moved = true;
+		}
+		else if (DOWN_KEYS.contains(e.getKeyCode())) {
+			selectedIndex = selectedIndex == choices.length - 1 ? 0 : selectedIndex + 1;
+			moved = true;
+		}
+		else if (SELECT_KEYS.contains(e.getKeyCode()) && !disabledIndexes.contains(selectedIndex)) {
 			onSelection(selectedIndex);
-		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			selected = true;
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			onEscape();
+			selected = true;
+		}
+
+		if (moved) Sound.MENU_MOVE.play();
+		if (selected) Sound.MENU_SELECT.play();
 
 		repaint();
 	}
