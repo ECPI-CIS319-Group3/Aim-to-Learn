@@ -32,7 +32,7 @@ public class MainScreen extends BaseScreen {
 	private static final Dimension SHOT_SIZE = new Dimension(10, 40);
 
 	private static final int SHIP_SPEED = 5, SHOT_SPEED = 10, FIRE_DELAY = 500,
-		LEFT_BOUND = Ship.WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND;
+		LEFT_BOUND = SHIP_WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND;
 
 	protected MainScreen(Game game) {
 		super(game);
@@ -121,7 +121,7 @@ public class MainScreen extends BaseScreen {
 
 	private void fireShot() {
 		int x = (int) (ship.getX() - SHOT_SIZE.getWidth() / 2);
-		int y = SHIP_Y - Ship.HEIGHT / 2 - SHOT_SIZE.height;
+		int y = SHIP_Y - SHIP_WIDTH / 2 - SHOT_SIZE.height;
 
 		shots.add(new Rectangle(new Point(x, y), SHOT_SIZE));
 	}

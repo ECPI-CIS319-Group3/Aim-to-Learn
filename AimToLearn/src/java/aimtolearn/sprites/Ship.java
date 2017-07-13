@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.List;
 
-import static aimtolearn.Constants.SHIP_Y;
+import static aimtolearn.Constants.*;
 
 public class Ship {
 
@@ -28,22 +28,9 @@ public class Ship {
 	public static final byte DIR_RIGHT = 1, DIR_NONE = 0, DIR_LEFT = -1;
 	private static final List<Byte> DIRECTIONS = Arrays.asList(DIR_RIGHT, DIR_NONE, DIR_LEFT);
 
-	private static final BufferedImage IMAGE, MOVING_LEFT, MOVE_LEFT, MOVING_RIGHT, MOVE_RIGHT;
-	public static final int WIDTH, HEIGHT;
+	private static final BufferedImage MOVING_LEFT, MOVE_LEFT, MOVING_RIGHT, MOVE_RIGHT;
 
 	static {
-
-		IMAGE = Constants.getImage("ship.png");
-
-		if (IMAGE != null) {
-			WIDTH = IMAGE.getWidth(null);
-			HEIGHT = IMAGE.getHeight(null);
-		}
-		else {
-			WIDTH = -1;
-			HEIGHT = -1;
-		}
-
 		MOVING_LEFT = Constants.getImage("ship_moving_left.png");
 		MOVE_LEFT = Constants.getImage("ship_left.png");
 		MOVING_RIGHT = Constants.getImage("ship_moving_right.png");
@@ -52,15 +39,13 @@ public class Ship {
 
 	public Ship(int startX) {
 		this.x = startX;
-		this.y = SHIP_Y - HEIGHT;
+		this.y = SHIP_Y - SHIP_HEIGHT;
 		this.direction = 0;
-		this.currentImage = IMAGE;
+		this.currentImage = SHIP_IMAGE;
 	}
 
 	public void draw(Graphics g) {
-		int x = this.x - WIDTH / 2;
-
-		g.drawImage(currentImage, x, y, null);
+		g.drawImage(currentImage, computeX(), y, null);
 	}
 
 	public void tick() {
@@ -71,12 +56,12 @@ public class Ship {
 				this.currentImage = this.direction == DIR_LEFT ? MOVE_LEFT : MOVE_RIGHT;
 		}
 		else {
-			this.currentImage = IMAGE;
+			this.currentImage = SHIP_IMAGE;
 		}
 	}
 
 	private int computeX() {
-		return this.x - WIDTH / 2;
+		return this.x - SHIP_WIDTH / 2;
 	}
 
 	public int getX() {
@@ -106,6 +91,6 @@ public class Ship {
 	}
 
 	public Rectangle getBounds() {
-		return new Rectangle(computeX(), y, WIDTH, HEIGHT);
+		return new Rectangle(computeX(), y, SHIP_WIDTH, SHIP_HEIGHT);
 	}
 }

@@ -3,6 +3,7 @@ package aimtolearn;
 import javax.imageio.ImageIO;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
@@ -22,11 +23,19 @@ public class Constants {
 	public static final float MAIN_FONT = 24, SMALL_FONT = 16, LARGE_FONT = 50;
 	private static final String FONT_FILE = "PressStart2P-Regular.ttf";
 
+	public static final Image LOGO_IMAGE = Constants.getImage("logo.png");
+	public static final Image SHIP_IMAGE = Constants.getImage("ship.png");
+
+	public static final int SHIP_WIDTH, SHIP_HEIGHT;
+
 	public static final Font PIXEL_FONT;
 
 	public static final Random RAND = new Random();
 
 	static {
+
+		SHIP_WIDTH = SHIP_IMAGE.getWidth(null);
+		SHIP_HEIGHT = SHIP_IMAGE.getHeight(null);
 
 		Font font;
 		try {
