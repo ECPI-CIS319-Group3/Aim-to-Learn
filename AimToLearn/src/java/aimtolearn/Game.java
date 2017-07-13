@@ -18,7 +18,6 @@ public class Game extends JFrame {
 	private GameLoop loop;
 //	private AnimationOverlay animationOverlay;
 
-	private final SplashScreen SPLASH_SCREEN;
 	public final MainMenu MAIN_MENU;
 	public final PauseMenu PAUSE_MENU;
 	public final GameplayScreen GAMEPLAY_SCREEN;
@@ -32,14 +31,14 @@ public class Game extends JFrame {
 	private static final Integer[] HEIGHTS = {720, 900, 1080};
 
 	public Game() {
-		this.SPLASH_SCREEN = new SplashScreen(this);
 		this.MAIN_MENU = new MainMenu(this);
 		this.PAUSE_MENU = new PauseMenu(this);
 		this.GAMEPLAY_SCREEN = new GameplayScreen(this);
 		this.CONTINUE_SCREEN = new ContinueShootingMenu(this);
 		this.SUBJECT_SCREEN = new SubjectShootingMenu(this);
 
-		setDisplayPanel(SPLASH_SCREEN);
+		SplashScreen splashScreen = new SplashScreen(this);
+		setDisplayPanel(splashScreen);
 
 		DragGlassPane glass = new DragGlassPane();
 		this.setGlassPane(glass);

@@ -49,7 +49,10 @@ public class SplashScreen extends BaseScreen {
 
 	@Override
 	protected void onKeyDown(KeyEvent e) {
-		game.setDisplayPanel(game.MAIN_MENU);
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			game.quitTemp();
+		else
+			game.setDisplayPanel(game.MAIN_MENU);
 	}
 
 	@Override
