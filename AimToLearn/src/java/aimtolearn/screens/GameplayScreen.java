@@ -5,7 +5,6 @@ import aimtolearn.sprites.AnimatedSprite;
 import aimtolearn.sprites.AnswerSprite;
 import aimtolearn.sprites.NumberBox;
 
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.*;
 import java.util.List;
@@ -19,6 +18,7 @@ public class GameplayScreen extends MainScreen {
 	private Question currentQuestion;
 
 	private int score, level, round;
+	private int totalScore;
 	private boolean ready;
 
 	private long lastAnswerSpawnTime = 0;
@@ -44,6 +44,7 @@ public class GameplayScreen extends MainScreen {
 		super(game);
 
 		this.score = 0;
+		this.totalScore = 0;
 		this.level = 1;
 		this.round = 1;
 		this.ready = false;
@@ -75,6 +76,10 @@ public class GameplayScreen extends MainScreen {
 		this.level = difficulty.ordinal() + 1;
 		resetKeys();
 		setActive(true);
+	}
+
+	public void resetScore() {
+		this.totalScore = 0;
 	}
 
 	@Override
@@ -174,18 +179,18 @@ public class GameplayScreen extends MainScreen {
 
 				boolean passed = score >= PASSING_SCORE;
 
-				// TODO this needs work
-
+				/*
 				String msg = "You have scored %d out of %d possible questions. ";
 				if (passed)	msg += "You have passed this round.";
 				else msg += "You have failed this round and must try again for a score of " + PASSING_SCORE + ".";
 				JOptionPane.showMessageDialog(game, String.format(msg, score, MAX_SCORE));
-
+				*/
 				if (passed) {
 					roundComplete();
 				}
 				else {
-					this.start(currentQuestion.getSubject(), currentQuestion.getDifficulty());
+				//	this.start(currentQuestion.getSubject(), currentQuestion.getDifficulty());
+					game.setDisplayPanel(game.GAME_OVER_SCREEN);
 				}
 
 			}
@@ -200,6 +205,8 @@ public class GameplayScreen extends MainScreen {
 	}
 
 	private void roundComplete() {
+
+		this.totalScore += score;
 
 		game.setDisplayPanel(game.CONTINUE_SCREEN);
 		game.CONTINUE_SCREEN.init();

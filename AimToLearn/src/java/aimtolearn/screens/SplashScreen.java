@@ -24,7 +24,7 @@ public class SplashScreen extends BaseScreen {
 	private final Rectangle textBounds;
 
 	private static final double LARGE_SHIP_RATIO = 2.5;
-	private static final Image LOGO_IMAGE = Constants.getImage("splash-logo.png");
+	private static final Image LOGO_IMAGE = Constants.getImage("splash_logo.png");
 
 	public SplashScreen(Game game) {
 		super(game);

@@ -29,6 +29,8 @@ public class MainMenu extends BaseMenu {
 	}
 
 	private void startChosen() {
+		game.GAMEPLAY_SCREEN.resetScore();
+
 		game.setDisplayPanel(game.SUBJECT_SCREEN);
 		game.SUBJECT_SCREEN.init();
 	}

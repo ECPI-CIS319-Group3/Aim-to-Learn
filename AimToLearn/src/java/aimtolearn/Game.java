@@ -25,6 +25,7 @@ public class Game extends JFrame {
 	public final ContinueShootingMenu CONTINUE_SCREEN;
 	public final SubjectShootingMenu SUBJECT_SCREEN;
 	public final ConfirmReturnMenu CONFIRM_RETURN_MENU;
+	public final GameOverScreen GAME_OVER_SCREEN;
 
 	private final ConfirmQuitMenu CONFIRM_QUIT_SCREEN;
 	private final HowToPlayScreen HOW_TO_SCREEN;
@@ -47,6 +48,8 @@ public class Game extends JFrame {
 
 		this.CONFIRM_RETURN_MENU = new ConfirmReturnMenu(this);
 		this.CONFIRM_QUIT_SCREEN = new ConfirmQuitMenu(this);
+
+		this.GAME_OVER_SCREEN = new GameOverScreen(this);
 
 		SplashScreen splashScreen = new SplashScreen(this);
 		setDisplayPanel(splashScreen);

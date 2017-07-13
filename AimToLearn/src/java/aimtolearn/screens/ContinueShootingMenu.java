@@ -7,7 +7,7 @@ public class ContinueShootingMenu extends BaseShootingMenu {
 
 
 	public ContinueShootingMenu(Game game) {
-		super(game, "How do you want to continue?", "Change subject", "Increase Difficulty");
+		super(game, "Round Complete!\nHow would you like to continue?", "Change subject", "Increase Difficulty");
 	}
 
 	@Override
