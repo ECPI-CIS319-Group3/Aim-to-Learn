@@ -1,5 +1,6 @@
 package aimtolearn.screens;
 
+import aimtolearn.Constants;
 import aimtolearn.Game;
 import aimtolearn.Utils;
 
@@ -21,7 +22,8 @@ public class SplashScreen extends BaseScreen {
 	private final Point logoPos, shipPos;
 	private final Rectangle textBounds;
 
-	private static final double LARGE_SHIP_RATIO = 3;
+	private static final double LARGE_SHIP_RATIO = 2.5;
+	private static final Image LOGO_IMAGE = Constants.getImage("splash-logo.png");
 
 	public SplashScreen(Game game) {
 		super(game);
@@ -41,7 +43,7 @@ public class SplashScreen extends BaseScreen {
 
 		this.shipPos = new Point(
 			(MAIN_WIDTH - largeShip.getWidth(null)) / 2,
-			300
+			350
 		);
 
 		this.textBounds = new Rectangle(0, shipPos.y + h + 100, MAIN_WIDTH, 100);
@@ -63,7 +65,7 @@ public class SplashScreen extends BaseScreen {
 
 		g.drawImage(largeShip, shipPos.x, shipPos.y, this);
 
-		g.setFont(g.getFont().deriveFont(50f));
+		g.setFont(g.getFont().deriveFont(40f));
 
 		Utils.text("Press any key to begin...", textBounds, g, SwingConstants.CENTER);
 	}

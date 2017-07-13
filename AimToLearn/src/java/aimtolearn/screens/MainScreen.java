@@ -31,7 +31,7 @@ public class MainScreen extends BaseScreen {
 
 	private static final Dimension SHOT_SIZE = new Dimension(10, 40);
 
-	private static final int SHIP_SPEED = 5, SHOT_SPEED = 10, // FIRE_DELAY = 500, replaced with Ship.SHOT_CHARGE_TIME
+	private static final int SHIP_SPEED = 5, SHOT_SPEED = 15, // FIRE_DELAY = 500, replaced with Ship.SHOT_CHARGE_TIME
 		LEFT_BOUND = SHIP_WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND;
 
 	protected MainScreen(Game game) {

@@ -4,15 +4,13 @@ import aimtolearn.Game;
 import aimtolearn.Question;
 import aimtolearn.QuestionSet;
 import aimtolearn.Utils;
+import aimtolearn.sprites.AnimatedSprite;
 import aimtolearn.sprites.AnswerSprite;
 import aimtolearn.sprites.NumberBox;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -33,6 +31,7 @@ public class GameplayScreen extends MainScreen {
 	private final NumberBox levelBox, roundBox, scoreBox;
 	private final NumberBox[] numberBoxes;
 	private final Rectangle questionBox;
+	private Point answerExplosionLoc;
 
 	private static final int TOP = 150;
 	private static final int TOP_MARGIN = 25;
@@ -41,6 +40,8 @@ public class GameplayScreen extends MainScreen {
 	private static final int ANSWER_SPAWN_RATE = 1000;
 	private static final int MAX_SCORE = 10;
 	private static final int PASSING_SCORE = 7;
+
+	private static final AnimatedSprite ANSWER_HIT_OVERLAY_ANIM = new AnimatedSprite("answer_hit_explosion", 8, 400);
 
 	public GameplayScreen(Game game) {
 		super(game);
@@ -97,6 +98,9 @@ public class GameplayScreen extends MainScreen {
 
 		for (AnswerSprite answer : answers) answer.draw(g);
 
+		if (ANSWER_HIT_OVERLAY_ANIM.isRunning())
+			ANSWER_HIT_OVERLAY_ANIM.draw(g, answerExplosionLoc.x, answerExplosionLoc.y);
+
 		// draw the top interface
 
 		for (NumberBox box : numberBoxes) box.draw(g);
@@ -110,6 +114,8 @@ public class GameplayScreen extends MainScreen {
 	public void tick() {
 
 		super.tick();
+
+		ANSWER_HIT_OVERLAY_ANIM.tick();
 
 		for (AnswerSprite answer : answers) {
 
@@ -152,6 +158,12 @@ public class GameplayScreen extends MainScreen {
 	}
 
 	private void onAnswerHit(AnswerSprite answer) {
+
+		Rectangle bounds = answer.getBounds();
+		int explosionY = bounds.y + bounds.height;
+		answerExplosionLoc = new Point(bounds.x, explosionY);
+		ANSWER_HIT_OVERLAY_ANIM.start();
+
 		if (currentQuestion.isCorrect(answer.getText())) {
 			answers.clear();
 			shots.clear();
@@ -193,7 +205,7 @@ public class GameplayScreen extends MainScreen {
 	}
 
 	private void decrementScore() {
-		/*if (score > 0)*/ this.score--;
+		if (score > 0) this.score--;
 	}
 
 	public Question getQuestion() {

@@ -22,7 +22,7 @@ public class Ship {
 	private boolean shotCharging;
 
 	private static final int INVULN_DURATION = 2000;
-	public static final int SHOT_CHARGE_TIME = 500;
+	public static final int SHOT_CHARGE_TIME = 750;
 
 	public static final byte DIR_RIGHT = 1, DIR_NONE = 0, DIR_LEFT = -1;
 	private static final List<Byte> DIRECTIONS = Arrays.asList(DIR_RIGHT, DIR_NONE, DIR_LEFT);
@@ -34,8 +34,9 @@ public class Ship {
 	private static final AnimatedSprite FIRING_ANIM = new AnimatedSprite("ship_fire", 9, SHOT_CHARGE_TIME);
 	private static final AnimatedSprite EXPLOSION_ANIM = new AnimatedSprite("ship_explosion", 3, 1);
 	private static final AnimatedSprite SHIELD_OVERLAY_ANIM = new AnimatedSprite("ship_shield", 4, 250, INVULN_DURATION);
+	private static final AnimatedSprite HIT_OVERLAY_ANIM = new AnimatedSprite("ship_hit_explosion", 6, 250);
 	private static final List<AnimatedSprite> ANIMATIONS =
-		Arrays.asList(FIRING_ANIM, EXPLOSION_ANIM, SHIELD_OVERLAY_ANIM);
+		Arrays.asList(FIRING_ANIM, EXPLOSION_ANIM, SHIELD_OVERLAY_ANIM, HIT_OVERLAY_ANIM);
 
 	public Ship(int startX) {
 		this.x = startX;
@@ -47,13 +48,10 @@ public class Ship {
 	public void draw(Graphics g) {
 
 		int x = computeX();
-		if (shotCharging) {
-			FIRING_ANIM.draw(g, x, y);
-		}
-		else {
-			g.drawImage(currentImage, x, y, null);
-		}
+		if (shotCharging) FIRING_ANIM.draw(g, x, y);
+		else g.drawImage(currentImage, x, y, null);
 
+		if (HIT_OVERLAY_ANIM.isRunning()) HIT_OVERLAY_ANIM.draw(g, x, y);
 		if (SHIELD_OVERLAY_ANIM.isRunning()) SHIELD_OVERLAY_ANIM.draw(g, x, y);
 	}
 
@@ -86,6 +84,7 @@ public class Ship {
 
 	public void impacted() {
 		this.impactedStart = System.currentTimeMillis();
+		HIT_OVERLAY_ANIM.start();
 		SHIELD_OVERLAY_ANIM.start();
 	}
 

@@ -3,10 +3,14 @@ package aimtolearn.screens;
 import aimtolearn.Constants;
 import aimtolearn.Game;
 
+import java.awt.Image;
+
 public class MainMenu extends BaseMenu {
 
+	private static final Image LOGO_IMAGE = Constants.getImage("logo.png");
+
 	public MainMenu(Game game) {
-		super(game, new String[]{"Start", "Options", "How to Play", "Quit"}, Constants.LOGO_IMAGE);
+		super(game, new String[]{"Start", "Options", "How to Play", "Quit"}, LOGO_IMAGE);
 		setTopHeight(300);
 	}
 

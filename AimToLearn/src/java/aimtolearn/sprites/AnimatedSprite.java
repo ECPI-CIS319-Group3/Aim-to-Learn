@@ -29,12 +29,8 @@ public class AnimatedSprite {
 				OFFSETS.put(name, new Point(x, y));
 			}
 		}
-		catch (IOException | URISyntaxException e) {
-			System.err.println("Failed to load animation offset file. Quitting game.");
-			System.exit(15);
-		}
-		catch (NumberFormatException e) {
-			System.err.println("Failed to parse animation offset file. Quitting Game.");
+		catch (IOException | URISyntaxException | NumberFormatException e) {
+			System.err.println("Failed to load or parse animation offset file. Quitting game.");
 			System.exit(15);
 		}
 	}
@@ -88,7 +84,7 @@ public class AnimatedSprite {
 
 		long t = System.currentTimeMillis();
 
-		if (loop && t - startTime >= totalDuration) { // we passed the total duration, so stop
+		if (t - startTime >= totalDuration) { // we passed the total duration, so stop
 			this.running = false;
 		}
 

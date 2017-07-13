@@ -25,7 +25,6 @@ public class Constants {
 	public static final float MAIN_FONT = 24, SMALL_FONT = 16, LARGE_FONT = 50;
 	private static final String FONT_FILE = "PressStart2P-Regular.ttf";
 
-	public static final Image LOGO_IMAGE = Constants.getImage("logo.png");
 	public static final Image SHIP_IMAGE = Constants.getImage("ship.png");
 
 	public static final int SHIP_WIDTH, SHIP_HEIGHT;
