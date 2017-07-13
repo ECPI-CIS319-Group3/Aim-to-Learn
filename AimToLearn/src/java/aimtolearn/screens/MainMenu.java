@@ -19,7 +19,7 @@ public class MainMenu extends BaseMenu {
 	public void onSelection(int index) {
 		if (index == 0) startChosen();
 		else if (index == 1) game.optionsTemp();
-		else if (index == 2) game.howToPlayTemp();
+		else if (index == 2) game.howToPlay(this);
 		else if (index == 3) game.confirmQuit(this);
 		else throw new AssertionError("Not possible");
 	}

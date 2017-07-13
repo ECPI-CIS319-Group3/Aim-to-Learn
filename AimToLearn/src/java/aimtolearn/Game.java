@@ -24,7 +24,9 @@ public class Game extends JFrame {
 	public final ContinueShootingMenu CONTINUE_SCREEN;
 	public final SubjectShootingMenu SUBJECT_SCREEN;
 	public final ConfirmReturnMenu CONFIRM_RETURN_MENU;
+
 	private final ConfirmQuitMenu CONFIRM_QUIT_SCREEN;
+	private final HowToPlayScreen HOW_TO_SCREEN;
 
 	private int desiredHeight;
 	private int desiredWidth;
@@ -35,9 +37,13 @@ public class Game extends JFrame {
 	public Game() {
 		this.MAIN_MENU = new MainMenu(this);
 		this.PAUSE_MENU = new PauseMenu(this);
+
 		this.GAMEPLAY_SCREEN = new GameplayScreen(this);
 		this.CONTINUE_SCREEN = new ContinueShootingMenu(this);
 		this.SUBJECT_SCREEN = new SubjectShootingMenu(this);
+
+		this.HOW_TO_SCREEN = new HowToPlayScreen(this);
+
 		this.CONFIRM_RETURN_MENU = new ConfirmReturnMenu(this);
 		this.CONFIRM_QUIT_SCREEN = new ConfirmQuitMenu(this);
 
@@ -85,8 +91,10 @@ public class Game extends JFrame {
 		activePanel.requestFocusInWindow();
 	}
 
-	public void howToPlayTemp() {
-		JOptionPane.showMessageDialog(this, "TODO: How to play screen");
+	public void howToPlay(BaseScreen returnScreen) {
+	//	JOptionPane.showMessageDialog(this, "TODO: How to play screen");
+		setDisplayPanel(HOW_TO_SCREEN);
+		HOW_TO_SCREEN.setReturnScreen(returnScreen);
 	}
 
 	public void optionsTemp() {

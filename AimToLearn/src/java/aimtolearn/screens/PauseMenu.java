@@ -43,7 +43,7 @@ public class PauseMenu extends BaseMenu {
 			game.optionsTemp();
 		}
 		else if (index == 2) {
-			game.howToPlayTemp();
+			game.howToPlay(this);
 		}
 		else if (index == 3) {
 			game.setDisplayPanel(game.CONFIRM_RETURN_MENU);
