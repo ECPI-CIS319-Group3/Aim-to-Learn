@@ -51,6 +51,7 @@ public class Game extends JFrame {
 		setDisplayPanel(splashScreen);
 
 		Sound.init();
+		Sound.BG_MUSIC.loop();
 
 		GameLoop loop = new GameLoop(this);
 		loop.start();
@@ -97,8 +98,13 @@ public class Game extends JFrame {
 	}
 
 	public void onKeyDown(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_F10) System.exit(0);
-		else if (e.getKeyCode() == KeyEvent.VK_F9) setDisplayPanel(GAME_OVER_SCREEN);
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_F10) System.exit(0);
+		else if (key == KeyEvent.VK_F9) setDisplayPanel(GAME_OVER_SCREEN);
+		else if (key == KeyEvent.VK_F8) {
+			setDisplayPanel(CONTINUE_SCREEN);
+			CONTINUE_SCREEN.init();
+		}
 	}
 
 	public int getDesiredHeight() {

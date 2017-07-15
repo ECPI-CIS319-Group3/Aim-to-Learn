@@ -8,6 +8,7 @@ public class ContinueShootingMenu extends BaseShootingMenu {
 
 	public ContinueShootingMenu(Game game) {
 		super(game, "Round Complete!\nHow would you like to continue?", "Change subject", "Increase Difficulty");
+		setPromptHeight(300);
 	}
 
 	@Override

@@ -41,7 +41,10 @@ public class OptionsMenu extends BaseMenu {
 	@Override
 	protected Rectangle makeChoiceBounds(int index) {
 		Rectangle orig = super.makeChoiceBounds(index);
-		orig.setBounds(MARGIN, orig.y, LEFT_WIDTH, orig.height);
+
+		if (index < 4) // 3 sound options and resolution option must be moved over
+			orig.setBounds(MARGIN, orig.y, LEFT_WIDTH, orig.height);
+
 		return orig;
 	}
 

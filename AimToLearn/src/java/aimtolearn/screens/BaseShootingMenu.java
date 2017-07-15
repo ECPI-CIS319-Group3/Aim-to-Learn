@@ -19,11 +19,10 @@ public abstract class BaseShootingMenu extends ShipScreen {
 	private String[] optionStrings;
 	private boolean initiated;
 	private List<Integer> disabledIndexes;
-
+	private int promptHeight;
+	private Rectangle promptBounds;
 	private Rectangle[] options;
 
-	private static final int PROMPT_HEIGHT = 200;
-	private static final Rectangle PROMPT_BOUNDS = new Rectangle(0, 0, Constants.MAIN_WIDTH, PROMPT_HEIGHT);
 	private static final float FONT_SIZE = 40;
 
 	protected BaseShootingMenu(Game game, String prompt, String... optionStrings) {
@@ -33,10 +32,16 @@ public abstract class BaseShootingMenu extends ShipScreen {
 		this.options = new Rectangle[optionStrings.length];
 		this.initiated = false;
 		this.disabledIndexes = new ArrayList<>();
+		setPromptHeight(200);
 	}
 
 	protected void setDisabledIndexes(Integer... disabled) {
 		this.disabledIndexes = Arrays.asList(disabled);
+	}
+
+	protected void setPromptHeight(int promptHeight) {
+		this.promptHeight = promptHeight;
+		this.promptBounds = new Rectangle(0, 0, Constants.MAIN_WIDTH, promptHeight);
 	}
 
 	public void init() {
@@ -70,7 +75,7 @@ public abstract class BaseShootingMenu extends ShipScreen {
 			int lastX = 0;
 
 			for (int i = 0; i < options.length; i++) {
-				Rectangle bounds = new Rectangle(lastX + spacing, PROMPT_HEIGHT, optionWidths.get(i), height);
+				Rectangle bounds = new Rectangle(lastX + spacing, promptHeight, optionWidths.get(i), height);
 				this.options[i] = bounds;
 				lastX = (int) bounds.getMaxX();
 			}
@@ -78,7 +83,7 @@ public abstract class BaseShootingMenu extends ShipScreen {
 			this.initiated = true;
 		}
 
-		Utils.text(prompt, PROMPT_BOUNDS, g, SwingConstants.CENTER);
+		Utils.text(prompt, promptBounds, g, SwingConstants.CENTER);
 
 		for (int i = 0; i < options.length; i++) {
 			if (disabledIndexes.contains(i))

@@ -13,7 +13,8 @@ public enum Sound {
 	SHOT_CHARGE("shot_charge.wav"),
 	ANSWER_EXPLOSION("answer_hit_explosion.wav"),
 	SHIP_HIT("ship_hit_explosion.wav"),
-	SHIELD_HIT("answer_hit_shield.wav");
+	SHIELD_HIT("answer_hit_shield.wav"),
+	BG_MUSIC("bg_music.wav", true);
 
 	private static int masterVolume = 100;
 	private static int fxVolume = 100;
@@ -46,10 +47,14 @@ public enum Sound {
 		clip.start();
 	}
 
+	public void loop() {
+		clip.setLoopPoints(0, -1);
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+	}
+
 	public static void setMasterVolume(int percentVolume) {
 		masterVolume = clampVolume(percentVolume);
 		float gain = toGain(masterVolume);
-
 		for (Sound sound : values())
 			sound.gainControl.setValue(gain);
 	}
@@ -82,7 +87,7 @@ public enum Sound {
 
 	private static float toGain(int percentVolume) {
 		double percentVol = percentVolume / 100.0;
-		return (float) (Math.log(percentVol) / Math.log(10.0) * 20.0);
+		return (float) (20 * Math.log10(percentVol));
 	}
 
 	static class CloseListener implements LineListener {
