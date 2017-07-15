@@ -17,7 +17,7 @@ import static java.awt.event.KeyEvent.*;
 /**
  * The main screen containing a controllable ship at the bottom and nothing else.
  */
-public class MainScreen extends BaseScreen {
+public class ShipScreen extends BaseScreen {
 
 	protected final Ship ship;
 	protected final List<Rectangle> shots = new CopyOnWriteArrayList<>();
@@ -35,7 +35,7 @@ public class MainScreen extends BaseScreen {
 	private static final int SHIP_SPEED = 5, SHOT_SPEED = 15, // FIRE_DELAY = 500, replaced with Ship.SHOT_CHARGE_TIME
 		LEFT_BOUND = SHIP_WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND;
 
-	protected MainScreen(Game game) {
+	protected ShipScreen(Game game) {
 		super(game);
 		this.ship = new Ship(MAIN_WIDTH / 2);
 	}

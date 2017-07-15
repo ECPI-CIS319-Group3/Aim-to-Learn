@@ -6,7 +6,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class MoveScreen extends ReturnableScreen {
+public class MoveScreen extends ReturnableMenu {
 
 	private Point startClick;
 
@@ -28,6 +28,8 @@ public class MoveScreen extends ReturnableScreen {
 			public void mouseDragged(MouseEvent e) {
 
 				if (startClick == null) return;
+
+				// TODO this needs work
 
 				// get location of Window
 				int thisX = game.getLocation().x;

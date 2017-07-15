@@ -34,8 +34,8 @@ public class PauseMenu extends BaseMenu {
 		if (index == 0) {
 			game.setDisplayPanel(resume);
 
-			if (resume instanceof MainScreen)
-				((MainScreen) resume).resetKeys();
+			if (resume instanceof ShipScreen)
+				((ShipScreen) resume).resetKeys();
 
 			resume.setActive(true);
 		}

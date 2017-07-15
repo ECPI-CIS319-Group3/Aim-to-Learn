@@ -2,11 +2,11 @@ package aimtolearn.screens;
 
 import aimtolearn.Game;
 
-public abstract class ReturnableScreen extends BaseMenu {
+public abstract class ReturnableMenu extends BaseMenu {
 
 	private BaseScreen returnScreen;
 
-	protected ReturnableScreen(Game game, String[] choices, String titleText) {
+	protected ReturnableMenu(Game game, String[] choices, String titleText) {
 		super(game, choices, titleText);
 	}
 

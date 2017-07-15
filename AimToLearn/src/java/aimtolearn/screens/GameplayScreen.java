@@ -12,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import static aimtolearn.Constants.*;
 
-public class GameplayScreen extends MainScreen {
+public class GameplayScreen extends ShipScreen {
 
 	private QuestionSet questionSet;
 	private Question currentQuestion;

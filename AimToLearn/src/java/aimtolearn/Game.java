@@ -13,8 +13,6 @@ import static aimtolearn.Constants.*;
 public class Game extends JFrame {
 
 	private BaseScreen activePanel = null;
-	private GameLoop loop;
-//	private AnimationOverlay animationOverlay;
 
 	public final MainMenu MAIN_MENU;
 	public final PauseMenu PAUSE_MENU;
@@ -54,11 +52,7 @@ public class Game extends JFrame {
 
 		Sound.init();
 
-	//	this.animationOverlay = new AnimationOverlay(this);
-	//	this.getLayeredPane().add(animationOverlay, new Integer(100));
-	//	this.revalidate();
-
-		this.loop = new GameLoop(this);
+		GameLoop loop = new GameLoop(this);
 		loop.start();
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();

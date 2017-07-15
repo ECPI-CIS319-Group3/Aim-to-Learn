@@ -2,7 +2,7 @@ package aimtolearn.screens;
 
 import aimtolearn.Game;
 
-public class ConfirmReturnMenu extends ReturnableScreen {
+public class ConfirmReturnMenu extends ReturnableMenu {
 
 	public ConfirmReturnMenu(Game game) {
 		super(game, new String[]{"Yes", "No"}, "Are you sure you want to\nreturn to the main menu?");
