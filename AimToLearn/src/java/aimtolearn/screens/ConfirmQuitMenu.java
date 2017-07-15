@@ -17,7 +17,7 @@ public class ConfirmQuitMenu extends BaseMenu {
 	}
 
 	@Override
-	public void onSelection(int index) {
+	public boolean onSelection(int index) {
 		if (index == 0) { // yes
 			System.exit(0);
 		}
@@ -25,5 +25,6 @@ public class ConfirmQuitMenu extends BaseMenu {
 			game.setDisplayPanel(returnScreen);
 			returnScreen.setActive(true);
 		}
+		return true;
 	}
 }

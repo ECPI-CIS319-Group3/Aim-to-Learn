@@ -27,7 +27,7 @@ public class PauseMenu extends BaseMenu {
 	}
 
 	@Override
-	public void onSelection(int index) {
+	public boolean onSelection(int index) {
 
 		BaseScreen resume = resumeScreen == null ? game.GAMEPLAY_SCREEN : resumeScreen;
 
@@ -49,5 +49,7 @@ public class PauseMenu extends BaseMenu {
 			game.setDisplayPanel(game.CONFIRM_RETURN_MENU);
 			game.CONFIRM_RETURN_MENU.setReturnScreen(this);
 		}
+
+		return true;
 	}
 }

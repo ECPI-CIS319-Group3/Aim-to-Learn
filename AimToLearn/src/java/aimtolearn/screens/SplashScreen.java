@@ -32,7 +32,7 @@ public class SplashScreen extends BaseScreen {
 		int w = (int) (SHIP_WIDTH * LARGE_SHIP_RATIO);
 		int h = (int) (SHIP_HEIGHT * LARGE_SHIP_RATIO);
 
-		ReplicateScaleFilter scaleFilter = new ReplicateScaleFilter(w,h);
+		ReplicateScaleFilter scaleFilter = new ReplicateScaleFilter(w, h);
 		FilteredImageSource fis = new FilteredImageSource(SHIP_IMAGE.getSource(), scaleFilter);
 
 		this.largeShip = createImage(fis);
@@ -43,13 +43,12 @@ public class SplashScreen extends BaseScreen {
 
 	@Override
 	protected void onKeyDown(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			Sound.MENU_SELECT.play();
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			game.confirmQuit(this);
-		}
-		else {
+		else
 			game.setDisplayPanel(game.MAIN_MENU);
-		}
+
+		Sound.MENU_SELECT.play();
 	}
 
 	@Override

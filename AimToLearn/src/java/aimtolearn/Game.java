@@ -4,9 +4,10 @@ import aimtolearn.screens.*;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -29,6 +30,7 @@ public class Game extends JFrame {
 
 	private final ConfirmQuitMenu CONFIRM_QUIT_SCREEN;
 	private final HowToPlayScreen HOW_TO_SCREEN;
+	private final OptionsMenu OPTIONS_MENU;
 
 	private int desiredHeight;
 	private int desiredWidth;
@@ -45,6 +47,7 @@ public class Game extends JFrame {
 		this.SUBJECT_SCREEN = new SubjectShootingMenu(this);
 
 		this.HOW_TO_SCREEN = new HowToPlayScreen(this);
+		this.OPTIONS_MENU = new OptionsMenu(this);
 
 		this.CONFIRM_RETURN_MENU = new ConfirmReturnMenu(this);
 		this.CONFIRM_QUIT_SCREEN = new ConfirmQuitMenu(this);
@@ -58,34 +61,23 @@ public class Game extends JFrame {
 		this.setGlassPane(glass);
 		glass.setVisible(true);
 
-	//	this.animationOverlay = new AnimationOverlay(this);
+		Sound.init();
 
+	//	this.animationOverlay = new AnimationOverlay(this);
 	//	this.getLayeredPane().add(animationOverlay, new Integer(100));
 	//	this.revalidate();
 
 		this.loop = new GameLoop(this);
 		loop.start();
 
-	//	int res = -1;
-	//	Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-	//	if (screen.width > screen.height) {
-	//		for (int h : HEIGHTS) {
-	//			if (h > screen.height) break;
-	//			res = h;
-	//		}
-	//	}
-	//	else throw new UnsupportedOperationException("Not implemented yet"); // TODO implement this
-
-	//	setRes(res);
-		setRes(900);
+		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+		setRes(screen.width < HEIGHTS[1] ? HEIGHTS[0] : HEIGHTS[1]);
 
 		this.setTitle("Aim to Learn");
 		this.setResizable(false);
 		this.setUndecorated(true);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
 		this.setVisible(true);
-
 	}
 
 	public void setDisplayPanel(BaseScreen panel) {
@@ -101,7 +93,10 @@ public class Game extends JFrame {
 	}
 
 	public void optionsTemp() {
-		int option = JOptionPane.showOptionDialog(this,
+
+		setDisplayPanel(OPTIONS_MENU);
+		OPTIONS_MENU.setReturnScreen(MAIN_MENU);
+	/*	int option = JOptionPane.showOptionDialog(this,
 			"Choose resolution", "Resolution",
 			JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
 			HEIGHTS, HEIGHTS[0]);
@@ -112,6 +107,7 @@ public class Game extends JFrame {
 		String volume = JOptionPane.showInputDialog(this, String.format("Input Volume (current: %d%%)", Sound.getVolume()),
 			"Volume", JOptionPane.QUESTION_MESSAGE);
 		Sound.setVolume(Integer.parseInt(volume));
+		*/
 	}
 
 	private void setRes(int h) {
@@ -129,14 +125,6 @@ public class Game extends JFrame {
 	public void onKeyDown(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_F10) System.exit(0);
 	}
-
-	/*
-	public void quitTemp() {
-		int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to quit?", "Confirm Quit",
-			JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-		if (confirm == 0) System.exit(0);
-	}*/
 
 	public int getDesiredHeight() {
 		return desiredHeight;

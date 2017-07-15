@@ -22,17 +22,19 @@ public abstract class BaseMenu extends BaseScreen {
 	private String titleText;
 	private Image titleImage;
 	private List<Integer> disabledIndexes;
+	private Font titleFont, optionFont;
 
 	private Rectangle titleBounds;
+	private int topHeight, choiceHeight;
 
 	private Rectangle[] choiceBounds;
+	private Point[] choicePoints;
 
 	private static final List<Integer> UP_KEYS = Arrays.asList(KeyEvent.VK_UP, KeyEvent.VK_W);
 	private static final List<Integer> DOWN_KEYS = Arrays.asList(KeyEvent.VK_DOWN, KeyEvent.VK_S);
 	private static final List<Integer> SELECT_KEYS = Arrays.asList(KeyEvent.VK_ENTER, KeyEvent.VK_SPACE);
 
-	private static final int CHOICE_HEIGHT = 75, TRIANGLE_MARGIN = 10;
-
+	private static final int TRIANGLE_MARGIN = 10;
 	private static final Dimension TRIANGLE_SIZE = new Dimension(30, 20);
 
 	protected BaseMenu(Game game, String[] choices, Image titleImage) {
@@ -50,7 +52,10 @@ public abstract class BaseMenu extends BaseScreen {
 		this.titleText = titleText;
 		this.titleImage = titleImage;
 		this.disabledIndexes = new ArrayList<>();
+		setChoiceHeight(75);
 		setTopHeight(250);
+		setTitleFontSize(64);
+		setOptionFontSize((int) MAIN_FONT);
 	}
 
 	public void reset() {
@@ -62,41 +67,61 @@ public abstract class BaseMenu extends BaseScreen {
 		this.disabledIndexes = Arrays.asList(disabled);
 	}
 
-	protected void setTopHeight(int topHeight) {
+	protected void setTitleFontSize(int size) {
+		this.titleFont = PIXEL_FONT.deriveFont((float) size);
+	}
 
+	protected void setOptionFontSize(int size) {
+		this.optionFont = PIXEL_FONT.deriveFont((float) size);
+	}
+
+	protected void setTopHeight(int topHeight) {
+		this.topHeight = topHeight;
 		this.titleBounds = new Rectangle(0, 0, MAIN_WIDTH, topHeight);
 		this.choiceBounds = new Rectangle[choices.length];
+		this.choicePoints = new Point[choices.length];
 
-		for (int i = 0; i < choices.length; i++) {
-			this.choiceBounds[i] = new Rectangle(0, topHeight + i * CHOICE_HEIGHT, MAIN_WIDTH, CHOICE_HEIGHT);
-		}
+		for (int i = 0; i < choices.length; i++)
+			this.choiceBounds[i] = makeChoiceBounds(i);
 	}
 
 	@Override
 	protected void onKeyDown(KeyEvent e) {
-		boolean moved = false, selected = false;
 
 		if (UP_KEYS.contains(e.getKeyCode())) {
 			selectedIndex = selectedIndex == 0 ? choices.length - 1 : selectedIndex - 1;
-			moved = true;
+			Sound.MENU_MOVE.play();
 		}
 		else if (DOWN_KEYS.contains(e.getKeyCode())) {
 			selectedIndex = selectedIndex == choices.length - 1 ? 0 : selectedIndex + 1;
-			moved = true;
+			Sound.MENU_MOVE.play();
 		}
 		else if (SELECT_KEYS.contains(e.getKeyCode()) && !disabledIndexes.contains(selectedIndex)) {
-			onSelection(selectedIndex);
-			selected = true;
+			boolean doBeep = onSelection(selectedIndex);
+			if (doBeep) Sound.MENU_SELECT.play();
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			onEscape();
-			selected = true;
+			Sound.MENU_SELECT.play();
 		}
 
-		if (moved) Sound.MENU_MOVE.play();
-		if (selected) Sound.MENU_SELECT.play();
-
 		repaint();
+	}
+
+	protected Rectangle makeChoiceBounds(int index) {
+		return new Rectangle(0, topHeight + index * choiceHeight, MAIN_WIDTH, choiceHeight);
+	}
+
+	protected void setChoiceHeight(int choiceHeight) {
+		this.choiceHeight = choiceHeight;
+	}
+
+	public Point[] getChoicePoints() {
+		return choicePoints;
+	}
+
+	public int getSelectedIndex() {
+		return selectedIndex;
 	}
 
 	protected void onEscape() {}
@@ -109,18 +134,20 @@ public abstract class BaseMenu extends BaseScreen {
 			g.drawImage(titleImage, logoX, 100, this);
 		}
 		else {
-			g.setFont(PIXEL_FONT.deriveFont(64f));
+			g.setFont(titleFont);
 			Utils.text(titleText, titleBounds, g, SwingConstants.CENTER);
 		}
 
-		g.setFont(PIXEL_FONT);
+		g.setFont(optionFont);
 
 		for (int i = 0; i < choices.length; i++) {
 
 			if (disabledIndexes.contains(i)) g.setColor(Color.GRAY);
 			else g.setColor(Color.WHITE);
 
-			Point pos = Utils.text(choices[i], choiceBounds[i], g, SwingConstants.BOTTOM);
+			Point pos = Utils.text(choices[i], choiceBounds[i], g, SwingConstants.CENTER); //BOTTOM);
+
+			this.choicePoints[i] = pos;
 
 			if (i == selectedIndex) {
 				Polygon triangle = new Polygon(
@@ -137,5 +164,5 @@ public abstract class BaseMenu extends BaseScreen {
 	@Override
 	public void tick() {}
 
-	public abstract void onSelection(int index);
+	public abstract boolean onSelection(int index);
 }

@@ -9,8 +9,9 @@ public class GameOverScreen extends BaseMenu {
 	}
 
 	@Override
-	public void onSelection(int index) {
+	public boolean onSelection(int index) {
 		if (index == 0) game.setDisplayPanel(game.MAIN_MENU);
 		else System.exit(0);
+		return true;
 	}
 }

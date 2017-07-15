@@ -11,6 +11,7 @@ import java.util.Random;
 
 public class Constants {
 
+	// resolution constants
 	public static final int MAIN_WIDTH = 1600;
 	public static final int MAIN_HEIGHT = 900;
 	public static final double AR = (double) MAIN_WIDTH / MAIN_HEIGHT;
@@ -22,18 +23,12 @@ public class Constants {
 	public static final int SHIP_Y = 850;
 
 	public static final int MULTILINE_SPACING = 20;
-
 	public static final float MAIN_FONT = 24, SMALL_FONT = 16, LARGE_FONT = 50;
 	private static final String FONT_FILE = "PressStart2P-Regular.ttf";
-
 	public static final Image SHIP_IMAGE = Constants.getImage("ship.png");
-
 	public static final int SHIP_WIDTH, SHIP_HEIGHT;
-
 	public static final Font PIXEL_FONT;
-
 	public static final Random RAND = new Random();
-
 	private static final String IMG_DIR = "img/", WAV_DIR = "wav/";
 
 	static {
