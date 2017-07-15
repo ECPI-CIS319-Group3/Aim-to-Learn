@@ -56,7 +56,7 @@ public class QuestionSet {
 		this.currentQuestionNum = -1;
 	}
 
-	public void randomize() {
+	private void randomize() {
 		for (Map<Question.Difficulty, List<Question>> subjects : masterData.values()) {
 			for (List<Question> questions : subjects.values())
 				Collections.shuffle(questions);
@@ -99,7 +99,7 @@ public class QuestionSet {
 		return currentQuestionNum >= getQuestionCount(currentSubject, currentDiff) - 1;
 	}
 
-	public int getQuestionCount(Question.Subject subject, Question.Difficulty diff) {
+	private int getQuestionCount(Question.Subject subject, Question.Difficulty diff) {
 		return masterData.get(subject).get(diff).size();
 	}
 }

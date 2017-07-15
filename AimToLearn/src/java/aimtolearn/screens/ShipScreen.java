@@ -6,9 +6,8 @@ import aimtolearn.sprites.Ship;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static aimtolearn.Constants.*;
@@ -24,7 +23,7 @@ public class ShipScreen extends BaseScreen {
 
 	private long lastShotTime = 0, shotChargeStart = 0;
 
-	private Map<Integer, Boolean> activeKeys = new HashMap<>();
+	private List<Integer> activeKeys = new ArrayList<>();
 
 	private final int[] RIGHT_KEYS = {VK_RIGHT, VK_D};
 	private final int[] LEFT_KEYS = {VK_LEFT, VK_A};
@@ -42,9 +41,10 @@ public class ShipScreen extends BaseScreen {
 
 	@Override
 	protected void onKeyDown(KeyEvent e) {
-		activeKeys.put(e.getKeyCode(), true);
+		int key = e.getKeyCode();
+		activeKeys.add(key);
 
-		if (e.getKeyCode() == VK_ESCAPE) {
+		if (key == VK_ESCAPE) {
 			Sound.MENU_SELECT.play();
 			game.PAUSE_MENU.setResumeScreen(this);
 			game.setDisplayPanel(game.PAUSE_MENU);
@@ -55,7 +55,7 @@ public class ShipScreen extends BaseScreen {
 
 	@Override
 	protected void onKeyUp(KeyEvent e) {
-		activeKeys.put(e.getKeyCode(), false);
+		activeKeys.remove(e.getKeyCode());
 	}
 
 	protected void resetKeys() {
@@ -63,10 +63,8 @@ public class ShipScreen extends BaseScreen {
 	}
 
 	private boolean isKeyDown(int... keyNumbers) {
-		for (int key : keyNumbers) {
-			if (activeKeys.getOrDefault(key, false))
-				return true;
-		}
+		for (int key : keyNumbers)
+			if (activeKeys.contains(key)) return true;
 		return false;
 	}
 
@@ -138,7 +136,4 @@ public class ShipScreen extends BaseScreen {
 		shots.add(new Rectangle(new Point(x, y), SHOT_SIZE));
 	}
 
-	public Ship getShip() {
-		return ship;
-	}
 }

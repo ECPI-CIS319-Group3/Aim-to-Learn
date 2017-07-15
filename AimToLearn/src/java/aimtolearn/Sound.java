@@ -33,8 +33,9 @@ public enum Sound {
 	}
 
 	Sound(String fileName, boolean isMusic) {
-		clip = Constants.getSound(fileName);
-		gainControl = ((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN));
+		this.clip = Constants.getSound(fileName);
+		this.gainControl = ((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN));
+		this.isMusic = isMusic;
 	//	clip.addLineListener(CloseListener.self);
 	}
 

@@ -37,7 +37,6 @@ public class AnimatedSprite {
 
 	private Image[] frames;
 	private final Point offset;
-	private final boolean loop;
 	private final int frameCount, frameTime, totalDuration;
 
 	private boolean running;
@@ -66,7 +65,6 @@ public class AnimatedSprite {
 		this.frameCount = frameCount;
 		this.frameTime = frameTime;
 		this.totalDuration = totalDuration;
-		this.loop = loop;
 
 	}
 

@@ -26,7 +26,7 @@ public abstract class BaseShootingMenu extends ShipScreen {
 	private static final Rectangle PROMPT_BOUNDS = new Rectangle(0, 0, Constants.MAIN_WIDTH, PROMPT_HEIGHT);
 	private static final float FONT_SIZE = 40;
 
-	public BaseShootingMenu(Game game, String prompt, String... optionStrings) {
+	protected BaseShootingMenu(Game game, String prompt, String... optionStrings) {
 		super(game);
 		this.prompt = prompt;
 		this.optionStrings = optionStrings;

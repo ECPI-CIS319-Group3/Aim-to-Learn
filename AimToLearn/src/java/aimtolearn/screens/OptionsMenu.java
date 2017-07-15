@@ -48,14 +48,14 @@ public class OptionsMenu extends BaseMenu {
 	@Override
 	protected void onKeyDown(KeyEvent e) {
 
-		if (LEFT_KEYS.contains(e.getKeyCode())) {
-			boolean doBeep = onDirection(-1);
-			if (doBeep) Sound.MENU_MOVE.play();
-		}
-		else if (RIGHT_KEYS.contains(e.getKeyCode())) {
-			boolean doBeep = onDirection(1);
-			if (doBeep) Sound.MENU_MOVE.play();
-		}
+		boolean doBeep = false;
+
+		if (LEFT_KEYS.contains(e.getKeyCode()))
+			doBeep = onDirection(-1);
+		else if (RIGHT_KEYS.contains(e.getKeyCode()))
+			doBeep = onDirection(1);
+
+		if (doBeep) Sound.MENU_MOVE.play();
 
 		super.onKeyDown(e);
 	}

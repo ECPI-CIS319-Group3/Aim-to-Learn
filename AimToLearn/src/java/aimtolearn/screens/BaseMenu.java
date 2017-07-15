@@ -103,19 +103,20 @@ public abstract class BaseMenu extends BaseScreen {
 	@Override
 	protected void onKeyDown(KeyEvent e) {
 
-		if (UP_KEYS.contains(e.getKeyCode())) {
+		int key = e.getKeyCode();
+		if (UP_KEYS.contains(key)) {
 			selectedIndex = selectedIndex == 0 ? choices.length - 1 : selectedIndex - 1;
 			Sound.MENU_MOVE.play();
 		}
-		else if (DOWN_KEYS.contains(e.getKeyCode())) {
+		else if (DOWN_KEYS.contains(key)) {
 			selectedIndex = selectedIndex == choices.length - 1 ? 0 : selectedIndex + 1;
 			Sound.MENU_MOVE.play();
 		}
-		else if (SELECT_KEYS.contains(e.getKeyCode()) && !disabledIndexes.contains(selectedIndex)) {
+		else if (SELECT_KEYS.contains(key) && !disabledIndexes.contains(selectedIndex)) {
 			boolean doBeep = onSelection(selectedIndex);
 			if (doBeep) Sound.MENU_SELECT.play();
 		}
-		else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+		else if (key == KeyEvent.VK_ESCAPE) {
 			onEscape();
 			Sound.MENU_SELECT.play();
 		}
@@ -127,11 +128,11 @@ public abstract class BaseMenu extends BaseScreen {
 		return new Rectangle(0, topHeight + extraSpacing + index * choiceHeight, MAIN_WIDTH, choiceHeight);
 	}
 
-	public Point[] getChoicePoints() {
+	protected Point[] getChoicePoints() {
 		return choicePoints;
 	}
 
-	public int getSelectedIndex() {
+	protected int getSelectedIndex() {
 		return selectedIndex;
 	}
 
@@ -175,5 +176,5 @@ public abstract class BaseMenu extends BaseScreen {
 	@Override
 	public void tick() {}
 
-	public abstract boolean onSelection(int index);
+	protected abstract boolean onSelection(int index);
 }

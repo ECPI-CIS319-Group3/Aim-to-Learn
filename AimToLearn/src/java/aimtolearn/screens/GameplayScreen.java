@@ -35,7 +35,6 @@ public class GameplayScreen extends ShipScreen {
 	private static final int BOX_WIDTH = 100;
 	private static final int ANSWER_SPEED = 2;
 	private static final int ANSWER_SPAWN_RATE = 1000;
-	private static final int MAX_SCORE = 10;
 	private static final int PASSING_SCORE = 7;
 
 	private static final AnimatedSprite ANSWER_HIT_OVERLAY_ANIM = new AnimatedSprite("answer_hit_explosion", 8, 400);

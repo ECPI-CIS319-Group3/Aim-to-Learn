@@ -78,24 +78,15 @@ public class Game extends JFrame {
 	}
 
 	public void openOptions(BaseScreen returnScreen) {
-
 		setDisplayPanel(OPTIONS_MENU);
 		OPTIONS_MENU.setReturnScreen(returnScreen);
 		OPTIONS_MENU.init();
 		OPTIONS_MENU.reset();
+	}
 
-	/*	int option = JOptionPane.showOptionDialog(this,
-			"Choose resolution", "Resolution",
-			JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-			HEIGHTS, HEIGHTS[0]);
-
-		if (option != JOptionPane.CLOSED_OPTION)
-			setRes(HEIGHTS[option]);
-
-		String volume = JOptionPane.showInputDialog(this, String.format("Input Volume (current: %d%%)", Sound.getVolume()),
-			"Volume", JOptionPane.QUESTION_MESSAGE);
-		Sound.setVolume(Integer.parseInt(volume));
-		*/
+	public void confirmQuit(BaseScreen returnScreen) {
+		CONFIRM_QUIT_SCREEN.setReturnScreen(returnScreen);
+		setDisplayPanel(CONFIRM_QUIT_SCREEN);
 	}
 
 	public void setResolution(int h) {
@@ -103,11 +94,6 @@ public class Game extends JFrame {
 		this.desiredWidth = (int) (desiredHeight * AR);
 		this.setSize(desiredWidth, desiredHeight);
 		this.setLocationRelativeTo(null);
-	}
-
-	public void confirmQuit(BaseScreen returnScreen) {
-		CONFIRM_QUIT_SCREEN.setReturnScreen(returnScreen);
-		setDisplayPanel(CONFIRM_QUIT_SCREEN);
 	}
 
 	public void onKeyDown(KeyEvent e) {
@@ -126,9 +112,5 @@ public class Game extends JFrame {
 	public BaseScreen getActivePanel() {
 		return activePanel;
 	}
-
-//	public AnimationOverlay getOverlay() {
-//		return animationOverlay;
-//	}
 
 }
