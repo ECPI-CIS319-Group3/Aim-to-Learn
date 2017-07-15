@@ -24,17 +24,14 @@ public class OptionsMenu extends BaseMenu {
 		new String[]{"Master Volume", "Sound FX Volume", "Music Volume", "Resolution", "Move Screen"};
 	private static final int MARGIN = 50, LEFT_WIDTH = 600, BAR_RIGHT_MARGIN = 50, BAR_NUM_WIDTH = 100,
 		BAR_LENGTH = 600, BAR_HEIGHT = 30, BAR_THICKNESS = 10, RES_PADDING = 20;
-
 	private static final List<Integer> LEFT_KEYS = Arrays.asList(KeyEvent.VK_LEFT, KeyEvent.VK_A);
 	private static final List<Integer> RIGHT_KEYS = Arrays.asList(KeyEvent.VK_RIGHT, KeyEvent.VK_D);
-
 	private static final String[] RESOLUTIONS = {"1280x720", "1600x900", "1920x1080"};
-
 	private static final Color VOLUME_WARN = new Color(68, 0, 0);
 
 	public OptionsMenu(Game game) {
 		super(game, OPTIONS, "Options");
-		setChoiceHeight(150);
+		setChoiceHeight(100);
 	}
 
 	public void init() {
@@ -171,6 +168,10 @@ public class OptionsMenu extends BaseMenu {
 		else if (index == 3) { // if resolution option was selected
 			game.setResolution(HEIGHTS[visibleResIndex]);
 			init();
+		}
+		else if (index == 4) { // move window button
+			game.setDisplayPanel(game.MOVE_SCREEN);
+			game.MOVE_SCREEN.setReturnScreen(this);
 		}
 		return true;
 	}

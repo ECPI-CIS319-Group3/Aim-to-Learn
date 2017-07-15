@@ -2,15 +2,11 @@ package aimtolearn;
 
 import aimtolearn.screens.*;
 
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import static aimtolearn.Constants.*;
 
@@ -27,6 +23,7 @@ public class Game extends JFrame {
 	public final SubjectShootingMenu SUBJECT_SCREEN;
 	public final ConfirmReturnMenu CONFIRM_RETURN_MENU;
 	public final GameOverScreen GAME_OVER_SCREEN;
+	public final MoveScreen MOVE_SCREEN;
 
 	private final ConfirmQuitMenu CONFIRM_QUIT_SCREEN;
 	private final HowToPlayScreen HOW_TO_SCREEN;
@@ -34,7 +31,6 @@ public class Game extends JFrame {
 
 	private int desiredHeight;
 	private int desiredWidth;
-	private boolean windowMovementEnabled = false;
 
 	public Game() {
 		this.MAIN_MENU = new MainMenu(this);
@@ -46,6 +42,7 @@ public class Game extends JFrame {
 
 		this.HOW_TO_SCREEN = new HowToPlayScreen(this);
 		this.OPTIONS_MENU = new OptionsMenu(this);
+		this.MOVE_SCREEN = new MoveScreen(this);
 
 		this.CONFIRM_RETURN_MENU = new ConfirmReturnMenu(this);
 		this.CONFIRM_QUIT_SCREEN = new ConfirmQuitMenu(this);
@@ -54,10 +51,6 @@ public class Game extends JFrame {
 
 		SplashScreen splashScreen = new SplashScreen(this);
 		setDisplayPanel(splashScreen);
-
-		DragGlassPane glass = new DragGlassPane();
-		this.setGlassPane(glass);
-		glass.setVisible(true);
 
 		Sound.init();
 
@@ -144,40 +137,4 @@ public class Game extends JFrame {
 //		return animationOverlay;
 //	}
 
-	private class DragGlassPane extends JComponent {
-
-		private Point startClick;
-
-		DragGlassPane() {
-
-			this.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					startClick = e.getPoint();
-					getComponentAt(startClick);
-				}
-			});
-
-			this.addMouseMotionListener(new MouseAdapter() {
-				public void mouseDragged(MouseEvent e) {
-
-					if (!windowMovementEnabled || startClick == null) return;
-
-					// get location of Window
-					int thisX = Game.this.getLocation().x;
-					int thisY = Game.this.getLocation().y;
-
-					// Determine how much the mouse moved since the initial click
-					int xMoved = (thisX + e.getX()) - (thisX + startClick.x);
-					int yMoved = (thisY + e.getY()) - (thisY + startClick.y);
-
-					// Move window to this position
-					int X = thisX + xMoved;
-					int Y = thisY + yMoved;
-					Game.this.setLocation(X, Y);
-				}
-			});
-
-		}
-
-	}
 }
