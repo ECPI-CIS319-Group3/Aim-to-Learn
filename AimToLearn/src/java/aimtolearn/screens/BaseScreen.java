@@ -66,6 +66,7 @@ public abstract class BaseScreen extends JPanel {
 		g.fillRect(0, 0, MAIN_WIDTH, MAIN_HEIGHT);
 		g.setColor(WHITE);
 		g.setFont(PIXEL_FONT);
+		g.setStroke(MAIN_STROKE);
 
 		updateScreen(g);
 

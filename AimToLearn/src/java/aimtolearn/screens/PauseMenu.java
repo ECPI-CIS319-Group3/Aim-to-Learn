@@ -40,7 +40,7 @@ public class PauseMenu extends BaseMenu {
 			resume.setActive(true);
 		}
 		else if (index == 1) {
-			game.optionsTemp();
+			game.openOptions(this);
 		}
 		else if (index == 2) {
 			game.howToPlay(this);

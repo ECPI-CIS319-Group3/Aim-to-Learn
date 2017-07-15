@@ -2,9 +2,7 @@ package aimtolearn;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
@@ -22,6 +20,8 @@ public class Constants {
 	/** Y-coordinate for bottom of the ship */
 	public static final int SHIP_Y = 850;
 
+	public static final Stroke MAIN_STROKE = new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+	public static final int[] HEIGHTS = {720, 900, 1080};
 	public static final int MULTILINE_SPACING = 20;
 	public static final float MAIN_FONT = 24, SMALL_FONT = 16, LARGE_FONT = 50;
 	private static final String FONT_FILE = "PressStart2P-Regular.ttf";

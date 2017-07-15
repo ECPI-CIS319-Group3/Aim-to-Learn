@@ -12,7 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import static aimtolearn.Constants.AR;
+import static aimtolearn.Constants.*;
 
 public class Game extends JFrame {
 
@@ -35,8 +35,6 @@ public class Game extends JFrame {
 	private int desiredHeight;
 	private int desiredWidth;
 	private boolean windowMovementEnabled = false;
-
-	private static final Integer[] HEIGHTS = {720, 900, 1080};
 
 	public Game() {
 		this.MAIN_MENU = new MainMenu(this);
@@ -71,7 +69,7 @@ public class Game extends JFrame {
 		loop.start();
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		setRes(screen.width < HEIGHTS[1] ? HEIGHTS[0] : HEIGHTS[1]);
+		setResolution(screen.width < HEIGHTS[1] ? HEIGHTS[0] : HEIGHTS[1]);
 
 		this.setTitle("Aim to Learn");
 		this.setResizable(false);
@@ -92,10 +90,13 @@ public class Game extends JFrame {
 		HOW_TO_SCREEN.setReturnScreen(returnScreen);
 	}
 
-	public void optionsTemp() {
+	public void openOptions(BaseScreen returnScreen) {
 
 		setDisplayPanel(OPTIONS_MENU);
-		OPTIONS_MENU.setReturnScreen(MAIN_MENU);
+		OPTIONS_MENU.setReturnScreen(returnScreen);
+		OPTIONS_MENU.init();
+		OPTIONS_MENU.reset();
+
 	/*	int option = JOptionPane.showOptionDialog(this,
 			"Choose resolution", "Resolution",
 			JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
@@ -110,7 +111,7 @@ public class Game extends JFrame {
 		*/
 	}
 
-	private void setRes(int h) {
+	public void setResolution(int h) {
 		this.desiredHeight = h;
 		this.desiredWidth = (int) (desiredHeight * AR);
 		this.setSize(desiredWidth, desiredHeight);
@@ -124,6 +125,7 @@ public class Game extends JFrame {
 
 	public void onKeyDown(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_F10) System.exit(0);
+		else if (e.getKeyCode() == KeyEvent.VK_F9) setDisplayPanel(GAME_OVER_SCREEN);
 	}
 
 	public int getDesiredHeight() {

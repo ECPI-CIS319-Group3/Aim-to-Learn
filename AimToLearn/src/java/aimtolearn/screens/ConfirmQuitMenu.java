@@ -9,6 +9,8 @@ public class ConfirmQuitMenu extends BaseMenu {
 	public ConfirmQuitMenu(Game game) {
 		super(game, new String[]{"Yes", "No"}, "Are you sure you\nwant to quit?");
 		setTopHeight(400);
+		setTitleFontSize(40);
+		setOptionFontSize(30);
 	}
 
 	public void setReturnScreen(BaseScreen returnScreen) {

@@ -25,7 +25,7 @@ public abstract class BaseMenu extends BaseScreen {
 	private Font titleFont, optionFont;
 
 	private Rectangle titleBounds;
-	private int topHeight, choiceHeight;
+	private int topHeight, choiceHeight, extraSpacing;
 
 	private Rectangle[] choiceBounds;
 	private Point[] choicePoints;
@@ -55,6 +55,7 @@ public abstract class BaseMenu extends BaseScreen {
 		setChoiceHeight(75);
 		setTopHeight(250);
 		setTitleFontSize(64);
+		setExtraSpacing(0);
 		setOptionFontSize((int) MAIN_FONT);
 	}
 
@@ -78,6 +79,20 @@ public abstract class BaseMenu extends BaseScreen {
 	protected void setTopHeight(int topHeight) {
 		this.topHeight = topHeight;
 		this.titleBounds = new Rectangle(0, 0, MAIN_WIDTH, topHeight);
+		updateBounds();
+	}
+
+	protected void setChoiceHeight(int choiceHeight) {
+		this.choiceHeight = choiceHeight;
+		updateBounds();
+	}
+
+	protected void setExtraSpacing(int extraSpacing) {
+		this.extraSpacing = extraSpacing;
+		updateBounds();
+	}
+
+	private void updateBounds() {
 		this.choiceBounds = new Rectangle[choices.length];
 		this.choicePoints = new Point[choices.length];
 
@@ -109,11 +124,7 @@ public abstract class BaseMenu extends BaseScreen {
 	}
 
 	protected Rectangle makeChoiceBounds(int index) {
-		return new Rectangle(0, topHeight + index * choiceHeight, MAIN_WIDTH, choiceHeight);
-	}
-
-	protected void setChoiceHeight(int choiceHeight) {
-		this.choiceHeight = choiceHeight;
+		return new Rectangle(0, topHeight + extraSpacing + index * choiceHeight, MAIN_WIDTH, choiceHeight);
 	}
 
 	public Point[] getChoicePoints() {

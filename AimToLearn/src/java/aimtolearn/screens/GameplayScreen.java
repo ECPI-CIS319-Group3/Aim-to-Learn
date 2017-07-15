@@ -172,9 +172,12 @@ public class GameplayScreen extends MainScreen {
 		Sound.ANSWER_EXPLOSION.play();
 
 		if (currentQuestion.isCorrect(answer.getText())) {
+
 			answers.clear();
 			shots.clear();
 			this.score++;
+			this.totalScore++;
+
 			if (questionSet.outOfQuestions()) {
 
 				boolean passed = score >= PASSING_SCORE;
@@ -205,19 +208,20 @@ public class GameplayScreen extends MainScreen {
 	}
 
 	private void roundComplete() {
-
-		this.totalScore += score;
-
 		game.setDisplayPanel(game.CONTINUE_SCREEN);
 		game.CONTINUE_SCREEN.init();
-
 	}
 
 	private void decrementScore() {
 		if (score > 0) this.score--;
+		if (totalScore > 0) this.totalScore--;
 	}
 
 	public Question getQuestion() {
 		return currentQuestion;
+	}
+
+	public int getTotalScore() {
+		return totalScore;
 	}
 }
