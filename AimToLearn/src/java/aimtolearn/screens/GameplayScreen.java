@@ -131,7 +131,7 @@ public class GameplayScreen extends ShipScreen {
 				for (Rectangle shot : shots) {
 					if (ansBounds.intersects(shot)) {
 						shots.remove(shot);
-						onAnswerHit(answer);
+						onAnswerHit(answer, shot);
 						remove = true;
 						break;
 					}
@@ -161,11 +161,11 @@ public class GameplayScreen extends ShipScreen {
 		repaint();
 	}
 
-	private void onAnswerHit(AnswerSprite answer) {
+	private void onAnswerHit(AnswerSprite answer, Rectangle shotBounds) {
 
 		Rectangle bounds = answer.getBounds();
 		int explosionY = bounds.y + bounds.height;
-		answerExplosionLoc = new Point(bounds.x, explosionY);
+		answerExplosionLoc = new Point(shotBounds.x + shotBounds.width/2, explosionY);
 		ANSWER_HIT_OVERLAY_ANIM.start();
 
 		Sound.ANSWER_EXPLOSION.play();
