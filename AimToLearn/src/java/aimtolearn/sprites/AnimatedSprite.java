@@ -6,13 +6,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class AnimatedSprite {
 
@@ -20,8 +16,10 @@ public class AnimatedSprite {
 
 	static {
 		try {
-			List<String> lines = Files.readAllLines(Paths.get(Constants.class.getResource("offsets.txt").toURI()));
-			for (String line : lines) {
+		//	List<String> lines = Files.readAllLines(Paths.get(Constants.class.getResource("offsets.txt").toURI()));
+			Scanner linesScanner = new Scanner(Constants.class.getResourceAsStream("offsets.txt"));
+			while (linesScanner.hasNext()) {
+				String line = linesScanner.nextLine();
 				String[] parts = line.split(" ");
 				String name = parts[0];
 				int x = Integer.parseInt(parts[1]);
@@ -29,7 +27,7 @@ public class AnimatedSprite {
 				OFFSETS.put(name, new Point(x, y));
 			}
 		}
-		catch (IOException | URISyntaxException | NumberFormatException e) {
+		catch (/*IOException | URISyntaxException | FileSystemNotFoundException |*/ NumberFormatException e) {
 			System.err.println("Failed to load or parse animation offset file. Quitting game.");
 			System.exit(15);
 		}
@@ -45,15 +43,10 @@ public class AnimatedSprite {
 
 	// create a one-time animation
 	public AnimatedSprite(String imgName, int frameCount, int totalDuration) {
-		this(imgName, frameCount, totalDuration / frameCount, totalDuration, false);
+		this(imgName, frameCount, totalDuration / frameCount, totalDuration);
 	}
 
-	// creates a looping animation
 	public AnimatedSprite(String imgName, int frameCount, int frameTime, int totalDuration) {
-		this(imgName, frameCount, frameTime, totalDuration, true);
-	}
-
-	private AnimatedSprite(String imgName, int frameCount, int frameTime, int totalDuration, boolean loop) {
 
 		BufferedImage spriteSheet = Constants.getImage(imgName + ".png");
 		int frameHeight = spriteSheet.getHeight(null);

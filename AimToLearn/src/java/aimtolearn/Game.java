@@ -51,7 +51,7 @@ public class Game extends JFrame {
 		setDisplayPanel(splashScreen);
 
 		Sound.init();
-		Sound.BG_MUSIC.loop();
+		Sound.BG_MUSIC_V2.loop();
 
 		GameLoop loop = new GameLoop(this);
 		loop.start();
