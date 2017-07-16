@@ -2,6 +2,7 @@ package aimtolearn.screens;
 
 import aimtolearn.Constants;
 import aimtolearn.Game;
+import aimtolearn.Sound;
 import aimtolearn.Utils;
 
 import javax.swing.SwingConstants;
@@ -111,6 +112,7 @@ public abstract class BaseShootingMenu extends ShipScreen {
 					if (!disabledIndexes.contains(i)) {
 						this.initiated = false;
 						setActive(false);
+						Sound.ANSWER_EXPLOSION.play();
 						onSelection(i);
 					}
 				}
