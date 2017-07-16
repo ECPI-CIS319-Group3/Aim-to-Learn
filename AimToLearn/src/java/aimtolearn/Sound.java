@@ -17,7 +17,7 @@ public enum Sound {
 	BG_MUSIC_V1("bg_music_v1.wav", true),
 	BG_MUSIC_V2("bg_music_v2.wav", true);
 
-	private static int masterVolume = 100;
+	private static double masterVolume = 1.0;
 	private static int fxVolume = 100;
 	private static int musicVolume = 100;
 
@@ -54,15 +54,14 @@ public enum Sound {
 	}
 
 	public static void setMasterVolume(int percentVolume) {
-		masterVolume = clampVolume(percentVolume);
-		float gain = toGain(masterVolume);
-		for (Sound sound : values())
-			sound.gainControl.setValue(gain);
+		masterVolume = clampVolume(percentVolume) / 100.0;
+		setFxVolume(fxVolume);
+		setMusicVolume(musicVolume);
 	}
 
 	public static void setFxVolume(int percentVolume) {
 		fxVolume = clampVolume(percentVolume);
-		float gain = toGain(fxVolume);
+		float gain = toGain((int) (fxVolume * masterVolume));
 		for (Sound sound : values()) {
 			if (!sound.isMusic)
 				sound.gainControl.setValue(gain);
@@ -71,7 +70,7 @@ public enum Sound {
 
 	public static void setMusicVolume(int percentVolume) {
 		musicVolume = clampVolume(percentVolume);
-		float gain = toGain(musicVolume);
+		float gain = toGain((int) (musicVolume * masterVolume));
 		for (Sound sound : values()) {
 			if (sound.isMusic)
 				sound.gainControl.setValue(gain);
@@ -82,7 +81,7 @@ public enum Sound {
 		return percentVol < 0 ? 0 : percentVol > 150 ? 150 : percentVol;
 	}
 
-	public static int getMasterVolume() { return masterVolume;	}
+	public static int getMasterVolume() { return (int) (100 * masterVolume); }
 	public static int getFxVolume() { return fxVolume; }
 	public static int getMusicVolume() { return musicVolume; }
 
