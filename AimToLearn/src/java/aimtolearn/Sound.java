@@ -15,11 +15,12 @@ public enum Sound {
 	ANSWER_EXPLOSION("answer_hit_explosion.wav"),
 	SHIP_HIT("ship_hit_explosion.wav"),
 	SHIELD_HIT("answer_hit_shield.wav"),
-	MAIN_MENU_MUSIC("main_menu_music.wav", true),
-	MATH_MUSIC("math_music.wav", true),
-	SCIENCE_MUSIC("science_music.wav", true),
-	HISTORY_MUSIC("history_music.wav", true),
-	TUTORIAL_MUSIC("tutorial_music.wav", true);
+//	MAIN_MENU_MUSIC("main_menu_music.wav", true),
+//	MATH_MUSIC("math_music.wav", true),
+//	SCIENCE_MUSIC("science_music.wav", true),
+	BG_MUSIC("bg_music.wav", true),
+//	TUTORIAL_MUSIC("tutorial_music.wav", true);
+	;
 
 	private static double masterVolume = 1.0;
 	private static int fxVolume = 100;

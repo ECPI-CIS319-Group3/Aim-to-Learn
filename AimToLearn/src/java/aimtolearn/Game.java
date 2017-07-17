@@ -60,6 +60,8 @@ public class Game extends JFrame {
 		// preload sounds
 		Sound.init();
 
+		Sound.BG_MUSIC.loop();
+
 		// splash screen is only shown once, so no need to have a field for it
 		SplashScreen splashScreen = new SplashScreen(this);
 		setDisplayPanel(splashScreen);
@@ -91,7 +93,9 @@ public class Game extends JFrame {
 		activePanel.requestFocusInWindow();
 
 		// play screen and subject-specific music
+		// TODO we need smaller music files for this to be possible
 
+		/*
 		if (panel instanceof SplashScreen || panel instanceof MainMenu) Sound.MAIN_MENU_MUSIC.loop();
 		else if (panel instanceof TutorialScreen) Sound.TUTORIAL_MUSIC.loop();
 		else if (panel instanceof GameplayScreen) {
@@ -106,10 +110,11 @@ public class Game extends JFrame {
 					Sound.SCIENCE_MUSIC.loop();
 					break;
 				case HISTORY:
-					Sound.HISTORY_MUSIC.loop();
+					Sound.BG_MUSIC.loop();
 					break;
 			}
 		}
+		*/
 	}
 
 	/**
