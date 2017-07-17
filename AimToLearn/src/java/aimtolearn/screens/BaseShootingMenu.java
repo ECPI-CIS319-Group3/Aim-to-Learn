@@ -37,7 +37,7 @@ public abstract class BaseShootingMenu extends ShipScreen {
 	}
 
 	protected void setDisabledIndexes(Integer... disabled) {
-		this.disabledIndexes = Arrays.asList(disabled);
+		this.disabledIndexes.addAll(Arrays.asList(disabled));
 	}
 
 	protected void setPromptHeight(int promptHeight) {
@@ -47,6 +47,7 @@ public abstract class BaseShootingMenu extends ShipScreen {
 
 	public void init() {
 		resetKeys();
+		disabledIndexes.clear();
 		setActive(true);
 	}
 

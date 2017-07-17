@@ -12,9 +12,8 @@ public class PauseMenu extends BaseMenu {
 	private static final Image PAUSED_LOGO = Constants.getImage("pause-logo.png");
 
 	public PauseMenu(Game game) {
-		super(game, new String[]{"Resume", "Options", "How to play", "Return to menu"}, PAUSED_LOGO);
+		super(game, new String[]{"Resume", "Options", "Controls", "Return to menu"}, PAUSED_LOGO);
 		this.resumeScreen = null;
-	//	setDisabledIndexes(1);
 	}
 
 	@Override

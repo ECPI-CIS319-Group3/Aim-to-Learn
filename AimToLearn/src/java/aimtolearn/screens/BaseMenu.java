@@ -18,6 +18,7 @@ public abstract class BaseMenu extends BaseScreen {
 	private String[] choices;
 
 	private int selectedIndex;
+	private boolean movementEnabled;
 
 	private String titleText;
 	private Image titleImage;
@@ -52,6 +53,7 @@ public abstract class BaseMenu extends BaseScreen {
 		this.titleText = titleText;
 		this.titleImage = titleImage;
 		this.disabledIndexes = new ArrayList<>();
+		this.movementEnabled = true;
 		setChoiceHeight(75);
 		setTopHeight(250);
 		setTitleFontSize(64);
@@ -60,12 +62,17 @@ public abstract class BaseMenu extends BaseScreen {
 	}
 
 	public void reset() {
-		this.selectedIndex = 0;
+		this.selectedIndex = movementEnabled ? 0 : -1;
 		repaint();
 	}
 
 	protected void setDisabledIndexes(Integer... disabled) {
 		this.disabledIndexes = Arrays.asList(disabled);
+	}
+
+	public void setMovementEnabled(boolean movementEnabled) {
+		this.movementEnabled = movementEnabled;
+		reset();
 	}
 
 	protected void setTitleFontSize(int size) {
@@ -102,6 +109,8 @@ public abstract class BaseMenu extends BaseScreen {
 
 	@Override
 	protected void onKeyDown(KeyEvent e) {
+
+		if (!movementEnabled) return;
 
 		int key = e.getKeyCode();
 		if (UP_KEYS.contains(key)) {

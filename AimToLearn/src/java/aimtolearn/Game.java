@@ -20,6 +20,7 @@ public class Game extends JFrame {
 
 	// the public screens used by this and other classes
 	public final MainMenu MAIN_MENU;
+	public final TutorialScreen TUTORIAL_SCREEN;
 	public final PauseMenu PAUSE_MENU;
 	public final GameplayScreen GAMEPLAY_SCREEN;
 	public final ContinueShootingMenu CONTINUE_SCREEN;
@@ -46,6 +47,7 @@ public class Game extends JFrame {
 		this.CONTINUE_SCREEN = new ContinueShootingMenu(this);
 		this.SUBJECT_SCREEN = new SubjectShootingMenu(this);
 
+		this.TUTORIAL_SCREEN = new TutorialScreen(this);
 		this.HOW_TO_SCREEN = new HowToPlayScreen(this);
 		this.OPTIONS_MENU = new OptionsMenu(this);
 		this.MOVE_SCREEN = new MoveScreen(this);
@@ -55,13 +57,12 @@ public class Game extends JFrame {
 
 		this.GAME_OVER_SCREEN = new GameOverScreen(this);
 
+		// preload sounds
+		Sound.init();
+
 		// splash screen is only shown once, so no need to have a field for it
 		SplashScreen splashScreen = new SplashScreen(this);
 		setDisplayPanel(splashScreen);
-
-		// preload sounds and start playing bg music
-		Sound.init();
-		Sound.BG_MUSIC_V2.loop();
 
 		// start the update thread
 		GameLoop loop = new GameLoop(this);
@@ -88,11 +89,31 @@ public class Game extends JFrame {
 		this.setContentPane(activePanel);
 		this.revalidate(); // this is needed when changing components on-the-fly
 		activePanel.requestFocusInWindow();
+
+		// play screen and subject-specific music
+
+		if (panel instanceof SplashScreen || panel instanceof MainMenu) Sound.MAIN_MENU_MUSIC.loop();
+		else if (panel instanceof TutorialScreen) Sound.TUTORIAL_MUSIC.loop();
+		else if (panel instanceof GameplayScreen) {
+
+			Question.Subject sub = GAMEPLAY_SCREEN.getQuestion().getSubject();
+
+			switch (sub) {
+				case MATH:
+					Sound.MATH_MUSIC.loop();
+					break;
+				case SCIENCE:
+					Sound.SCIENCE_MUSIC.loop();
+					break;
+				case HISTORY:
+					Sound.HISTORY_MUSIC.loop();
+					break;
+			}
+		}
 	}
 
 	/**
-	 * Show the "how to play" screen given a screen to return to after closing the screen
-	 * @param returnScreen the BaseScreen to return to
+	 * Show the "how to play" tutorial. Only called from the main menu
 	 */
 	public void howToPlay(BaseScreen returnScreen) {
 		setDisplayPanel(HOW_TO_SCREEN);

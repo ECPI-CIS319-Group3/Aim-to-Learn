@@ -18,8 +18,8 @@ public class SubjectShootingMenu extends BaseShootingMenu {
 		Question.Subject[] subs = Question.Subject.values();
 
 		if (index < subs.length) {
-			game.setDisplayPanel(game.GAMEPLAY_SCREEN);
 			game.GAMEPLAY_SCREEN.start(subs[index], Question.Difficulty.EASY);
+			game.setDisplayPanel(game.GAMEPLAY_SCREEN);
 		}
 		else {
 			throw new AssertionError("Not possible");

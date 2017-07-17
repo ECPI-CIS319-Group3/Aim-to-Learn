@@ -261,7 +261,7 @@
 				"Benjamin Franklin",
 				"Abraham Lincoln"
 			],
-			"What was the name of Columbus’ ship?": [
+			"What was the name of Columbus' ship?": [
 				"Mayflower",
 				"Daisy",
 				"Tulip",
@@ -315,7 +315,7 @@
 				"Globe",
 				"Map",
 				"Compass",
-				"Directions"
+				"Direction"
 			],
 			"To bring things into your country from\nanother country is called __.": [
 				"Import",
@@ -347,7 +347,7 @@
 				"Geography",
 				"Crop"
 			],
-			"How many stripes are on the United States' flag?": [
+			"How many stripes are on the\nUnited States' flag?": [
 				13,
 				50,
 				12,

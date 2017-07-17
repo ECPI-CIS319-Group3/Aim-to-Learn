@@ -1,49 +1,35 @@
 package aimtolearn.screens;
 
-import aimtolearn.Constants;
 import aimtolearn.Game;
 import aimtolearn.Sound;
 
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.KeyEvent;
 
-public class HowToPlayScreen extends BaseScreen {
-
-	private int imgX, imgY;
-	private Image howToPlayImg;
-	private BaseScreen returnScreen;
-
-	private static final Image HOW_TO_PLAY = Constants.getImage("how_to_play.png");
+public class HowToPlayScreen extends ReturnableMenu {
 
 	public HowToPlayScreen(Game game) {
-		super(game);
+		super(game, new String[]{
+			"Move left       ← or A",
+			"Move right      → or D",
+			"Shoot           ↑ or W",
+			"Pause           Escape",
+			"Quit             F10  "
+		}, "Controls");
 
-		Image i = HOW_TO_PLAY;
-		this.imgX = (Constants.MAIN_WIDTH - i.getWidth(null)) / 2;
-		this.imgY = (Constants.MAIN_HEIGHT - i.getHeight(null)) / 2;
-
-		howToPlayImg = i; // TODO possibly rescale this image
-	}
-
-	public void setReturnScreen(BaseScreen returnScreen) {
-		this.returnScreen = returnScreen;
+		setMovementEnabled(false);
 	}
 
 	@Override
 	protected void onKeyDown(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ESCAPE && returnScreen != null) {
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			Sound.MENU_SELECT.play();
-			game.setDisplayPanel(returnScreen);
-			returnScreen.setActive(true);
+			returnToScreen();
+		}
+		else {
+			super.onKeyDown(e);
 		}
 	}
 
 	@Override
-	protected void updateScreen(Graphics g) {
-		g.drawImage(howToPlayImg, imgX, imgY, this);
-	}
-
-	@Override
-	public void tick() {}
+	protected boolean onSelection(int i) { return false; }
 }

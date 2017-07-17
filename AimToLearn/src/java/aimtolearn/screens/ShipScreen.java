@@ -6,6 +6,7 @@ import aimtolearn.sprites.Ship;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,18 +18,20 @@ import static java.awt.event.KeyEvent.*;
 /**
  * The main screen containing a controllable ship at the bottom and nothing else.
  */
-public class ShipScreen extends BaseScreen {
+public abstract class ShipScreen extends BaseScreen {
 
 	protected final Ship ship;
 	protected final List<Rectangle> shots = new CopyOnWriteArrayList<>();
 
 	private long lastShotTime = 0, shotChargeStart = 0;
 
+	private boolean shootingEnabled;
+
 	private Map<Integer, Boolean> activeKeys = new HashMap<>();
 
-	private final int[] RIGHT_KEYS = {VK_RIGHT, VK_D};
-	private final int[] LEFT_KEYS = {VK_LEFT, VK_A};
-	private final int[] FIRE_KEYS = {VK_UP, VK_W};
+	protected final List<Integer> RIGHT_KEYS = Arrays.asList(VK_RIGHT, VK_D);
+	protected final List<Integer> LEFT_KEYS = Arrays.asList(VK_LEFT, VK_A);
+	protected final List<Integer> FIRE_KEYS = Arrays.asList(VK_UP, VK_W);
 
 	private static final Dimension SHOT_SIZE = new Dimension(10, 40);
 
@@ -37,6 +40,7 @@ public class ShipScreen extends BaseScreen {
 
 	protected ShipScreen(Game game) {
 		super(game);
+		this.shootingEnabled = true;
 		this.ship = new Ship(MAIN_WIDTH / 2);
 	}
 
@@ -63,7 +67,7 @@ public class ShipScreen extends BaseScreen {
 		activeKeys.clear();
 	}
 
-	private boolean isKeyDown(int... keyNumbers) {
+	private boolean isKeyDown(List<Integer> keyNumbers) {
 		for (int key : keyNumbers)
 			if (activeKeys.getOrDefault(key, false)) return true;
 		return false;
@@ -79,6 +83,7 @@ public class ShipScreen extends BaseScreen {
 	/**
 	 * Called every game tick to update positions and such
 	 */
+	@Override
 	public void tick() {
 		ship.tick();
 
@@ -105,8 +110,8 @@ public class ShipScreen extends BaseScreen {
 			ship.setX(shipX);
 		}
 
-		if (isKeyDown(FIRE_KEYS)) {
-			if (System.currentTimeMillis() - lastShotTime >= Ship.SHOT_CHARGE_TIME) { // auto-fire every [x]ms
+		if (isKeyDown(FIRE_KEYS) && shootingEnabled) {
+			if (!ship.isShotCharging() && System.currentTimeMillis() - lastShotTime >= Ship.SHOT_CHARGE_TIME) { // auto-fire every [x]ms
 				this.shotChargeStart = System.currentTimeMillis();
 				ship.setShotCharging(true);
 				Sound.SHOT_CHARGE.play();
@@ -127,7 +132,7 @@ public class ShipScreen extends BaseScreen {
 		}
 	}
 
-	private void fireShot() {
+	protected void fireShot() {
 
 		Sound.SHOOT.play();
 
@@ -137,4 +142,5 @@ public class ShipScreen extends BaseScreen {
 		shots.add(new Rectangle(new Point(x, y), SHOT_SIZE));
 	}
 
+	public void setShootingEnabled(boolean shootingEnabled) { this.shootingEnabled = shootingEnabled; }
 }

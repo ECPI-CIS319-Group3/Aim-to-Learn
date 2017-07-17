@@ -23,7 +23,10 @@ public class MainMenu extends BaseMenu {
 	public boolean onSelection(int index) {
 		if (index == 0) startChosen();
 		else if (index == 1) game.openOptions(this);
-		else if (index == 2) game.howToPlay(this);
+		else if (index == 2) {
+			game.setDisplayPanel(game.TUTORIAL_SCREEN);
+			game.TUTORIAL_SCREEN.init();
+		}
 		else if (index == 3) game.confirmQuit(this);
 		else throw new AssertionError("Not possible");
 		return true;

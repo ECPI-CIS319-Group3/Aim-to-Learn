@@ -15,8 +15,11 @@ public enum Sound {
 	ANSWER_EXPLOSION("answer_hit_explosion.wav"),
 	SHIP_HIT("ship_hit_explosion.wav"),
 	SHIELD_HIT("answer_hit_shield.wav"),
-	BG_MUSIC_V1("bg_music_v1.wav", true),
-	BG_MUSIC_V2("bg_music_v2.wav", true);
+	MAIN_MENU_MUSIC("main_menu_music.wav", true),
+	MATH_MUSIC("math_music.wav", true),
+	SCIENCE_MUSIC("science_music.wav", true),
+	HISTORY_MUSIC("history_music.wav", true),
+	TUTORIAL_MUSIC("tutorial_music.wav", true);
 
 	private static double masterVolume = 1.0;
 	private static int fxVolume = 100;
@@ -53,6 +56,7 @@ public enum Sound {
 	 * Play this sound once, cutting off the previous instance of this sound
 	 */
 	public void play() {
+		clearMusic();
 		clip.stop();
 		clip.flush();
 		clip.setFramePosition(0);
@@ -63,8 +67,20 @@ public enum Sound {
 	 * Loop this sound indefinitely
 	 */
 	public void loop() {
+		clearMusic();
 		clip.setLoopPoints(0, -1);
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
+	}
+
+	private void clearMusic() {
+		if (!isMusic) return;
+
+		for (Sound sound : values()) {
+			if (isMusic) {
+				sound.clip.stop();
+				sound.clip.flush();
+			}
+		}
 	}
 
 	/**

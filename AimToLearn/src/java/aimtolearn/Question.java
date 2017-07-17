@@ -25,6 +25,8 @@ public class Question {
 		this.subject = subject;
 		this.difficulty = difficulty;
 
+		if (allAnswers.length < 2) throw new IllegalArgumentException("Must have at least 2 answers");
+
 		this.allAnswers = new ArrayList<>(Arrays.asList(allAnswers));
 		this.answerCount = allAnswers.length;
 		this.lastAnswerIndex = answerCount; // this gets reset in randomAnswer()
