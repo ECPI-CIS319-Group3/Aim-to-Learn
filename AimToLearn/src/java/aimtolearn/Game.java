@@ -10,10 +10,15 @@ import java.awt.event.KeyEvent;
 
 import static aimtolearn.Constants.*;
 
+/**
+ * The main program window
+ */
 public class Game extends JFrame {
 
+	// the currently-active JPanel
 	private BaseScreen activePanel = null;
 
+	// the public screens used by this and other classes
 	public final MainMenu MAIN_MENU;
 	public final PauseMenu PAUSE_MENU;
 	public final GameplayScreen GAMEPLAY_SCREEN;
@@ -23,14 +28,17 @@ public class Game extends JFrame {
 	public final GameOverScreen GAME_OVER_SCREEN;
 	public final MoveScreen MOVE_SCREEN;
 
+	// private screens used only by this class
 	private final ConfirmQuitMenu CONFIRM_QUIT_SCREEN;
 	private final HowToPlayScreen HOW_TO_SCREEN;
 	private final OptionsMenu OPTIONS_MENU;
 
+	// the current visible width/height - contents are scaled to match this size
 	private int desiredHeight;
 	private int desiredWidth;
 
 	public Game() {
+		// initialize all screens, which all take this Game instance as their parameter
 		this.MAIN_MENU = new MainMenu(this);
 		this.PAUSE_MENU = new PauseMenu(this);
 
@@ -47,37 +55,54 @@ public class Game extends JFrame {
 
 		this.GAME_OVER_SCREEN = new GameOverScreen(this);
 
+		// splash screen is only shown once, so no need to have a field for it
 		SplashScreen splashScreen = new SplashScreen(this);
 		setDisplayPanel(splashScreen);
 
+		// preload sounds and start playing bg music
 		Sound.init();
 		Sound.BG_MUSIC_V2.loop();
 
+		// start the update thread
 		GameLoop loop = new GameLoop(this);
 		loop.start();
 
+		// set resolution to 1600x900 (the res everything was built for), or
+		// to 1280x720 if the screen height is too small
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-		setResolution(screen.width < HEIGHTS[1] ? HEIGHTS[0] : HEIGHTS[1]);
+		setResolution(screen.height < HEIGHTS[1] ? HEIGHTS[0] : HEIGHTS[1]);
 
+		// set this frame's options
 		this.setTitle("Aim to Learn");
-		this.setResizable(false);
-		this.setUndecorated(true);
+		this.setResizable(false); // disable resizing
+		this.setUndecorated(true); // remove border and top bar
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.setVisible(true);
 	}
 
+	/**
+	 * Sets the currently visible JPanel and gives it focus
+	 * @param panel the BaseScreen instance to set visible
+	 */
 	public void setDisplayPanel(BaseScreen panel) {
 		this.activePanel = panel;
 		this.setContentPane(activePanel);
-		this.revalidate();
+		this.revalidate(); // this is needed when changing components on-the-fly
 		activePanel.requestFocusInWindow();
 	}
 
+	/**
+	 * Show the "how to play" screen given a screen to return to after closing the screen
+	 * @param returnScreen the BaseScreen to return to
+	 */
 	public void howToPlay(BaseScreen returnScreen) {
 		setDisplayPanel(HOW_TO_SCREEN);
 		HOW_TO_SCREEN.setReturnScreen(returnScreen);
 	}
 
+	/**
+	 * Show the options screen given a screen to return to after closing it
+	 * @param returnScreen the BaseScreen to return to
+	 */
 	public void openOptions(BaseScreen returnScreen) {
 		setDisplayPanel(OPTIONS_MENU);
 		OPTIONS_MENU.setReturnScreen(returnScreen);
@@ -85,18 +110,29 @@ public class Game extends JFrame {
 		OPTIONS_MENU.reset();
 	}
 
+	/**
+	 * Show the quit confirmation screen given a screen to return to when hitting cancel
+	 * @param returnScreen the BaseScreen to return to
+	 */
 	public void confirmQuit(BaseScreen returnScreen) {
 		CONFIRM_QUIT_SCREEN.setReturnScreen(returnScreen);
 		setDisplayPanel(CONFIRM_QUIT_SCREEN);
 	}
 
-	public void setResolution(int h) {
-		this.desiredHeight = h;
+	/**
+	 * Set the resolution by its height. Width is calculated from that
+	 * @param height the height to switch to
+	 */
+	public void setResolution(int height) {
+		this.desiredHeight = height;
 		this.desiredWidth = (int) (desiredHeight * AR);
 		this.setSize(desiredWidth, desiredHeight);
-		this.setLocationRelativeTo(null);
+		this.setLocationRelativeTo(null); // this centers the window in the screen
 	}
 
+	/**
+	 * Delegated method from the active screen's key listener to handle some debug keybinds
+	 */
 	public void onKeyDown(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_F10) System.exit(0);
@@ -106,6 +142,8 @@ public class Game extends JFrame {
 			CONTINUE_SCREEN.init();
 		}
 	}
+
+	// === misc. getters ===
 
 	public int getDesiredHeight() {
 		return desiredHeight;

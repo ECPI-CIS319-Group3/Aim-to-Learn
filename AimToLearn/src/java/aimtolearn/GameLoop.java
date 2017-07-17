@@ -1,5 +1,8 @@
 package aimtolearn;
 
+/**
+ * This class manages the game's update loop, which runs every 10 ms, 100 times per second
+ */
 public class GameLoop implements Runnable {
 
 	private static GameLoop instance;
@@ -19,6 +22,9 @@ public class GameLoop implements Runnable {
 		instance = this;
 	}
 
+	/**
+	 * Start the update loop
+	 */
 	public void start() {
 
 		this.running = true;
@@ -38,13 +44,14 @@ public class GameLoop implements Runnable {
 		final int delay = 1000 / Constants.TICK_RATE;
 		long lastStartTime, offset, sleepTime;
 
+		// track the last tick time so that we can account for inaccuracies that may build over time
 		lastStartTime = System.currentTimeMillis();
 
 		while (running) {
+
+			// every tick, update the active panel
 			if (game.getActivePanel().isActive())
 				game.getActivePanel().tick();
-
-		//	game.getOverlay().repaint();
 
 			offset = System.currentTimeMillis() - lastStartTime;
 			sleepTime = delay - offset;

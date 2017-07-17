@@ -6,8 +6,11 @@ import java.awt.geom.Rectangle2D;
 
 public class Utils {
 
+	/**
+	 * Get a value from a given enum type
+	 */
 	public static <T extends Enum<T>> T getEnum(String name, Class<T> type) throws IllegalArgumentException {
-		return Enum.valueOf(type, name.trim().toUpperCase());
+		return Enum.valueOf(type, name.toUpperCase());
 	}
 
 	/**

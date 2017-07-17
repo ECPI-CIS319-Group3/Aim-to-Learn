@@ -11,6 +11,9 @@ import java.util.List;
 
 import static aimtolearn.Constants.*;
 
+/**
+ * Class representing the controllable ship, along with all its animations and sounds
+ */
 public class Ship {
 
 	private int x;
@@ -18,15 +21,25 @@ public class Ship {
 
 	/** -1, 0, or 1 **/
 	private byte direction;
+
+	// timings for when certain events started - used for animations
 	private long directionChangeStart, impactedStart;
+
+	// the current ship's image - used for tilting/moving left/right having different images
 	private Image currentImage;
+
+	// indicates a shot is being charged
 	private boolean shotCharging;
+
+	// constants
 
 	private static final int INVULN_DURATION = 2000;
 	public static final int SHOT_CHARGE_TIME = 750;
 
 	public static final byte DIR_RIGHT = 1, DIR_NONE = 0, DIR_LEFT = -1;
 	private static final List<Byte> DIRECTIONS = Arrays.asList(DIR_RIGHT, DIR_NONE, DIR_LEFT);
+
+	// images and animations
 
 	private static final Image MOVING_LEFT = Constants.getImage("ship_moving_left.png");
 	private static final Image MOVE_LEFT = Constants.getImage("ship_left.png");
@@ -46,6 +59,10 @@ public class Ship {
 		this.currentImage = SHIP_IMAGE;
 	}
 
+	/**
+	 * Draws the ship at its current location.
+	 * Called by the screen's updateScreen() method
+	 */
 	public void draw(Graphics g) {
 
 		int x = computeX();
@@ -56,6 +73,9 @@ public class Ship {
 		if (SHIELD_OVERLAY_ANIM.isRunning()) SHIELD_OVERLAY_ANIM.draw(g, x, y);
 	}
 
+	/**
+	 * Update the ship; called every game tick
+	 */
 	public void tick() {
 
 		for (AnimatedSprite anim : ANIMATIONS) anim.tick();
@@ -71,41 +91,51 @@ public class Ship {
 		}
 	}
 
+	/**
+	 * Compute the ship's top-left position. this.x is tracked from the center of the ship
+	 */
 	private int computeX() {
 		return this.x - SHIP_WIDTH / 2;
 	}
 
-	public int getX() {
-		return x;
-	}
+	// getter and setter for x
+	public int getX() { return x; }
+	public void setX(int x) { this.x = x; }
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
+	/**
+	 * Notify the ship that it has been hit by a falling answer
+	 */
 	public void impacted() {
 		this.impactedStart = System.currentTimeMillis();
+
 		HIT_OVERLAY_ANIM.start();
 		SHIELD_OVERLAY_ANIM.start();
 
 		Sound.SHIP_HIT.play();
-
 		Sound.SHIELD_ACTIVE.play();
 	}
 
+	/**
+	 * Checks if the ship is currently invincible, which is for a moment after being impacted
+	 */
 	public boolean isInvincible() {
 		return System.currentTimeMillis() - impactedStart <= INVULN_DURATION;
 	}
 
+	/**
+	 * Notify the ship that a shot has started/stopped charging. Starts the animation if needed
+	 */
 	public void setShotCharging(boolean charging) {
 		this.shotCharging = charging;
-		FIRING_ANIM.start();
+		if (charging) FIRING_ANIM.start();
 	}
 
-	public boolean isShotCharging() {
-		return shotCharging;
-	}
+	/** Get whether or not a shot is chargingn */
+	public boolean isShotCharging() { return shotCharging; }
 
+	/**
+	 * Notify the ship that it has just began a direction change
+	 */
 	public void setDirection(byte direction) {
 		if (!DIRECTIONS.contains(direction))
 			throw new IllegalArgumentException("Invalid direction: " + direction);
@@ -116,6 +146,9 @@ public class Ship {
 		this.direction = direction;
 	}
 
+	/**
+	 * Get the ship's current bounding box - used for hit detection
+	 */
 	public Rectangle getBounds() {
 		return new Rectangle(computeX(), y, SHIP_WIDTH, SHIP_HEIGHT);
 	}

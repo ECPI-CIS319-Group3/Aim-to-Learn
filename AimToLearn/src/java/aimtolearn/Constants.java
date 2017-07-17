@@ -7,6 +7,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * Class filled with misc. constant values used throughout the program
+ */
 public class Constants {
 
 	// resolution constants
@@ -50,6 +53,9 @@ public class Constants {
 		PIXEL_FONT = font;
 	}
 
+	/**
+	 * Load an image file from the resource folder
+	 */
 	public static BufferedImage getImage(String fileName) {
 		fileName = IMG_DIR + fileName;
 		try {
@@ -61,6 +67,9 @@ public class Constants {
 		}
 	}
 
+	/**
+	 * Load a sound file from the resouce folder
+	 */
 	public static Clip getSound(String fileName) {
 		fileName = WAV_DIR + fileName;
 		try (AudioInputStream in = AudioSystem.getAudioInputStream(Constants.class.getResource(fileName))) {
@@ -73,8 +82,5 @@ public class Constants {
 			throw new RuntimeException(e);
 		}
 	}
-
-	// question length limit is currently 52
-//	public static final String QUESTION = "How many states are in the United states of america?";
 
 }

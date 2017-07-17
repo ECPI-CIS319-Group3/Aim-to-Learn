@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class represents a single question, with its list of answers and correct answer
+ */
 public class Question {
 
 	private final String questionPrompt, correctAnswer;
@@ -24,8 +27,9 @@ public class Question {
 
 		this.allAnswers = new ArrayList<>(Arrays.asList(allAnswers));
 		this.answerCount = allAnswers.length;
-		this.lastAnswerIndex = answerCount; // reset in randomAnswer()
+		this.lastAnswerIndex = answerCount; // this gets reset in randomAnswer()
 
+		// correct answer is the first one from the list in the data file
 		this.correctAnswer = allAnswers[0];
 
 		// helpful check for questions with any of their lines that are too long
@@ -56,24 +60,17 @@ public class Question {
 		}
 
 		return allAnswers.get(lastAnswerIndex);
-
-
-		// previous implementation, using array
-	//	return allAnswers[Constants.RAND.nextInt(answerCount)];
 	}
 
-	public String getQuestionPrompt() {
-		return questionPrompt;
-	}
+	// === getters ===
 
-	public Subject getSubject() {
-		return subject;
-	}
+	public String getQuestionPrompt() { return questionPrompt; }
+	public Subject getSubject() { return subject; }
+	public Difficulty getDifficulty() { return difficulty; }
 
-	public Difficulty getDifficulty() {
-		return difficulty;
-	}
-
+	/**
+	 * The Subject enum, containing each of the 3 subjects
+	 */
 	public enum Subject {
 		MATH, SCIENCE, HISTORY;
 
@@ -87,6 +84,9 @@ public class Question {
 		public static String[] items() { return items; }
 	}
 
+	/**
+	 * The Difficulty enum, containing each of the 3 difficulties
+	 */
 	public enum Difficulty {
 		EASY, NORMAL, HARD;
 

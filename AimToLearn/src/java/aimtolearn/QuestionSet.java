@@ -9,22 +9,27 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class handles loading the question data file and parses it to a complex map.
+ * It also tracks the current question number, subject and difficulty, allowing the game to easily get each question.
+ */
 public class QuestionSet {
 
-	private static final Gson JSON = new Gson();
-	private static final String FILE_NAME = "QnA.json";
+	// the parsed data file
 	private final EnumMap<Question.Subject, EnumMap<Question.Difficulty, List<Question>>> masterData;
 
+	// current status info
 	private Question.Subject currentSubject;
 	private Question.Difficulty currentDiff;
 	private int currentQuestionNum;
 
 	public QuestionSet() {
-		Reader input = new InputStreamReader(Constants.class.getResourceAsStream(FILE_NAME));
+		Reader input = new InputStreamReader(Constants.class.getResourceAsStream("QnA.json"));
 		Type dataType = new TypeToken<Map<String, Map<String, LinkedHashMap<String, String[]>>>>() {}.getType();
+		Gson gson = new Gson();
 
 		// Map structure: subject -> difficulty -> question -> answers
-		Map<String, Map<String, LinkedHashMap<String, String[]>>> data = JSON.fromJson(input, dataType);
+		Map<String, Map<String, LinkedHashMap<String, String[]>>> data = gson.fromJson(input, dataType);
 
 		this.masterData = new EnumMap<>(Question.Subject.class);
 
@@ -56,6 +61,9 @@ public class QuestionSet {
 		this.currentQuestionNum = -1;
 	}
 
+	/**
+	 * Randomize each list of questions to they are chosen in a random order each time
+	 */
 	private void randomize() {
 		for (Map<Question.Difficulty, List<Question>> subjects : masterData.values()) {
 			for (List<Question> questions : subjects.values())
@@ -63,6 +71,18 @@ public class QuestionSet {
 		}
 	}
 
+	/**
+	 * Reset current question data to default
+	 */
+	public void resetQuestions() {
+		this.currentQuestionNum = 0;
+		this.currentSubject = null;
+		this.currentDiff = null;
+	}
+
+	/**
+	 * Get another question from the current subject and difficulty
+	 */
 	public Question getQuestion() {
 		if (this.currentSubject == null || this.currentDiff == null)
 			throw new IllegalStateException("Cannot get next question - no subject or difficulty set.");
@@ -70,12 +90,10 @@ public class QuestionSet {
 		return getQuestion(currentSubject, currentDiff);
 	}
 
-	public void resetQuestions() {
-		this.currentQuestionNum = 0;
-		this.currentSubject = null;
-		this.currentDiff = null;
-	}
-
+	/**
+	 * Get a question from the given subject and difficulty. Gets next question if current difficulty and subject
+	 * are given, otherwise, starts a new counter
+	 */
 	public Question getQuestion(Question.Subject subject, Question.Difficulty diff) {
 
 		if (subject == currentSubject && diff == currentDiff)
@@ -95,10 +113,16 @@ public class QuestionSet {
 			.get(currentQuestionNum);
 	}
 
+	/**
+	 * Returns whether or not this subject and difficulty is out of questions
+	 */
 	public boolean outOfQuestions() {
 		return currentQuestionNum >= getQuestionCount(currentSubject, currentDiff) - 1;
 	}
 
+	/**
+	 * Get the question count for a given subject and difficulty
+	 */
 	private int getQuestionCount(Question.Subject subject, Question.Difficulty diff) {
 		return masterData.get(subject).get(diff).size();
 	}

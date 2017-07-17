@@ -2,9 +2,10 @@ package aimtolearn;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 
+/**
+ * An enum of possible sound files
+ */
 public enum Sound {
 	MENU_MOVE("menu_move.wav"),
 	MENU_SELECT("menu_select.wav"),
@@ -27,20 +28,30 @@ public enum Sound {
 
 	public static int STEP_SIZE = 5;
 
-	// called to preload sounds
+	/** Called to preload sounds */
 	public static void init() { values(); }
 
+	/**
+	 * Constructor for sound effects. Delegates to the 2-arg constructor with isMusic = false
+	 */
 	Sound(String fileName) {
 		this(fileName, false);
 	}
 
+	/**
+	 * Constructor for sound effects or music
+	 * @param fileName The filename to load
+	 * @param isMusic true if this sound is music
+	 */
 	Sound(String fileName, boolean isMusic) {
 		this.clip = Constants.getSound(fileName);
 		this.gainControl = ((FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN));
 		this.isMusic = isMusic;
-	//	clip.addLineListener(CloseListener.self);
 	}
 
+	/**
+	 * Play this sound once, cutting off the previous instance of this sound
+	 */
 	public void play() {
 		clip.stop();
 		clip.flush();
@@ -48,17 +59,30 @@ public enum Sound {
 		clip.start();
 	}
 
+	/**
+	 * Loop this sound indefinitely
+	 */
 	public void loop() {
 		clip.setLoopPoints(0, -1);
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 
+	/**
+	 * Set the master volume, which scales both other volumes accordingly
+	 * @param percentVolume an integer representation of a percent for this volume
+	 */
 	public static void setMasterVolume(int percentVolume) {
 		masterVolume = clampVolume(percentVolume) / 100.0;
+
+		// update other volumes with this new master volume scale
 		setFxVolume(fxVolume);
 		setMusicVolume(musicVolume);
 	}
 
+	/**
+	 * Sets the volume of all sound effects
+	 * @param percentVolume an integer representation of a percent for this volume
+	 */
 	public static void setFxVolume(int percentVolume) {
 		fxVolume = clampVolume(percentVolume);
 		float gain = toGain((int) (fxVolume * masterVolume));
@@ -68,6 +92,10 @@ public enum Sound {
 		}
 	}
 
+	/**
+	 * Sets the volume of all music
+	 * @param percentVolume an integer representation of a percent for this volume
+	 */
 	public static void setMusicVolume(int percentVolume) {
 		musicVolume = clampVolume(percentVolume);
 		float gain = toGain((int) (musicVolume * masterVolume));
@@ -77,26 +105,25 @@ public enum Sound {
 		}
 	}
 
+	/**
+	 * Used to clamp the given volume to the range 0 - 150
+	 */
 	private static int clampVolume(int percentVol) {
 		return percentVol < 0 ? 0 : percentVol > 150 ? 150 : percentVol;
 	}
+
+	// === getters for the 3 volumes ===
 
 	public static int getMasterVolume() { return (int) (100 * masterVolume); }
 	public static int getFxVolume() { return fxVolume; }
 	public static int getMusicVolume() { return musicVolume; }
 
+	/**
+	 * Turn a percent volume >0 into a gain value
+	 */
 	private static float toGain(int percentVolume) {
 		double percentVol = percentVolume / 100.0;
 		return (float) (20 * Math.log10(percentVol));
-	}
-
-	static class CloseListener implements LineListener {
-
-		static LineListener self = new CloseListener();
-
-		public void update(LineEvent e){
-			if (e.getType() == LineEvent.Type.STOP) e.getLine().close();
-		}
 	}
 
 }
