@@ -15,9 +15,7 @@ public class AnimatedSprite {
 	private static final Map<String, Point> OFFSETS = new HashMap<>();
 
 	static {
-		try {
-		//	List<String> lines = Files.readAllLines(Paths.get(Constants.class.getResource("offsets.txt").toURI()));
-			Scanner linesScanner = new Scanner(Constants.class.getResourceAsStream("offsets.txt"));
+		try (Scanner linesScanner = new Scanner(Constants.class.getResourceAsStream("offsets.txt"))) {
 			while (linesScanner.hasNext()) {
 				String line = linesScanner.nextLine();
 				String[] parts = line.split(" ");
@@ -27,7 +25,7 @@ public class AnimatedSprite {
 				OFFSETS.put(name, new Point(x, y));
 			}
 		}
-		catch (/*IOException | URISyntaxException | FileSystemNotFoundException |*/ NumberFormatException e) {
+		catch (NumberFormatException e) {
 			System.err.println("Failed to load or parse animation offset file. Quitting game.");
 			System.exit(15);
 		}
