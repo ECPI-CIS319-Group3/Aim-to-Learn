@@ -2,3 +2,8 @@
 /AimToLearn/out/**
 /AimToLearn/.idea
 /AimToLearn/*.iml
+/AimToLearn/*.eml
+/AimToLearn/*.userlibraries
+/AimToLearn/.settings
+/AimToLearn/.classpath
+/AimToLearn/.project
