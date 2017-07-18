@@ -150,6 +150,8 @@ public class Ship {
 		return System.currentTimeMillis() - explosionStart <= EXPLOSION_DURATION;
 	}
 
+	public boolean isDead() { return dead; }
+
 	/**
 	 * Notify the ship that a shot has started/stopped charging. Starts the animation if needed
 	 */

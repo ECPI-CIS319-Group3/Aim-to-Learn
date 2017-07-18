@@ -59,7 +59,7 @@ public abstract class ShipScreen extends BaseScreen {
 		}
 
 		// TODO this is temporary
-		if (key == VK_F8 && !ship.isExploding()) {
+		if (key == VK_F8 && !ship.isDead()) {
 			ship.explode();
 		}
 	}
@@ -99,7 +99,7 @@ public abstract class ShipScreen extends BaseScreen {
 		if (frozen) return;
 
 		// prevent all movement and firing while ship is exploding
-		if (!ship.isExploding()) {
+		if (!ship.isDead()) {
 
 			// prevent both left and right from being held down together
 			if (!(isKeyDown(RIGHT_KEYS) && isKeyDown(LEFT_KEYS))) {
