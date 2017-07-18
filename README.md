@@ -14,13 +14,13 @@ It is a collaboration of Justin Mariner, Rebekah Marsh, and Emir Kaynak.
 
 The player, shown as a ship, is moved with <kbd>&larr;</kbd> and <kbd>&rarr;</kbd> or the <kbd>A</kbd> and <kbd>D</kbd> keys. Shots are fired by pressing <kbd>&uarr;</kbd> or the <kbd>W</kbd> key.
 
-### Technical Information
+## Technical Information
 
 * Questions are loaded from a [JSON file](/AimToLearn/src/resources/aimtolearn/QnA.json) using Google's [GSON](https://github.com/google/gson) library.
 * Each screen is contained within its own `JPanel` and those are swapped between on-the-fly by using `JFrame.setContentPane(...)`. See [Game.java](/AimToLearn/src/java/aimtolearn/Game.java#L91).
 * The game ([currently](/AimToLearn/src/java/aimtolearn/Constants.java#L21)) runs at 100 updates per second, which runs on a second thread (see [GameLoop.java](/AimToLearn/src/java/aimtolearn/GameLoop.java)). This updates whatever is currently being shown on the screen using each screen's `tick()` method ([example](/AimToLearn/src/java/aimtolearn/screens/ShipScreen.java#L87)).
 
-## Directory Info
+### Directory Info
 
 Directory | Info
 -|-
