@@ -17,7 +17,7 @@ import static aimtolearn.Constants.*;
 public class Ship {
 
 	private int x;
-	private final int y;
+	private final int y, initialX;
 
 	/** -1, 0, or 1 **/
 	private byte direction;
@@ -53,6 +53,7 @@ public class Ship {
 		Arrays.asList(FIRING_ANIM, EXPLOSION_ANIM, SHIELD_OVERLAY_ANIM, HIT_OVERLAY_ANIM);
 
 	public Ship(int startX) {
+		this.initialX = startX;
 		this.x = startX;
 		this.y = SHIP_Y - SHIP_HEIGHT;
 		this.direction = 0;
@@ -89,6 +90,13 @@ public class Ship {
 		else {
 			this.currentImage = SHIP_IMAGE;
 		}
+	}
+
+	/**
+	 * Resets the ship's location back to default
+	 */
+	public void resetLocation() {
+		this.x = initialX;
 	}
 
 	/**

@@ -78,6 +78,13 @@ public class QuestionSet {
 		this.currentQuestionNum = 0;
 		this.currentSubject = null;
 		this.currentDiff = null;
+
+		for (Map<Question.Difficulty, List<Question>> subjects : masterData.values()) {
+			for (List<Question> questions : subjects.values()) {
+				for (Question q : questions)
+					q.resetAnswers();
+			}
+		}
 	}
 
 	/**

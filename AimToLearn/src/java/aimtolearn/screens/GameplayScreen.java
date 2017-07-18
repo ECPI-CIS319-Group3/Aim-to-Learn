@@ -107,8 +107,15 @@ public class GameplayScreen extends BaseGameplayScreen {
 	}
 
 	private void roundComplete() {
-		game.setDisplayPanel(game.CONTINUE_SCREEN);
-		game.CONTINUE_SCREEN.init();
+		if (getQuestion().getDifficulty() == Question.Difficulty.HARD) {
+			game.setDisplayPanel(game.SUBJECT_SCREEN);
+			game.SUBJECT_SCREEN.setDisabledSubject(getQuestion().getSubject());
+			game.SUBJECT_SCREEN.init(true);
+		}
+		else {
+			game.setDisplayPanel(game.CONTINUE_SCREEN);
+			game.CONTINUE_SCREEN.init();
+		}
 	}
 
 	private void decrementScore() {

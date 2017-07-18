@@ -5,8 +5,17 @@ import aimtolearn.Question;
 
 public class SubjectShootingMenu extends BaseShootingMenu {
 
+	private static final String PROMPT_1 = "Choose a subject";
+	private static final String PROMPT_2 = "Difficulty complete.\nChoose another subject";
+
 	public SubjectShootingMenu(Game game) {
-		super(game, "Choose a subject", Question.Subject.items());
+		super(game, PROMPT_1, Question.Subject.items());
+	}
+
+	public void init(boolean diffComplete) {
+		setPrompt(diffComplete ? PROMPT_2 : PROMPT_1);
+		setPromptHeight(diffComplete ? 300 : 200);
+		super.init();
 	}
 
 	public void setDisabledSubject(Question.Subject sub) {

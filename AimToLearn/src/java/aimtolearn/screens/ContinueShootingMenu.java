@@ -19,7 +19,7 @@ public class ContinueShootingMenu extends BaseShootingMenu {
 
 		if (index == 0) { // "change subject"
 			game.setDisplayPanel(game.SUBJECT_SCREEN);
-			game.SUBJECT_SCREEN.init();
+			game.SUBJECT_SCREEN.init(false);
 			game.SUBJECT_SCREEN.setDisabledSubject(sub);
 		}
 		else if (index == 1) { // "inc difficulty"

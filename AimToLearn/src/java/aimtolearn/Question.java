@@ -1,9 +1,6 @@
 package aimtolearn;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class represents a single question, with its list of answers and correct answer
@@ -29,7 +26,7 @@ public class Question {
 
 		this.allAnswers = new ArrayList<>(Arrays.asList(allAnswers));
 		this.answerCount = allAnswers.length;
-		this.lastAnswerIndex = answerCount; // this gets reset in randomAnswer()
+		resetAnswers();
 
 		// correct answer is the first one from the list in the data file
 		this.correctAnswer = allAnswers[0];
@@ -47,16 +44,22 @@ public class Question {
 		return correctAnswer.equals(testAnswer);
 	}
 
+	public void resetAnswers() {
+		this.lastAnswerIndex = -1; // this is reset is randomAnswer()
+
+		// shuffle until the correct answer is NOT first
+		do {
+			Collections.shuffle(allAnswers);
+		} while (allAnswers.get(0).equals(correctAnswer));
+	}
+
 	public String randomAnswer() {
 		this.lastAnswerIndex++;
 
 		// if the index is beyond the length
 		if (lastAnswerIndex >= answerCount) {
-			// shuffle until the correct answer is NOT first
-			do {
-				Collections.shuffle(allAnswers);
-			} while (allAnswers.get(0).equals(correctAnswer));
-
+			// shuffle the list of answers
+			Collections.shuffle(allAnswers);
 			// and reset counter
 			this.lastAnswerIndex = 0;
 		}

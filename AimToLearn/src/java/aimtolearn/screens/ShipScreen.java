@@ -31,11 +31,11 @@ public abstract class ShipScreen extends BaseScreen {
 
 	protected final List<Integer> RIGHT_KEYS = Arrays.asList(VK_RIGHT, VK_D);
 	protected final List<Integer> LEFT_KEYS = Arrays.asList(VK_LEFT, VK_A);
-	protected final List<Integer> FIRE_KEYS = Arrays.asList(VK_UP, VK_W);
+	private final List<Integer> FIRE_KEYS = Arrays.asList(VK_UP, VK_W);
 
 	private static final Dimension SHOT_SIZE = new Dimension(10, 40);
 
-	private static final int SHIP_SPEED = 5, SHOT_SPEED = 15, // FIRE_DELAY = 500, replaced with Ship.SHOT_CHARGE_TIME
+	private static final int SHIP_SPEED = 5, SHOT_SPEED = 15,
 		LEFT_BOUND = SHIP_WIDTH / 2, RIGHT_BOUND = MAIN_WIDTH - LEFT_BOUND;
 
 	protected ShipScreen(Game game) {
@@ -63,8 +63,9 @@ public abstract class ShipScreen extends BaseScreen {
 		activeKeys.put(e.getKeyCode(), false);
 	}
 
-	protected void resetKeys() {
+	protected void reset() {
 		activeKeys.clear();
+		ship.resetLocation();
 	}
 
 	private boolean isKeyDown(List<Integer> keyNumbers) {

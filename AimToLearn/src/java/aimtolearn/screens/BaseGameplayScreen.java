@@ -68,7 +68,7 @@ public abstract class BaseGameplayScreen extends ShipScreen {
 		this.score = 0;
 		this.round = 1;
 		this.level = 1;
-		resetKeys();
+		reset();
 		setActive(true);
 	}
 
