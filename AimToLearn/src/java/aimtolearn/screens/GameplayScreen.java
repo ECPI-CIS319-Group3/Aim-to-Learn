@@ -130,8 +130,8 @@ public class GameplayScreen extends BaseGameplayScreen {
 	private void roundComplete() {
 		if (getQuestion().getDifficulty() == Question.Difficulty.HARD) {
 			game.setDisplayPanel(game.SUBJECT_SCREEN);
-			game.SUBJECT_SCREEN.setDisabledSubject(getQuestion().getSubject());
 			game.SUBJECT_SCREEN.init(true);
+			game.SUBJECT_SCREEN.setDisabledSubject(getQuestion().getSubject());
 		}
 		else {
 			game.setDisplayPanel(game.CONTINUE_SCREEN);
