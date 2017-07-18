@@ -106,6 +106,8 @@ public abstract class BaseGameplayScreen extends ShipScreen {
 
 		ANSWER_HIT_OVERLAY_ANIM.tick();
 
+		if (isFrozen()) return;
+
 		for (AnswerSprite answer : answers) {
 
 			Rectangle ansBounds = answer.getBounds();

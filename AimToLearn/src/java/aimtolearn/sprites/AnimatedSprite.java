@@ -37,16 +37,20 @@ public class AnimatedSprite {
 	private final Point offset;
 	private final int frameCount, frameTime, totalDuration;
 
-	private boolean running;
-	private int currentFrame;
+	private boolean running, loop;
+	private int nextFrame;
 	private long startTime, lastUpdateTime = 0;
 
 	// create a one-time animation
 	public AnimatedSprite(String imgName, int frameCount, int totalDuration) {
-		this(imgName, frameCount, totalDuration / frameCount, totalDuration);
+		this(imgName, frameCount, totalDuration / frameCount, totalDuration, false);
 	}
 
 	public AnimatedSprite(String imgName, int frameCount, int frameTime, int totalDuration) {
+		this(imgName, frameCount, frameTime, totalDuration, true);
+	}
+
+	private AnimatedSprite(String imgName, int frameCount, int frameTime, int totalDuration, boolean loop) {
 
 		BufferedImage spriteSheet = Constants.getImage(imgName + ".png");
 		int frameHeight = spriteSheet.getHeight(null);
@@ -58,12 +62,13 @@ public class AnimatedSprite {
 		this.frameCount = frameCount;
 		this.frameTime = frameTime;
 		this.totalDuration = totalDuration;
+		this.loop = loop;
 
 	}
 
 	public void start() {
 		this.startTime = System.currentTimeMillis();
-		this.currentFrame = 0;
+		this.nextFrame = 0;
 		this.running = true;
 	}
 
@@ -71,22 +76,30 @@ public class AnimatedSprite {
 		return running;
 	}
 
+	/**
+	 * Update this animation. Called every game tick and must be called before draw()
+	 */
 	public void tick() {
 
 		long t = System.currentTimeMillis();
 
-		if (t - startTime >= totalDuration) { // we passed the total duration, so stop
+		// we passed the total duration or frame count, so stop
+		if (t - startTime >= totalDuration || (!loop && nextFrame >= frameCount)) {
 			this.running = false;
 		}
 
 		if (running && t - lastUpdateTime >= frameTime) { // each frame step
-			this.currentFrame = currentFrame >= frameCount-1 ? 0 : currentFrame + 1;
+			this.nextFrame = nextFrame >= frameCount ? 1 : nextFrame + 1;
 			this.lastUpdateTime = t;
 		}
 	}
 
+	/**
+	 * Draw this animation. Must be called after tick()
+	 */
 	public void draw(Graphics g, int x, int y) {
-		g.drawImage(frames[currentFrame], x + offset.x, y + offset.y, null);
+		if (nextFrame > 0 && nextFrame <= frameCount)
+			g.drawImage(frames[nextFrame-1], x + offset.x, y + offset.y, null);
 	}
 
 }

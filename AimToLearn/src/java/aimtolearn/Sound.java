@@ -15,6 +15,7 @@ public enum Sound {
 	ANSWER_EXPLOSION("answer_hit_explosion.wav"),
 	SHIP_HIT("ship_hit_explosion.wav"),
 	SHIELD_HIT("answer_hit_shield.wav"),
+	SHIP_EXPLOSION("ship_explosion.wav"),
 	BG_MUSIC_V1("bg_music_v1.wav", true),
 	BG_MUSIC_V2("bg_music_v2.wav", true);
 

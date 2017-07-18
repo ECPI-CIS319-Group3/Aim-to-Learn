@@ -597,10 +597,10 @@
 				"Daytime",
 				"Nighttime"
 			],
-			"The closest star to Earth is __.": [
+			"What is the 5th planet from the sun?": [
+				"Jupiter",
 				"Sun",
 				"Orion",
-				"Moon",
 				"Mars"
 			],
 			"Molecules in this phase of matter\nare tightly packed together.": [

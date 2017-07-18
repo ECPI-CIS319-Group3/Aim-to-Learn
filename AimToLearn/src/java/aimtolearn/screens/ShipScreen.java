@@ -25,7 +25,7 @@ public abstract class ShipScreen extends BaseScreen {
 
 	private long lastShotTime = 0, shotChargeStart = 0;
 
-	private boolean shootingEnabled;
+	private boolean shootingEnabled, frozen;
 
 	private Map<Integer, Boolean> activeKeys = new HashMap<>();
 
@@ -40,6 +40,7 @@ public abstract class ShipScreen extends BaseScreen {
 
 	protected ShipScreen(Game game) {
 		super(game);
+		this.frozen = false;
 		this.shootingEnabled = true;
 		this.ship = new Ship(MAIN_WIDTH / 2);
 	}
@@ -56,6 +57,11 @@ public abstract class ShipScreen extends BaseScreen {
 			game.PAUSE_MENU.reset();
 			setActive(false);
 		}
+
+		// TODO this is temporary
+		if (key == VK_F8 && !ship.isExploding()) {
+			ship.explode();
+		}
 	}
 
 	@Override
@@ -64,8 +70,9 @@ public abstract class ShipScreen extends BaseScreen {
 	}
 
 	protected void reset() {
+		this.frozen = false;
 		activeKeys.clear();
-		ship.resetLocation();
+		ship.reset();
 	}
 
 	private boolean isKeyDown(List<Integer> keyNumbers) {
@@ -88,41 +95,48 @@ public abstract class ShipScreen extends BaseScreen {
 	public void tick() {
 		ship.tick();
 
-		// prevent both left and right from being held down together
-		if (!(isKeyDown(RIGHT_KEYS) && isKeyDown(LEFT_KEYS))) {
+		// prevent anything but ship updates when in gameover mode
+		if (frozen) return;
 
-			int shipX = ship.getX();
+		// prevent all movement and firing while ship is exploding
+		if (!ship.isExploding()) {
 
-			if (isKeyDown(RIGHT_KEYS)) { // if right is down, move right
-				shipX += SHIP_SPEED;
-				ship.setDirection(Ship.DIR_RIGHT);
+			// prevent both left and right from being held down together
+			if (!(isKeyDown(RIGHT_KEYS) && isKeyDown(LEFT_KEYS))) {
+
+				int shipX = ship.getX();
+
+				if (isKeyDown(RIGHT_KEYS)) { // if right is down, move right
+					shipX += SHIP_SPEED;
+					ship.setDirection(Ship.DIR_RIGHT);
+				}
+				else if (isKeyDown(LEFT_KEYS)) { // if left is down, move left
+					shipX -= SHIP_SPEED;
+					ship.setDirection(Ship.DIR_LEFT);
+				}
+				else {
+					ship.setDirection(Ship.DIR_NONE);
+				}
+
+				if (shipX > RIGHT_BOUND) shipX = RIGHT_BOUND;
+				if (shipX < LEFT_BOUND) shipX = LEFT_BOUND;
+
+				ship.setX(shipX);
 			}
-			else if (isKeyDown(LEFT_KEYS)) { // if left is down, move left
-				shipX -= SHIP_SPEED;
-				ship.setDirection(Ship.DIR_LEFT);
+
+			if (isKeyDown(FIRE_KEYS) && shootingEnabled) {
+				if (!ship.isShotCharging() && System.currentTimeMillis() - lastShotTime >= Ship.SHOT_CHARGE_TIME) {
+					this.shotChargeStart = System.currentTimeMillis();
+					ship.setShotCharging(true);
+					Sound.SHOT_CHARGE.play();
+				}
 			}
-			else {
-				ship.setDirection(Ship.DIR_NONE);
+
+			if (ship.isShotCharging() && System.currentTimeMillis() - shotChargeStart >= Ship.SHOT_CHARGE_TIME) {
+				fireShot();
+				ship.setShotCharging(false);
+				this.lastShotTime = System.currentTimeMillis();
 			}
-
-			if (shipX > RIGHT_BOUND) shipX = RIGHT_BOUND;
-			if (shipX < LEFT_BOUND) shipX = LEFT_BOUND;
-
-			ship.setX(shipX);
-		}
-
-		if (isKeyDown(FIRE_KEYS) && shootingEnabled) {
-			if (!ship.isShotCharging() && System.currentTimeMillis() - lastShotTime >= Ship.SHOT_CHARGE_TIME) { // auto-fire every [x]ms
-				this.shotChargeStart = System.currentTimeMillis();
-				ship.setShotCharging(true);
-				Sound.SHOT_CHARGE.play();
-			}
-		}
-
-		if (ship.isShotCharging() && System.currentTimeMillis() - shotChargeStart >= Ship.SHOT_CHARGE_TIME) {
-			fireShot();
-			ship.setShotCharging(false);
-			this.lastShotTime = System.currentTimeMillis();
 		}
 
 		for (Rectangle shotLoc : shots) {
@@ -143,5 +157,8 @@ public abstract class ShipScreen extends BaseScreen {
 		shots.add(new Rectangle(new Point(x, y), SHOT_SIZE));
 	}
 
-	public void setShootingEnabled(boolean shootingEnabled) { this.shootingEnabled = shootingEnabled; }
+	protected void setFrozen(boolean frozen) { this.frozen = frozen; }
+	protected boolean isFrozen() { return frozen; }
+
+	protected void setShootingEnabled(boolean shootingEnabled) { this.shootingEnabled = shootingEnabled; }
 }

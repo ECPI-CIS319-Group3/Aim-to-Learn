@@ -9,13 +9,16 @@ import aimtolearn.sprites.AnswerSprite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 
 public class GameplayScreen extends BaseGameplayScreen {
 
 	private QuestionSet questionSet;
 
+	private boolean gameOver;
+	private long gameOverStart;
 	private int totalScore;
-	private static final int PASSING_SCORE = 7;
+	private static final int PASSING_SCORE = 7, GAME_OVER_DELAY = 2000;
 
 	public GameplayScreen(Game game) {
 		super(game);
@@ -25,8 +28,16 @@ public class GameplayScreen extends BaseGameplayScreen {
 
 	}
 
+	@Override
+	protected void onKeyDown(KeyEvent e) {
+		super.onKeyDown(e);
+
+		if (e.getKeyCode() == KeyEvent.VK_F8) gameOver();
+	}
+
 	public void start(Question.Subject subject, Question.Difficulty difficulty) {
 
+		this.gameOver = false;
 		questionSet.resetQuestions();
 		updateQuestion(questionSet.getQuestion(subject, difficulty));
 
@@ -53,6 +64,12 @@ public class GameplayScreen extends BaseGameplayScreen {
 	@Override
 	public void tick() {
 		super.tick();
+
+		if (gameOver && System.currentTimeMillis() - gameOverStart >= GAME_OVER_DELAY) {
+			game.setDisplayPanel(game.GAME_OVER_SCREEN);
+			setActive(false);
+		}
+
 		repaint();
 	}
 
@@ -103,7 +120,11 @@ public class GameplayScreen extends BaseGameplayScreen {
 	}
 
 	private void gameOver() {
-		game.setDisplayPanel(game.GAME_OVER_SCREEN);
+		setQuestion(null); // disable new answer spawning
+		super.setFrozen(true); // freeze answers and shots
+		ship.explode();
+		this.gameOverStart = System.currentTimeMillis();
+		this.gameOver = true;
 	}
 
 	private void roundComplete() {

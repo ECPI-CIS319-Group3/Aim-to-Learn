@@ -23,17 +23,18 @@ public class Ship {
 	private byte direction;
 
 	// timings for when certain events started - used for animations
-	private long directionChangeStart, impactedStart;
+	private long directionChangeStart, impactedStart, explosionStart;
 
 	// the current ship's image - used for tilting/moving left/right having different images
 	private Image currentImage;
 
-	// indicates a shot is being charged
-	private boolean shotCharging;
+	// different states of the ship
+	private boolean shotCharging, dead;
 
 	// constants
 
-	private static final int INVULN_DURATION = 2000;
+	private static final int INVULN_DURATION = 2000, SHIELD_STEP_DURATION = 150,
+		HIT_DURATION = 250, EXPLOSION_DURATION = 1000;;
 	public static final int SHOT_CHARGE_TIME = 750;
 
 	public static final byte DIR_RIGHT = 1, DIR_NONE = 0, DIR_LEFT = -1;
@@ -45,19 +46,18 @@ public class Ship {
 	private static final Image MOVE_LEFT = Constants.getImage("ship_left.png");
 	private static final Image MOVING_RIGHT = Constants.getImage("ship_moving_right.png");
 	private static final Image MOVE_RIGHT = Constants.getImage("ship_right.png");
-	private static final AnimatedSprite FIRING_ANIM = new AnimatedSprite("ship_fire", 9, SHOT_CHARGE_TIME);
-	private static final AnimatedSprite EXPLOSION_ANIM = new AnimatedSprite("ship_explosion", 3, 1);
-	private static final AnimatedSprite SHIELD_OVERLAY_ANIM = new AnimatedSprite("ship_shield", 4, 250, INVULN_DURATION);
-	private static final AnimatedSprite HIT_OVERLAY_ANIM = new AnimatedSprite("ship_hit_explosion", 6, 250);
+	private static final AnimatedSprite FIRING_ANIM = new AnimatedSprite("ship_fire", 7, SHOT_CHARGE_TIME);
+	private static final AnimatedSprite EXPLOSION_ANIM = new AnimatedSprite("ship_explosion", 4, EXPLOSION_DURATION);
+	private static final AnimatedSprite SHIELD_OVERLAY_ANIM =
+		new AnimatedSprite("ship_shield", 4, SHIELD_STEP_DURATION, INVULN_DURATION);
+	private static final AnimatedSprite HIT_OVERLAY_ANIM = new AnimatedSprite("ship_hit_explosion", 6, HIT_DURATION);
 	private static final List<AnimatedSprite> ANIMATIONS =
 		Arrays.asList(FIRING_ANIM, EXPLOSION_ANIM, SHIELD_OVERLAY_ANIM, HIT_OVERLAY_ANIM);
 
 	public Ship(int startX) {
 		this.initialX = startX;
-		this.x = startX;
 		this.y = SHIP_Y - SHIP_HEIGHT;
-		this.direction = 0;
-		this.currentImage = SHIP_IMAGE;
+		reset();
 	}
 
 	/**
@@ -67,11 +67,13 @@ public class Ship {
 	public void draw(Graphics g) {
 
 		int x = computeX();
-		if (shotCharging) FIRING_ANIM.draw(g, x, y);
-		else g.drawImage(currentImage, x, y, null);
-
-		if (HIT_OVERLAY_ANIM.isRunning()) HIT_OVERLAY_ANIM.draw(g, x, y);
-		if (SHIELD_OVERLAY_ANIM.isRunning()) SHIELD_OVERLAY_ANIM.draw(g, x, y);
+		if (isExploding()) EXPLOSION_ANIM.draw(g, x, y);
+		else if (shotCharging) FIRING_ANIM.draw(g, x, y);
+		else if (!dead) {
+			g.drawImage(currentImage, x, y, null);
+			if (HIT_OVERLAY_ANIM.isRunning()) HIT_OVERLAY_ANIM.draw(g, x, y);
+			if (SHIELD_OVERLAY_ANIM.isRunning()) SHIELD_OVERLAY_ANIM.draw(g, x, y);
+		}
 	}
 
 	/**
@@ -82,7 +84,7 @@ public class Ship {
 		for (AnimatedSprite anim : ANIMATIONS) anim.tick();
 
 		if (this.direction != 0) {
-			if (System.currentTimeMillis() - this.directionChangeStart < 100)
+			if (System.currentTimeMillis() - directionChangeStart < 100)
 				this.currentImage = this.direction == DIR_LEFT ? MOVING_LEFT : MOVING_RIGHT;
 			else
 				this.currentImage = this.direction == DIR_LEFT ? MOVE_LEFT : MOVE_RIGHT;
@@ -95,8 +97,12 @@ public class Ship {
 	/**
 	 * Resets the ship's location back to default
 	 */
-	public void resetLocation() {
+	public void reset() {
 		this.x = initialX;
+		this.dead = false;
+		this.shotCharging = false;
+		this.direction = 0;
+		this.currentImage = SHIP_IMAGE;
 	}
 
 	/**
@@ -124,10 +130,24 @@ public class Ship {
 	}
 
 	/**
+	 * Explode the ship
+	 */
+	public void explode() {
+		this.explosionStart = System.currentTimeMillis();
+		Sound.SHIP_EXPLOSION.play();
+		this.dead = true;
+		EXPLOSION_ANIM.start();
+	}
+
+	/**
 	 * Checks if the ship is currently invincible, which is for a moment after being impacted
 	 */
 	public boolean isInvincible() {
 		return System.currentTimeMillis() - impactedStart <= INVULN_DURATION;
+	}
+
+	public boolean isExploding() {
+		return System.currentTimeMillis() - explosionStart <= EXPLOSION_DURATION;
 	}
 
 	/**
@@ -138,7 +158,7 @@ public class Ship {
 		if (charging) FIRING_ANIM.start();
 	}
 
-	/** Get whether or not a shot is chargingn */
+	/** Get whether or not a shot is charging */
 	public boolean isShotCharging() { return shotCharging; }
 
 	/**

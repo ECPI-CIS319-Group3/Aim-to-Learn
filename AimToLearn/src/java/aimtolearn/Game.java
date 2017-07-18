@@ -140,10 +140,6 @@ public class Game extends JFrame {
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_F10) System.exit(0);
 		else if (key == KeyEvent.VK_F9) setDisplayPanel(GAME_OVER_SCREEN);
-		else if (key == KeyEvent.VK_F8) {
-			setDisplayPanel(CONTINUE_SCREEN);
-			CONTINUE_SCREEN.init();
-		}
 	}
 
 	// === misc. getters ===
