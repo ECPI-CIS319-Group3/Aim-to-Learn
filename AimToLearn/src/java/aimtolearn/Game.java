@@ -21,6 +21,7 @@ public class Game extends JFrame {
 	// the public screens used by this and other classes
 	public final MainMenu MAIN_MENU;
 	public final TutorialScreen TUTORIAL_SCREEN;
+	public final CreditsScreen CREDITS_SCREEN;
 	public final PauseMenu PAUSE_MENU;
 	public final GameplayScreen GAMEPLAY_SCREEN;
 	public final ContinueShootingMenu CONTINUE_SCREEN;
@@ -48,6 +49,7 @@ public class Game extends JFrame {
 		this.SUBJECT_SCREEN = new SubjectShootingMenu(this);
 
 		this.TUTORIAL_SCREEN = new TutorialScreen(this);
+		this.CREDITS_SCREEN = new CreditsScreen(this);
 		this.HOW_TO_SCREEN = new HowToPlayScreen(this);
 		this.OPTIONS_MENU = new OptionsMenu(this);
 		this.MOVE_SCREEN = new MoveScreen(this);

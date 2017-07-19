@@ -120,6 +120,7 @@ public class GameplayScreen extends BaseGameplayScreen {
 	}
 
 	private void gameOver() {
+		setCenterBoxText("You've failed with a grade of " + (getScore()*10) + "%");
 		setQuestion(null); // disable new answer spawning
 		super.setFrozen(true); // freeze answers and shots
 		ship.explode();

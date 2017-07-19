@@ -74,7 +74,8 @@ public enum Sound {
 		}
 	}
 
-	private void stop() {
+	public void stop() {
+		if (isMusic) activeMusic = null;
 		clip.stop();
 		clip.flush();
 	}
