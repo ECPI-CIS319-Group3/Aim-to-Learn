@@ -1,6 +1,5 @@
 package aimtolearn.screens;
 
-import aimtolearn.Constants;
 import aimtolearn.Game;
 import aimtolearn.Sound;
 import aimtolearn.Utils;
@@ -24,7 +23,6 @@ public class SplashScreen extends BaseScreen {
 	private final Rectangle textBounds;
 
 	private static final double LARGE_SHIP_RATIO = 2.5;
-	private static final Image LOGO_IMAGE = Constants.getImage("splash_logo.png");
 
 	public SplashScreen(Game game) {
 		super(game);

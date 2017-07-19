@@ -52,12 +52,8 @@ public class GameplayScreen extends BaseGameplayScreen {
 
 	@Override
 	protected void updateScreen(Graphics graphics) {
-
 		if (!isReady()) return;
-
 		Graphics2D g = ((Graphics2D) graphics);
-
-
 		super.updateScreen(g);
 	}
 
