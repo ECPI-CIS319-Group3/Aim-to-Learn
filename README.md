@@ -9,7 +9,7 @@ It is a collaboration of Justin Mariner, Rebekah Marsh, and Emir Kaynak.
 
 Directory | Info
 -|-
-[`/AimToLearn`](/AimToLearn) | IntelliJ IDEA project folder, containing Java source files ([`/src/java`](/AimToLearn/src/java/aimtolearn)) and resource files ([`/src/resources`](/AimToLearn/src/resources/aimtolearn))
+`/AimToLearn` | Game submodule; links to a separate repository. This contains the Java project for the game
 [`/wireframes`](/wireframes) | Contains [draw.io](https://www.draw.io/) XML files and images
 [`/docs`](/docs) | Contains MS Word and Visio documents for this project
 [`/assets`](/assets) | Contains misc. assets relating to the project, including [piskel](http://www.piskelapp.com/) files
